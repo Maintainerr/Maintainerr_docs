@@ -13,7 +13,7 @@ We have implemented a way to test a specific pull request (new feature), using *
 
 ### Install Method
 
-In order to test these PR images, a dev would first need to create one. After the image is created, you can see its image name at the GHCR link here -> [GHCR images](https://github.com/jorenn92/Maintainerr/pkgs/container/maintainerr). Again, Docker is the only method for testing these images.
+In order to test these PR images, a dev would first need to create one. After the image is created, you can see its image name at the GHCR link here -> [GHCR images](https://github.com/Maintainerr/Maintainerr/pkgs/container/maintainerr). Again, Docker is the only method for testing these images.
 
 ### Getting Started
 
@@ -34,7 +34,7 @@ You can run the PR image using either docker run, or docker compose. Compose is 
     -u 1000:1000 \
     -p <9999>:6246 \
     --restart unless-stopped \
-    ghcr.io/jorenn92/maintainerr:<pr-#>
+    ghcr.io/maintainerr/maintainerr:<pr-#>
 ```
 
 #### Docker Compose
@@ -43,7 +43,7 @@ You can run the PR image using either docker run, or docker compose. Compose is 
 services:
     maintainerr-testing:
         container_name: maintainerr-testing
-        image: ghcr.io/jorenn92/maintainerr:<pr-#>
+        image: ghcr.io/maintainerr/maintainerr:<pr-#>
         user: 1000:1000
         volumes:
           - <your-testing-host-directory>:/opt/data
@@ -60,7 +60,7 @@ Remember, we need your feedback! Take a look at what the PR is for, what feature
 
 Reports should be made in one of the two ways:
 
-- [Github PR page](https://github.com/jorenn92/Maintainerr/pulls)
+- [Github PR page](https://github.com/Maintainerr/Maintainerr/pulls)
 
 - [Discord](https://discord.gg/WP4ZW2QYwk)
 

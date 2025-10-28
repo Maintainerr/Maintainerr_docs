@@ -27,8 +27,8 @@ site_description: >-
   Documentation for the wildly popular Maintainerr project.
 use_directory_urls: true
 # Repository
-repo_name: jorenn92/maintainerr
-repo_url: https://github.com/jorenn92/maintainerr
+repo_name: maintainerr/maintainerr
+repo_url: https://github.com/maintainerr/maintainerr
 copyright: Copyright &copy; Jorenn92
 
 # Configuration
@@ -155,7 +155,7 @@ extra:
       - reject
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/jorenn92/maintainerr
+      link: https://github.com/maintainerr/maintainerr
       name: Github
     - icon: fontawesome/brands/docker
       link: https://hub.docker.com/r/jorenn92/maintainerr/
@@ -167,7 +167,7 @@ extra:
       link: '#__consent'
       name: Cookie Settings
     - icon: material/gavel
-      link: https://github.com/jorenn92/Maintainerr/blob/main/LICENSE
+      link: https://github.com/Maintainerr/Maintainerr/blob/main/LICENSE
       name: License
   status:
     new: Recently Added

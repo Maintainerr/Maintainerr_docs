@@ -6,4 +6,4 @@ hide:
 status: new
 ---
 
---8<-- "https://raw.githubusercontent.com/jorenn92/Maintainerr/refs/heads/main/CHANGELOG.md"
+--8<-- "https://raw.githubusercontent.com/Maintainerr/Maintainerr/refs/heads/main/CHANGELOG.md"

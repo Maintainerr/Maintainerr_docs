@@ -5,7 +5,7 @@ title: Installation
 
 Docker is Maintainerr's supported method of installation.
 
-Images for amd64 & arm64 are available under `jorenn92/maintainerr` and `ghcr.io/jorenn92/maintainerr`.
+Images for amd64 & arm64 are available under `jorenn92/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
 The containers data location is set as /opt/data. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
 
 [tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
@@ -47,7 +47,7 @@ Setting the host data directory largely depends on how you are installing Mainta
     -u 1000:1000 \
     -p 6246:6246 \ # (1)!
     --restart unless-stopped \
-    ghcr.io/jorenn92/maintainerr:latest # (2)!
+    ghcr.io/maintainerr/maintainerr:latest # (2)!
 ```
 
 1. This is defined as `host:container`.
@@ -59,7 +59,7 @@ Setting the host data directory largely depends on how you are installing Mainta
 
     Changing from a development version to a stable version is not supported.
 
-    - `ghcr.io/jorenn92/maintainerr:main` for the develop branch
+    - `ghcr.io/maintainerr/maintainerr:main` for the develop branch
     - `jorenn92/maintainerr:main` for the Docker Hub development image.
 
 ### Updating
@@ -73,7 +73,7 @@ docker rm -f maintainerr
 Pull the latest image:
 
 ```bash
-docker pull ghcr.io/jorenn92/maintainerr:latest
+docker pull ghcr.io/maintainerr/maintainerr:latest
 ```
 
 Finally, run the container with the same parameters you originally used to create/start the container.
@@ -87,7 +87,7 @@ Define the Maintainerr service in your docker-compose.yml as follows.
 ``` yaml {.annotate}
 services:
     maintainerr:
-        image: ghcr.io/jorenn92/maintainerr:latest # (1)!
+        image: ghcr.io/maintainerr/maintainerr:latest # (1)!
         user: 1000:1000
         volumes:
           - type: bind
@@ -109,7 +109,7 @@ services:
 
     Changing from a development version to a stable version is not supported.
 
-    - `ghcr.io/jorenn92/maintainerr:main` for the develop branch
+    - `ghcr.io/maintainerr/maintainerr:main` for the develop branch
     - `jorenn92/maintainerr:main` for the Docker Hub development image.
 
 Save your docker-compose.yml file.
