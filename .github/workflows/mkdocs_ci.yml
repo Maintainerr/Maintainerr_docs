@@ -1,11 +1,11 @@
-name: Mkdocs Deploy
+name: Documentation Deploy
 on:
   repository_dispatch:
     types: [maintainerr-release]
   workflow_dispatch:
     inputs:
       versionInput:
-        description: 'Input version from Maintainerr release'
+        description: 'What version of Maintainerr are these docs for?'
         required: true
       isDev:
         description: 'Is this a dev version?'
@@ -13,14 +13,20 @@ on:
         type: boolean
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     if: github.event.repository.fork == false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/checkout@v5
         with: 
           fetch-depth: 0
           ref: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.ref || github.ref}}
@@ -57,15 +63,12 @@ jobs:
           restore-keys: |
             mkdocs-material- 
 
-      - run: sudo apt-get install pngquant
-      - run: pip install mkdocs-glightbox
-      - run: pip install mkdocs-swagger-ui-tag
-      - run: pip install "mkdocs-material[imaging]"
-      - run: pip install mike
-      - run: pip install mkdocs-git-revision-date-localized-plugin
-      - run: pip install mkdocs-git-committers-plugin-2
-      - run: pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
-
+      - run: pip install zensical
+      - run: zensical build --clean 
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
       - name: Deploy Documentation
         run: |
           VERSION="${{ github.event.inputs.versionInput || github.event.client_payload.versionInput }}"
