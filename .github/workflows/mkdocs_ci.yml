@@ -11,6 +11,7 @@ on:
         description: 'Is this a dev version?'
         required: true
         type: boolean
+  pull_request:      
 
 permissions:
   contents: read
