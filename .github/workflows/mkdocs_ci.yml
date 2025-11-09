@@ -10,8 +10,7 @@ on:
       isDev:
         description: 'Is this a dev version?'
         required: true
-        type: boolean
-  pull_request:      
+        type: boolean  
 
 permissions:
   contents: read
