@@ -1,4 +1,49 @@
-.cache
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.env
+.venv
+env/
+venv/
+ENV/
+dist/
+build/
+*.egg-info/
+
+# MkDocs/Documentation
+site/
+.cache/
+.temp/
+.doctrees/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project specific
 action_execute.sh
-ascii.txt
 action_execute_dev.sh
+ascii.txt
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Local development
+*.log
+.coverage
+coverage/
+htmlcov/
+.pytest_cache/

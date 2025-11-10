@@ -1,0 +1,260 @@
+
+# Copyright (c) 2016-2024 Martin Donath <martin.donath@squidfunk.com>
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to
+# deal in the Software without restriction, including without limitation the
+# rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+# sell copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions=
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+# IN THE SOFTWARE.
+
+# Project information
+[project]
+site_name = "Maintainerr Documentation"
+site_url = "https://docs.maintainerr.info/"
+site_author = "ydkmlt84"
+site_description = "Documentation for the wildly popular Maintainerr project."
+use_directory_urls = true
+# Repository
+repo_name = "maintainerr/maintainerr"
+repo_url = "https://github.com/maintainerr/maintainerr"
+copyright = "Copyright &copy; Jorenn92"
+# Extras
+extra_css = ["docs/assets/stylesheets"]
+# extra_javascript = ["docs/assets/javascripts/swagger-ui-bundle.js"]
+
+# Configuration
+## Theme Setup
+[project.theme]
+font.text = "Roboto"
+font.code = "Roboto Mono"
+favicon = "images/favicon.ico"
+logo = "images/logo_icon.svg"
+language = "en"
+features = [
+  "content.code.annotate",
+  "content.code.copy",
+  "content.tooltips",
+  "content.footnote.tooltips",
+  "content.tabs.link",
+  # - header.autohide
+  # - navigation.expand
+  "navigation.indexes",
+  #- navigation.instant
+  # - navigation.instant.prefetch
+  #- navigation.instant.progress
+  # - navigation.instant.preview
+  # - navigation.path
+  # - navigation.prune
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.tabs.sticky",
+  "navigation.top",
+  # - navigation.tracking
+  "search.highlight",
+  "search.share",
+  "toc.follow",
+  # - toc.integrate
+]
+[project.theme.pallete]
+primary = "grey"
+accent = "orange"
+[project.theme.icon]
+repo = "material/github"
+[[project.theme.palette]]
+media = "(prefers-color-scheme= light)"
+scheme = "default"
+toggle.icon = "material/weather-sunny"
+toggle.name = "Switch to dark mode"
+[[project.theme.palette]]
+media = "(prefers-color-scheme= dark)"
+scheme = "slate"
+toggle.icon = "material/weather-night"
+toggle.name = "Switch to light mode"
+
+
+# plugins=
+#  - blog=
+# categories_slugify= !!python/object/apply=pymdownx.slugs.slugify
+# kwds=
+#          case= lower
+# - mike=
+# alias_type= symlink
+# redirect_template= null
+# canonical_version= null
+# css_dir= docs/stylesheets
+# javascript_dir= docs/assets/javascripts
+# - git-revision-date-localized=
+# type= date
+# - git-committers=
+# repository= ydkmlt84/Maintainerr_docs
+# branch= main
+# - social=
+# cards_layout= custom_card
+# cards_layout_dir= layouts
+# - glightbox
+# - swagger-ui-tag
+# - optimize
+# hooks=
+#  - docs/overrides/hooks/shortcodes.py
+# - docs/overrides/hooks/translations.py
+# extra=
+#  annotate=
+#    json= [.s2]
+
+#[project.extra.analytics]
+#provider = "matomo"
+#property = "docs"
+[project.extra.analytics.feedback]
+title = "Was this page helpful?"
+[[project.extra.analytics.feedback.ratings]]
+icon = "fontawesome/solid/thumbs-up"
+name = "This page was helpful"
+note = """
+    Thanks for your feedback!
+    """
+[[project.extra.analytics.feedback.ratings]]
+icon = "fontawesome/solid/thumbs-down"
+name = "This page could be improved"
+note = """
+    Thanks for your feedback! Help us improve this page by
+    submitting an issue to the docs repo. <a href="https=//github.com/ydkmlt84/Maintainerr_docs/issues/new/choose" target="_blank">Docs Repo New Issue</a>
+    """
+[project.extra.consent.cookies]
+analytics = "Maintainerr's self-hosted analytics system (Matomo)."
+[project.extra.consent]
+actions = ["accept", "reject"]
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/maintainerr/maintainerr"
+name = "Github"
+[[project.extra.social]]
+icon = "fontawesome/brands/docker"
+link = "https://hub.docker.com/r/jorenn92/maintainerr/"
+name = "Docker Hub"
+[[project.extra.social]]
+icon = "fontawesome/brands/discord"
+link = "https://discord.maintainerr.info"
+name = "Discord"
+[[project.extra.social]]
+icon = "material/cookie-cog"
+link = "#__consent"
+name = "Cookie Settings"
+[[project.extra.social]]
+icon = "material/gavel"
+link = "https://github.com/Maintainerr/Maintainerr/blob/main/LICENSE"
+name = "License"
+
+[project.extra.status]
+new = "Recently Added"
+deprecated = "Deprecated"
+recent = "New Updates"
+# version=
+#    provider= mike
+# default= latest
+
+## Extensions
+[project.markdown_extensions.abbr]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.def_list]
+[project.markdown_extensions.footnotes]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.toc]
+permalink = true
+
+## Markdown Extensions
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
+[project.markdown_extensions.pymdownx.caret]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.emoji]
+[project.markdown_extensions.pymdownx.highlight]
+line_spans = "__span"
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.keys]
+[project.markdown_extensions.pymdownx.mark]
+[project.markdown_extensions.pymdownx.smartsymbols]
+[project.markdown_extensions.pymdownx.snippets]
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "!!python/name=pymdownx.superfences.fence_code_format" },
+]
+[project.markdown_extensions.pymdownx.tabbed]
+#[project.markdown_extensions.pymdownx.tabbed.slugify]
+#kwds = { case = "lower" }
+#object = "pymdownx.slugs.slugify"
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true
+[project.markdown_extensions.pymdownx.tilde]
+
+
+#nav=
+#  - Home= index.md
+#- Getting started=
+#- Installation.md
+#- Configuration.md
+#- Works.md
+#- Common.md
+#- ReverseProxy.md
+#- Rules=
+#- Rules.md
+#- Glossary.md
+#- Collections= - Collections.md
+#- Test-Media.md
+#- Notifications=
+#- Notifications.md
+#- Community=
+#- Introduction.md
+#- Contributing.md
+#- Testing.md
+#- Changelog.md
+#- API=
+#- API.md  - Walkthroughs=
+#- blog/index.md
+
+#link = '#__consent'title = "Help us, help you! (consent to cookies)"
+# Site navigation
+# These fields are all optional; the defaults are as below...
+#deploy_prefix = ''
+#version_selector = true
+#enable_creation_date = true
+#separator = '[\s\u200b\-_,=!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+# Hooks
+# Additional configuration
+#data = 1
+#data = 0
+#description = """
+#    We use cookies to recognize your repeated visits and preferences, as well
+#    as to measure the effectiveness of our documentation. With your consent, you're helping us to
+#    make our documentation better. <a href="https=//maintainerr.info/privacy.html" target="_blank">Privacy Policy</a>
+#    """
+# Extensions
+#permalink = true
+#- material.extensions.preview=
+#    targets=
+#      include=
+#        - changelog/index.md
+#        - customization.md
+#        - insiders/changelog/*
+#        - docs/extensions/*
+#generic = true
+#anchor_linenums = true
+#pygments_lang_class = true
+#normalize_issue_symbols = true
+#repo_url_shorthand = true
+#auto_append=
+#  - includes/mkdocs.md
+#url_download = true
+#alternate_style = true
