@@ -760,10 +760,19 @@ The key is used for identification in Yaml rule files.
 #### Favorited by (username) - shows
 
 !!! info ""
-    List of Jellyfin usernames who have marked the show, season, or episode as a favorite. Jellyfin only.
+    List of Jellyfin usernames who have marked the current item (show, season, or episode) as a favorite. Does not check parent items. Jellyfin only.
 
 - Key: Jellyfin.sw_favoritedBy
 - Availability: shows, seasons, episodes
+- Type: text[]
+
+#### Favorited by (username) (incl. parents) - shows
+
+!!! info ""
+    List of Jellyfin usernames who have marked the current item or its parent items (show, season, or episode) as a favorite. Jellyfin only.
+
+- Key: Jellyfin.sw_favoritedBy_including_parent
+- Availability: seasons, episodes
 - Type: text[]
 
 #### Jellyfin: playCount vs viewCount
