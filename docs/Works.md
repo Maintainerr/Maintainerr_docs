@@ -6,7 +6,7 @@ description: Explanation of the basics and how Maintainerr was designed to be us
 
 ## Basic Idea
 
-Some people come to Maintainerr because they heard it was the solution to whatever problem they were having. Not everyone understands completly, what Maintainerr even is and how to use it.
+Some people come to Maintainerr because they heard it was the solution to whatever problem they were having. Not everyone understands completely, what Maintainerr even is and how to use it.
 
 ### Quick Rundown
 
