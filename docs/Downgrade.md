@@ -9,14 +9,16 @@ description: How to install an older Maintainerr version using a database backup
 If you need to run an older Maintainerr version, you must use a database backup from before you upgraded.
 
 :::note Notice
- These instructions are given as a rough guide. The most important part is placing your backed up SQLite file in the mapped `/opt/data` folder. This is done outside of the container, on the host environment. You also need to change the version being used in your image variable, in docker run/compose.
+These instructions are a general guide. The most important part is restoring your backed up SQLite database into the mapped `/opt/data` directory on the host, outside the container.
 
+You also need to pin the container image to the version you want to run in Docker Compose or your `docker run` command.
 :::
+
 ## Before you start
 
-- It is highly recommended to make a habit of backing up your maintainerr.sqlite file. There is a button available in the Settings -> General page. You could also setup a custom script to periodically backup this file. 
+- It is strongly recommended to back up your `maintainerr.sqlite` file regularly. There is a backup button in `Settings -> General`, or you can automate backups with your own script.
 - Use a backup taken before the upgrade.
-- Downgrading from `main` (development) to stable is not supported, however it can be done. User beware.
+- Downgrading between unrelated versions is not officially supported. It may still work, but you should expect some risk.
 
 ## 1. Pick and pin the target version
 
@@ -33,6 +35,8 @@ image: maintainerr/maintainerr:2.10.0
 ```
 
 ## 2. Stop Maintainerr (if running)
+
+Stop the running container before replacing the database file.
 
 ## 3. Restore your database backup
 
@@ -58,7 +62,7 @@ docker compose up -d
 docker pull ghcr.io/maintainerr/maintainerr:2.10.0
 ```
 
-Then run your normal `docker run ...` command again with the same `/opt/data` volume mapping, but with the pinned older tag.
+Then run your normal `docker run ...` command again with the same `/opt/data` volume mapping, but using the pinned older image tag.
 
 ## 5. Validate after startup
 

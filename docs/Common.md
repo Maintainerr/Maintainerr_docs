@@ -7,67 +7,75 @@ title: Common Problems
 
 
 :::note
-These are not going to solve *every* problem and the suggested solutions might not correct your problem. If you have tried what is laid out here, and it still isn't working as expected. Please reach out on [Discord](https://discord.gg/WP4ZW2QYwk).
-
+These suggestions will not solve every issue, but they cover the most common problems people run into. If you try the steps below and still cannot get Maintainerr working as expected, reach out on [Discord](https://discord.maintainerr.info).
 :::
+
 ## Spinning Circle
 
-Q. I have installed Maintainerr but when I try to view it, all I can see on the page is a spinning circle.
+**Problem:** I have installed Maintainerr, but when I open the page all I can see is a spinning circle.
 
-A. This is due to a permissions problem. The container runs by default as user 1000 and the data volume you have set does not have permissions set correctly for that user.
+This is usually a permissions problem. The container runs as user `1000` by default, and the host directory mounted to `/opt/data` often does not allow that user to read or write correctly.
 
-:::note See The Fix?
-- check the logs (`docker logs -f maintainerr`) for permissions error
-- run the command `sudo chown -R 1000:1000 <host-directory for /opt/data>`
-
+:::tip Fix
+- Check the logs with `docker logs -f maintainerr` and look for permission-related errors.
+- Update ownership on the mounted data directory: `sudo chown -R 1000:1000 <host-directory for /opt/data>`
 :::
+
 ## Webpage is stuck
 
-Q. When I open the page for the first time I can click on things but nothing is happening.
+**Problem:** When I open the page for the first time, I can click on things but nothing happens.
 
-A. When the Maintainerr page loads up for the very first time, it is supposed to auto-direct to the Plex settings page. Sometimes it doesn't happen and the page looks stuck.
+When Maintainerr loads for the first time, it is supposed to redirect you to the initial media server settings page. Sometimes that redirect does not happen, which makes the page look stuck.
 
-:::note See The Fix?
-refresh the page
-
+:::tip Fix
+Refresh the page.
 :::
+
 ## TVDBid or TMDBid errors
 
-Q. There are a lot of entries in my logs about Maintainerr being unable to find the TVdbID or the TMDBid. They look similar to this. `[maintainerr] | 01/10/2024 14:20:52  [WARN] [SonarrGetterService] [TVDB] Failed to fetch tvdb id for 'Some TV Show'`
+**Problem:** My logs contain warnings about missing `TVDBid` or `TMDBid`, such as:
 
-A. Most likely this is a problem with the Plex metadata attached to a particular item. Maintainerr looks to the Plex API for the TMDB or TVDB id to make sure we are matching with the EXACT same item in Sonarr/Radarr/Overseerr/Jellyseerr/Tautulli.
+`[maintainerr] | 01/10/2024 14:20:52 [WARN] [SonarrGetterService] [TVDB] Failed to fetch tvdb id for 'Some TV Show'`
 
-:::note See The Fix?
-Unfortunately at this time there isn't a great fix. The issue comes from inside Plex's metadata agent and what TMDB or TVDB it is assigning or can't find (didn't attach). We are actively looking into a solution but as of right now we don't have one. You could try to **Fix Match** the item in Plex but that isn't guaranteed to solve it.
+This is usually caused by bad or incomplete metadata on the affected item in your media server. Maintainerr relies on that metadata to match the exact same movie or show in Sonarr, Radarr, Overseerr, Jellyseerr, or Tautulli.
 
+:::tip Fix
+There is not a reliable fix yet. The issue usually originates from your media server metadata and the IDs it assigns, or fails to assign, to the item.
+
+If your media server has a metadata refresh or rematch option for the affected item, you can try that, but it is not guaranteed to resolve the problem.
 :::
+
 ## Deleting Items
 
-Q. I have set my `Take action after days` to 0, but nothing is being removed.
+**Problem:** I set `Take action after days` to `0`, but nothing is being removed.
 
-A. Maintainerrs original design was to mirror Netflix's going away soon category. Maintainerr makes collections that show inside of Plex so that the user can be notified of an upcoming deletion, or Going Away Soon. This is unlikely to change as the intent is not to simply remove data, but provide the user a possible chance to watch something before it is removed, or simply know that it won't be available anymore.
+`0` is supported, but actions are still processed by the `Collection Handler` scheduled task. That means the item will not be handled immediately when you save the rule.
 
-:::note See The Fix?
-Simply put, 0 doesn't work. The minimum amount of time that you can set for this action is 1. There is no way to immediately delete items from inside Maintainerr.
+:::tip Fix
+If `Take action after days` is set to `0`, the action will run when one of these happens:
 
+- You manually click `Handle Collections`
+- The next `Collection Handler` task runs on its normal schedule
+
+So `0` means "no waiting period before eligibility," not "take action instantly at save time."
 :::
+
 ## Pre-made Rules
 
-Q. Is there a set of pre-made rules somewhere that I can use as a starting point?
+**Problem:** Is there a set of pre-made rules I can use as a starting point?
 
-A. There is a `Community` button when you are inside of a new rule. You can pull Community uploaded rules from there. There is a vote feature to show if a rule is good/popular, or if it doesn't work as expected. These rules are not tested or guaranteed to work as advertised. The Community is free to upload as they wish.
+Yes. When creating a new rule, use the `Community` button to browse rules uploaded by other users. There is a voting system to help surface popular or useful entries, but community rules are not reviewed or guaranteed to work as advertised.
 
-:::note See The Fix?
+:::tip Location
 ![Community Button](/img/community_button.png)
-
 :::
+
 ## Status of Services
 
-Q. When I try to load the Community Rules I get a spinning circle and they never load. The Feature Requests page isn't loading.
+**Problem:** Community Rules will not load, or the Feature Requests page is unavailable.
 
-A. Some of these services are self-hosted and some are hosted elsewhere. There are downtimes, but we try to minimize them as much as possible.
+Some Maintainerr services are self-hosted and others are hosted externally. Downtime can happen even though we try to keep it minimal.
 
-:::note See The Fix?
-There is a website where you can see the status of our services. [Service Monitoring Site](https://status.maintainerr.info)
-
+:::tip Check Status
+You can check the current service status at [status.maintainerr.info](https://status.maintainerr.info).
 :::

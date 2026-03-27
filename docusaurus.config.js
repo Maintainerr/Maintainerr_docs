@@ -39,6 +39,11 @@ const config = {
     ],
   ],
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
     image: 'img/docs_image.png',
     navbar: {
       title: 'Maintainerr Docs',
@@ -76,7 +81,7 @@ const config = {
             { label: 'Contributing', to: '/contributing' },
             {
               label: 'Discord',
-              href: 'https://discord.gg/WP4ZW2QYwk',
+              href: 'https://discord.maintainerr.info',
             },
           ],
         },

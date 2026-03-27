@@ -6,8 +6,9 @@ title: Configuration
 ---
 
 
-All configuration is done inside the application, no extra config is required in files. <br />
-When you first access the webUI, you will be redirected to the settings page. If this doesn't happen, refresh the page.
+All configuration is done inside the application. No extra config files are required.
+
+When you first access the web UI, you should be redirected to the settings page. If that does not happen, refresh the page.
 
 :::note
 All Base URL settings are to be entered without the leading slash.
@@ -20,80 +21,86 @@ All Base URL settings are to be entered without the leading slash.
 
 These settings are OK for most installations.
 
-| Param        | Description           |
-| ------------- |:-------------:|
-| Hostname      | The hostname or IP of the host Maintainerr runs on |
-| Api key       | Maintainerr's API key. Which has no use yet. |
+| Setting | Description |
+| --- | --- |
+| Hostname | The hostname or IP address of the host running Maintainerr |
+| API key | Maintainerr's API key. It is currently reserved for future use. |
+
+## Media Server
+
+Maintainerr requires at least one configured media server connection.
 
 ## Plex
 
-This is the only **required** configuration. Without a valid Plex connection, Maintainerr won't be able to function.
+Plex can be used as your media server connection.
 
-When using a local Plex instance, make sure your Plex's 'secure connections' network setting is set to 'preferred' instead of 'required'.
-If you'd like Maintainerr to communicate securely, you'll have to use your '*.plex.direct' URL as the hostname. You can copy this URL from Overseerr's configuration. Make sure you include 'https://'.
+When using a local Plex instance, make sure Plex's `Secure connections` network setting is set to `Preferred` instead of `Required`.
 
-| Param        | Description           |
-| ------------- |:-------------:|
-| Name          | The name of your server |
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Plex runs on, default is 32400 |
-| Authentication| Authenticate with your Plex server using a **admin** account |
+If you want Maintainerr to connect securely, use your `*.plex.direct` URL as the hostname and include `https://`. You can usually copy this from Seerr if that service is already connected to the same Plex server.
+
+| Setting | Description |
+| --- | --- |
+| Name | A friendly name for this server |
+| Hostname or IP | The domain name or local IP address of the host running Plex |
+| Port | The port Plex runs on. Default: `32400` |
+| Authentication | Authenticate with your Plex server using an **admin** account |
 
 :::tip
-The typical flow is to Authenticate with Plex -> click on the refresh icon -> choose your server from the dropdown menu -> click on Save Changes -> click on Test Saved.
-
+Typical setup flow: authenticate with Plex, click the refresh icon, choose your server from the dropdown, click `Save Changes`, then click `Test Saved`.
 :::
-## Overseerr
 
-Overseerr's configuration is required to use its parameters in rules and to remove requests. <br />
+## Jellyfin
 
-| Param | Description |
-| ------------- |:-------------:|
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Overseerr runs on |
-| Api key  | Overseerr API key, should be visible in the Overseerr settings |
+Jellyfin can also be used as your media server connection.
 
-## Jellyseerr
+| Setting | Description |
+| --- | --- |
+| Jellyfin URL | The domain name or local IP address of the host running Jellyfin |
+| API key | A Jellyfin API key generated from your Jellyfin server |
+| Admin User | Test Connection to load the available admin users |
 
-Jellyseerr's configuration is required to use its parameters in rules and to remove requests. <br />
+## Seerr
 
-| Param | Description |
-| ------------- |:-------------:|
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Jellyseerr runs on |
-| Api key  | Jellyseerr API key, should be visible in the Jellyseerr settings |
+Seerr configuration is required if you want to use Seerr-related rule parameters or remove Seerr requests.
+
+| Setting | Description |
+| --- | --- |
+| URL | The domain name or local IP address of the host running Seerr |
+| API key | The API key from Seerr settings |
 
 ## Radarr
 
 Radarr's configuration is required to use its parameters in rules and to remove or unmonitor movies.
 
-| Param | Description           |
-| ------------- |:-------------:|
-| Server Name   | A friendly name to help identify the server |
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Radarr runs on |
-| Base URL      | URL Base set in Radarr settings (if set)|
-| Api key   | Radarr API key, should be visible in the Radarr settings |
+| Setting | Description |
+| --- | --- |
+| Server Name | A friendly name to help identify the server |
+| Hostname or IP | The domain name or local IP address of the host running Radarr |
+| Port | The port Radarr runs on |
+| Base URL | The URL base configured in Radarr, if one is set |
+| API key | The API key from Radarr settings |
 
 ## Sonarr
 
 Sonarr's configuration is required to use its parameters in rules and to remove or unmonitor shows.
 
-| Param | Description           |
-| ------------- |:-------------:|
-| Server Name   | A friendly name to help identify the server |
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Sonarr runs on |
-| Base URL      | URL Base set in Sonarr Settings (if set)|
-| Api key   | Sonarr API key, should be visible in the Sonarr settings |
+| Setting | Description |
+| --- | --- |
+| Server Name | A friendly name to help identify the server |
+| Hostname or IP | The domain name or local IP address of the host running Sonarr |
+| Port | The port Sonarr runs on |
+| Base URL | The URL base configured in Sonarr, if one is set |
+| API key | The API key from Sonarr settings |
 
 ## Tautulli
 
 Tautulli's configuration is required to use its parameters in rules.
 
-| Param | Description |
-| ------------- |:-------------:|
-| Hostname or IP| The domain name or local IP of the host your server runs on |
-| Port          | The port Tautulli runs on |
-| Base URL      | HTTP Root set in Tautulli Settings (if set )|
-| Api key  | Tautulli API key, should be visible in the Tautulli settings |
+| Setting | Description |
+| --- | --- |
+| URL| The domain name or local IP address of the host running Tautulli |
+| API key | The API key from Tautulli settings |
+
+:::note
+Tautulli is only available for Plex users
+:::

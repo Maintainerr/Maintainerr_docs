@@ -62,7 +62,7 @@ Reports should be made in one of the two ways:
 
 - [Github PR page](https://github.com/Maintainerr/Maintainerr/pulls)
 
-- [Discord](https://discord.gg/WP4ZW2QYwk)
+- [Discord](https://discord.maintainerr.info)
 
 ??? note "Discord Link"
       If the **Discord** link doesn't work for you, message ydkmlt84 on Discord and he can help you out.

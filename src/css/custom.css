@@ -19,6 +19,17 @@
   --ifm-heading-color: #f8fafc;
 }
 
+.intro-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.intro-badges img {
+  display: block;
+}
+
 .hero-shell {
   min-height: calc(100vh - var(--ifm-navbar-height));
   background:

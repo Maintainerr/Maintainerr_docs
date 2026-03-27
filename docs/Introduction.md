@@ -7,8 +7,8 @@ author: [ydkmlt84]
 ---
 
 
-<p align="center" >
-  <a href="https://discord.gg/WP4ZW2QYwk"><img alt="Discord" src="https://img.shields.io/discord/1152219249549512724?style=flat&logo=discord&logoColor=white&label=Maintainerr" /></a>
+<p align="center" className="intro-badges">
+  <a href="https://discord.maintainerr.info"><img alt="Discord" src="https://img.shields.io/discord/1152219249549512724?style=flat&logo=discord&logoColor=white&label=Maintainerr" /></a>
   <picture><img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/maintainerr/maintainerr/.github%2Fworkflows%2Fbuild_dev.yml?branch=development&style=flat&logo=github&label=Latest%20Build" /></picture>
   <a href="https://github.com/maintainerr/Maintainerr/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/maintainerr/maintainerr?style=flat&logo=github&logoColor=white&label=Latest%20Release" /></a>
   <picture><img alt="GitHub commits since latest release" src="https://img.shields.io/github/commits-since/maintainerr/maintainerr/latest?style=flat&logo=github&logoColor=white" /></picture>
@@ -18,7 +18,7 @@ author: [ydkmlt84]
   <picture><img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-closed/maintainerr/maintainerr?style=flat&logo=github&logoColor=white" /></picture>
   <picture><img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/maintainerr/maintainerr?style=flat&logo=github&logoColor=white" /></picture>
   <a href="https://opencollective.com/maintainerr"><img alt="Static Badge" src="https://img.shields.io/badge/DONATE-opencollective-red?style=flat&logo=opencollective&logoColor=white" /></a>
-  <a href="https://docs.maintainerr.info"><img alt="Documentation" src="https://img.shields.io/badge/Material_for_MkDocs-%3A)-blue?style=flat&logo=materialformkdocs&logoColor=white" /></a>
+  <picture><img alt="Documentation" src="https://img.shields.io/badge/Docusaurus-%3A)-blue?style=flat&logo=docusaurus&logoColor=white" /></picture>
   <picture><img alt="GitHub License" src="https://img.shields.io/github/license/maintainerr/maintainerr?style=flat" /></picture>
 </p>
 
@@ -51,3 +51,16 @@ Maintainerr supports rules across these apps :
 - Radarr
 - Sonarr
 - Tautulli
+
+## Docker Run Quick Start
+
+```bash
+docker run -d \
+  --name maintainerr \
+  -e TZ=Europe/Brussels \
+  -v ./data:/opt/data \
+  -u 1000:1000 \
+  -p 6246:6246 \
+  --restart unless-stopped \
+  ghcr.io/maintainerr/maintainerr:2
+```
