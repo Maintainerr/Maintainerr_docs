@@ -1,14 +1,18 @@
 ---
+id: testing
+slug: /testing
 title: Testing 
 description: Information on testing a specific pull request image. Something not in a develop branch yet and not in a released.
 ---
 
 
+
 We have implemented a way to test a specific pull request (new feature), using *Docker*. This can help us to find bugs and issues before being pushed to the develop image and eventually, the latest release.
 
-!!! danger
-      :fire::fire: These PR images are HIGHLY volatile and should not be used in production. These are only created to test a specific feature that we are working on, and can break at any moment.
+:::danger
+  :fire::fire: These PR images are HIGHLY volatile and should not be used in production. These are only created to test a specific feature that we are working on, and can break at any moment.
 
+:::
 ## Testing
 
 ### Install Method
@@ -19,13 +23,14 @@ In order to test these PR images, a dev would first need to create one. After th
 
 You can run the PR image using either docker run, or docker compose. Compose is recommended, but it is up to you. These need to be completely separate from your main/stable Maintainerr install, including your `host data location`/`port`/`container name`.
 
-!!! info
-      If you need too much more than what is outlined in this page, as far as installing the PR image...maybe you shouldn't be testing such bleeding edge features. Anywhere you see `<xxxx-xxxx>`, is considered a placeholder for *variable* information. Don't exactly copy and paste what is here, as it won't work without you making some changes first.
-      All of the same applies, as far as file/folder permissions, from the main [Installation](Installation.md) page.
+:::note
+  If you need too much more than what is outlined in this page, as far as installing the PR image...maybe you shouldn't be testing such bleeding edge features. Anywhere you see `<xxxx-xxxx>`, is considered a placeholder for *variable* information. Don't exactly copy and paste what is here, as it won't work without you making some changes first.
+  All of the same applies, as far as file/folder permissions, from the main [Installation](Installation.md) page.
 
+:::
 #### Docker Run
 
-``` {.bash .annotate}
+```bash
     docker run -d \
     --name maintainerr-testing \
     --hostname maintainerr-testing \
@@ -64,9 +69,10 @@ Reports should be made in one of the two ways:
 
 - [Discord](https://discord.gg/WP4ZW2QYwk)
 
-??? note "Discord Link"
-      If the **Discord** link doesn't work for you, message ydkmlt84 on Discord and he can help you out.
+:::note Discord Link
+  If the **Discord** link doesn't work for you, message ydkmlt84 on Discord and he can help you out.
 
+:::
 Pay special attention to how you are submitting reports to the PR, or in Discord. We need specific information, we need logs, we need all of the information you can give us so we can recreate the problem on our end.
 
  When you post "code" you should use backticks ( ` ). This is not the same as an apostrophe ( ' ). Single line code is surrounded by one backtick on each side of the text, and multi-line code is surrounded by three backticks on each side of the text. (i.e. logs, rule exports, test media results, your compose file or docker run command)

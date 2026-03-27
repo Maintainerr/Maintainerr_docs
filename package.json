@@ -1,0 +1,28 @@
+{
+  "name": "maintainerr_docs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Docusaurus migration workspace for the Maintainerr docs site.",
+  "scripts": {
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "serve": "docusaurus serve --dir build",
+    "clear": "docusaurus clear"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maintainerr/Maintainerr_docs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Maintainerr/Maintainerr_docs/issues"
+  },
+  "homepage": "https://github.com/Maintainerr/Maintainerr_docs#readme"
+  ,
+  "dependencies": {
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2"
+  }
+}

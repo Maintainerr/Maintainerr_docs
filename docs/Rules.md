@@ -1,15 +1,19 @@
 ---
+id: rules
+slug: /rules
 description: Rules configurations and basic information about using rules.
 title: Rules
 ---
+
 
 Rules are the core of Maintainerr. They evaluate your Plex media based on the parameters you set. If a media item matches a rule, it is added to a collection.
 
 Media in a collection will remain there for the number of days you specify. After that period, Maintainerr will delete the media from disk and any connected external applications. If a collections media item no longer matches a rule, it will be removed from it.
 
-???+ note "Rule Handling"
-    Rule handling is a batch process that runs every 8 hours (this interval can be changed in the settings). During each run, Maintainerr checks all your rules and updates collections by adding or removing media items as needed. You can manually trigger this process with the `Run Rules` button on the 'Rules' page.
+:::note Rule Handling
+Rule handling is a batch process that runs every 8 hours (this interval can be changed in the settings). During each run, Maintainerr checks all your rules and updates collections by adding or removing media items as needed. You can manually trigger this process with the `Run Rules` button on the 'Rules' page.
 
+:::
 ## Creating rules
 
 ### General
@@ -48,11 +52,12 @@ With the *Media type* parameter, you specify which type of media to target in a 
 
 For example, you might create a rule group that selects and deletes old or watched seasons of a TV show, while keeping newer seasons untouched. Alternatively, you could target watched episodes and set them to unmonitored in Sonarr.
 
-???+ info
-    - Plex collections cannot contain mixed media types. Therefore, Maintainerr restricts each rule group / collection to a single media type.
+:::note
+- Plex collections cannot contain mixed media types. Therefore, Maintainerr restricts each rule group / collection to a single media type.
 
-    - Running rules on episodes is slower than on shows or seasons, as Maintainerr must process a larger volume of data.
+- Running rules on episodes is slower than on shows or seasons, as Maintainerr must process a larger volume of data.
 
+:::
 #### Manual collections
 
 If you prefer to manage Plex collections yourself or use a different tool, you can enable the manual collection option. With this enabled, Maintainerr will not automatically create and delete collections in Plex.
@@ -120,7 +125,7 @@ The difference between ***Contains/Contains (exact)*** and ***Contains (partial)
 
 #### List Examples
 
-<div class="grid" markdown>
+
 
 ``` title="True `Contains (partial)`"
 firstValue:
@@ -211,7 +216,7 @@ secondValue:
   - 3
 ``` 
 
-</div>
+
 
 ### Custom values
 

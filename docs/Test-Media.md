@@ -1,7 +1,10 @@
 ---
+id: test-media
+slug: /test-media
 description: Information on how to use the Test Media function.
 title: Test Media
 ---
+
 
 
 Maintainerr comes with a built-in feature to test your ruleset against your media, and display the results to you. This can be done without ever running a rule or creating collections in Plex. Sometimes, it is hard for you to determine why something was or wasn't added to a collection. Using the Test Media feature can be an extremely useful tool in helping you figure out what is going on.
@@ -12,9 +15,9 @@ The first thing you must do, in order to use this function, is to create a rule.
 
 <p align="center" markdown>
 
-[Rules](https://docs.maintainerr.info/latest/Rules/){ .md-button .md-button--primary }
+[Rules](https://docs.maintainerr.info/latest/Rules/)
 
-[Walkthroughs](https://docs.maintainerr.info/latest/blog/){ .md-button .md-button--primary }
+[Walkthroughs](https://docs.maintainerr.info/latest/blog/)
 
 </p>
 
@@ -22,7 +25,7 @@ After creating your rule, and saving it, you will be brought back to the Rules p
 
 Click on the name of the collection that you want to test rules for. You will be taken to the Collection's page. Here you will see the Test Media button at the top left. You can also see any exclusions that you may have setup for this collection, as well as information regarding the collection items.
 
- ![test-media](images/test-media-button.png)
+ ![test-media](/img/test-media-button.png)
 
 ## Test Media popup
 
@@ -65,7 +68,7 @@ Below is an example of your test's output.
 
 ### Test Output breakdown
 
-<div class="grid" markdown>
+
 
 ``` title="this is the plexid of the tested item, and the overall result"
 - plexId: 73061
@@ -88,7 +91,7 @@ ruleResults:
     result: false
 ```
 
-</div>
+
 
 As you can see, the overall test result was false. This is because this specific rule is testing to see if `Overseerr - Requested by user (Plex or local username)` contains_partial `ydkmlt84`. Which it did not.
 

@@ -1,14 +1,18 @@
 ---
+id: notifications
+slug: /notifications
 status: new
 description: Configure and manage notification agents for automated alerts and updates.
 title: Notifications
 ---
 
+
 Notifications allow Maintainerr to send automated alerts and updates about your media collections through various messaging platforms and services. You can configure multiple notification agents and specify which types of events should trigger notifications.
 
-???+ note "Beta Feature"
-    The notification system is currently in beta. Some agents have not been tested extensively.
+:::note Beta Feature
+The notification system is currently in beta. Some agents have not been tested extensively.
 
+:::
 ## Overview
 
 The notification system works by connecting configured notification agents to your rules. When specific events occur (such as media being added to or removed from collections), Maintainerr will send notifications to the configured agents that are subscribed to those event types.
@@ -48,9 +52,10 @@ Maintainerr supports several notification types that you can enable for each age
 
 Send notifications to Discord channels via webhooks.
 
-???+ info "Setup Required"
-    You'll need to create a Discord webhook for your channel. Follow Discord's guide: [Intro to Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+:::note Setup Required
+You'll need to create a Discord webhook for your channel. Follow Discord's guide: [Intro to Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Webhook URL | Yes | Discord webhook URL for the target channel |
@@ -81,9 +86,10 @@ Send notifications via SMTP email.
 
 Send notifications to a Gotify server.
 
-???+ info "Setup Required"
-    You'll need a running Gotify server instance. See the [Gotify documentation](https://gotify.net/docs/install) for installation instructions.
+:::note Setup Required
+You'll need a running Gotify server instance. See the [Gotify documentation](https://gotify.net/docs/install) for installation instructions.
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | URL | Yes | Gotify server URL |
@@ -93,12 +99,14 @@ Send notifications to a Gotify server.
 
 Send notifications to LunaSea mobile app.
 
-???+ warning "Project Status"
-    LunaSea has shut down development as of 2024. While the binaries are still available for download, no further updates will be provided. See [lunasea.app](https://www.lunasea.app/) for more information.
+:::warning Project Status
+LunaSea has shut down development as of 2024. While the binaries are still available for download, no further updates will be provided. See [lunasea.app](https://www.lunasea.app/) for more information.
 
-???+ info "Setup Required"
-    You'll need the LunaSea mobile app installed and configured. The webhook setup documentation may still be accessible through archived versions.
+:::
+:::note Setup Required
+You'll need the LunaSea mobile app installed and configured. The webhook setup documentation may still be accessible through archived versions.
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Webhook URL | Yes | LunaSea webhook URL |
@@ -108,9 +116,10 @@ Send notifications to LunaSea mobile app.
 
 Send notifications via Pushbullet.
 
-???+ info "Setup Required"
-    You'll need a Pushbullet account and API token. Visit [Pushbullet Settings](https://www.pushbullet.com/#settings) to create an access token.
+:::note Setup Required
+You'll need a Pushbullet account and API token. Visit [Pushbullet Settings](https://www.pushbullet.com/#settings) to create an access token.
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Access Token | Yes | Pushbullet API access token |
@@ -120,9 +129,10 @@ Send notifications via Pushbullet.
 
 Send notifications via Pushover.
 
-???+ info "Setup Required"
-    You'll need a Pushover account and to register an application. Visit [Pushover.net](https://pushover.net/apps/build) to sign up and create an application for your API token.
+:::note Setup Required
+You'll need a Pushover account and to register an application. Visit [Pushover.net](https://pushover.net/apps/build) to sign up and create an application for your API token.
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Access Token | Yes | Pushover application token |
@@ -133,9 +143,10 @@ Send notifications via Pushover.
 
 Send notifications to Slack channels.
 
-???+ info "Setup Required"
-    You'll need to create a Slack webhook for your workspace. Follow Slack's guide: [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
+:::note Setup Required
+You'll need to create a Slack webhook for your workspace. Follow Slack's guide: [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
 
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Webhook URL | Yes | Slack webhook URL for the target channel |
@@ -144,12 +155,13 @@ Send notifications to Slack channels.
 
 Send notifications via Telegram bot.
 
-???+ info "Setup Required"
-    You'll need to create a Telegram bot and get your chat ID. Follow these steps:
-    
-    1. Message [@BotFather](https://t.me/botfather) on Telegram to create a new bot
-    2. Get your Chat ID by messaging [@get_id_bot](https://t.me/get_id_bot) and using the `/my_id` command
+:::note Setup Required
+You'll need to create a Telegram bot and get your chat ID. Follow these steps:
 
+1. Message [@BotFather](https://t.me/botfather) on Telegram to create a new bot
+2. Get your Chat ID by messaging [@get_id_bot](https://t.me/get_id_bot) and using the `/my_id` command
+
+:::
 | Parameter | Required | Description |
 | --------- | -------- | ----------- |
 | Bot Auth Token | Yes | Telegram bot authentication token |

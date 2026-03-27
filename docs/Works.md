@@ -1,7 +1,10 @@
 ---
+id: works
+slug: /works
 title: How it works
 description: Explanation of the basics and how Maintainerr was designed to be used.
 ---
+
 
 
 ## Basic Idea
@@ -12,15 +15,16 @@ Some people come to Maintainerr because they heard it was the solution to whatev
 
 Maintainerr looks through your Plex media, to find items that match against the given ruleset. Rulesets can be as easy or as complex as you want.
 
-??? note "Rule example"
-    Here is a quick example:
-    ```
-    Plex- Date added before 90 days
-    AND
-    Plex- Viewed by username contains Overseerr- requested by username
-    ```
-    There are more examples and explanations of each option here &#8594; [Rule Glossary](https://docs.maintainerr.info/latest/Glossary) and here &#8594; [Walkthroughs](https://docs.maintainerr.info/blog).
+:::note Rule example
+Here is a quick example:
+```
+Plex- Date added before 90 days
+AND
+Plex- Viewed by username contains Overseerr- requested by username
+```
+There are more examples and explanations of each option here &#8594; [Rule Glossary](https://docs.maintainerr.info/latest/Glossary) and here &#8594; [Walkthroughs](https://docs.maintainerr.info/blog).
 
+:::
 Once the rule is setup and the rule handler has ran (every 8 hours by default), Maintainerr will add all of this rule's matches to a Collection. This collection, once it has matched items inside of it, will get synced to Plex. *An empty collection will not get synced with Plex*. There are various options as to where you want this collection displayed on your Plex server, but at the very least they will be inside of your library on the Collections tab.
 
 ### Take action after days

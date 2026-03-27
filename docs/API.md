@@ -1,4 +1,6 @@
 ---
+id: api
+slug: /api
 description: Documentation of the Maintainerr API and its endpoints.
 title: API Docs
 hide:
@@ -8,11 +10,17 @@ status: recent
 ---
 
 
-!!! danger
-    :fire: :fire: The API, and all of Maintainerr for that matter, does not have an authentication method. There are certain API calls, that if you make your instance public facing, will expose your entire settings configuration. This could include all of your service's API keys. Proceed with extreme caution if you choose to expose Maintainerr to the public. :fire: :fire:
 
+:::danger
+:fire: :fire: The API, and all of Maintainerr for that matter, does not have an authentication method. There are certain API calls, that if you make your instance public facing, will expose your entire settings configuration. This could include all of your service's API keys. Proceed with extreme caution if you choose to expose Maintainerr to the public. :fire: :fire:
+
+:::
 ## API endpoints
 
 This API documentation is a work in progress. For the time being, its usefulness is in showing the endpoints and URL parameters. Moving forward, expected responses will also be included.
 
-<swagger-ui supportedSubmitMethods="[]" src="./openapi-spec/maintainerr_api_specs.yaml"/>
+:::warning API preview pending
+The MkDocs Swagger embed has not been migrated yet.
+
+Use the raw OpenAPI file for now: [/openapi-spec/maintainerr_api_specs.yaml](/openapi-spec/maintainerr_api_specs.yaml)
+:::

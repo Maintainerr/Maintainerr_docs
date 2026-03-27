@@ -2,3 +2,7 @@
 action_execute.sh
 ascii.txt
 action_execute_dev.sh
+node_modules
+build
+.docusaurus
+docusaurus-docs

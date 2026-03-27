@@ -1,13 +1,17 @@
 ---
+id: downgrade
+slug: /downgrade
 title: Downgrade
 description: How to install an older Maintainerr version using a database backup.
 ---
 
+
 If you need to run an older Maintainerr version, you must use a database backup from before you upgraded.
 
-???+ note "Notice"
-     These instructions are given as a rough guide. The most important part is placing your backed up SQLite file in the mapped `/opt/data` folder. This is done outside of the container, on the host environment. You also need to change the version being used in your image variable, in docker run/compose.
+:::note Notice
+ These instructions are given as a rough guide. The most important part is placing your backed up SQLite file in the mapped `/opt/data` folder. This is done outside of the container, on the host environment. You also need to change the version being used in your image variable, in docker run/compose.
 
+:::
 ## Before you start
 
 - It is highly recommended to make a habit of backing up your maintainerr.sqlite file. There is a button available in the Settings -> General page. You could also setup a custom script to periodically backup this file. 

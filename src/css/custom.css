@@ -1,0 +1,89 @@
+:root {
+  --ifm-color-primary: #d97706;
+  --ifm-color-primary-dark: #c16c06;
+  --ifm-color-primary-darker: #b66506;
+  --ifm-color-primary-darkest: #965304;
+  --ifm-color-primary-light: #e18208;
+  --ifm-color-primary-lighter: #ec8e16;
+  --ifm-color-primary-lightest: #f4a544;
+  --ifm-background-color: #f8f5ef;
+  --ifm-navbar-background-color: rgba(17, 24, 39, 0.92);
+  --ifm-navbar-link-color: #f8fafc;
+  --ifm-heading-color: #111827;
+  --ifm-font-family-base: "Segoe UI", sans-serif;
+  --ifm-code-font-size: 95%;
+}
+
+[data-theme="dark"] {
+  --ifm-background-color: #111827;
+  --ifm-heading-color: #f8fafc;
+}
+
+.hero-shell {
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  background:
+    radial-gradient(circle at top left, rgba(217, 119, 6, 0.28), transparent 35%),
+    linear-gradient(135deg, #111827 0%, #1f2937 50%, #0f172a 100%);
+  color: #f8fafc;
+}
+
+.hero-banner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 4rem;
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+}
+
+.hero-copy h1,
+.hero-panel h2,
+.hero-copy p,
+.hero-panel p,
+.hero-panel li,
+.eyebrow {
+  color: inherit;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.hero-copy h1 {
+  font-size: clamp(2.5rem, 6vw, 4.7rem);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.hero-copy p {
+  max-width: 46rem;
+  font-size: 1.05rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.hero-panel {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.hero-panel ul {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 996px) {
+  .hero-banner {
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  }
+}

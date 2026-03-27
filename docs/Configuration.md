@@ -1,17 +1,21 @@
 ---
+id: configuration
+slug: /configuration
 description: Information on how to get Maintainerr up and running.
 title: Configuration
 ---
 
-All configuration is done inside the application, no extra config is required in files. </br>
+
+All configuration is done inside the application, no extra config is required in files. <br />
 When you first access the webUI, you will be redirected to the settings page. If this doesn't happen, refresh the page.
 
-!!! info
-    All Base URL settings are to be entered without the leading slash.
+:::note
+All Base URL settings are to be entered without the leading slash.
 
-    - Right: `tautulli`
-    - Wrong: `/tautulli`
+- Right: `tautulli`
+- Wrong: `/tautulli`
 
+:::
 ## General
 
 These settings are OK for most installations.
@@ -35,12 +39,13 @@ If you'd like Maintainerr to communicate securely, you'll have to use your '*.pl
 | Port          | The port Plex runs on, default is 32400 |
 | Authentication| Authenticate with your Plex server using a **admin** account |
 
-!!! tip
-    The typical flow is to Authenticate with Plex -> click on the refresh icon -> choose your server from the dropdown menu -> click on Save Changes -> click on Test Saved.
+:::tip
+The typical flow is to Authenticate with Plex -> click on the refresh icon -> choose your server from the dropdown menu -> click on Save Changes -> click on Test Saved.
 
+:::
 ## Overseerr
 
-Overseerr's configuration is required to use its parameters in rules and to remove requests. </br>
+Overseerr's configuration is required to use its parameters in rules and to remove requests. <br />
 
 | Param | Description |
 | ------------- |:-------------:|
@@ -50,7 +55,7 @@ Overseerr's configuration is required to use its parameters in rules and to remo
 
 ## Jellyseerr
 
-Jellyseerr's configuration is required to use its parameters in rules and to remove requests. </br>
+Jellyseerr's configuration is required to use its parameters in rules and to remove requests. <br />
 
 | Param | Description |
 | ------------- |:-------------:|

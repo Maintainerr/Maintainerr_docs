@@ -1,7 +1,10 @@
 ---
+id: installation
+slug: /installation
 description: Install methods and information.
 title: Installation
 ---
+
 
 Docker is Maintainerr's supported method of installation.
 
@@ -10,36 +13,38 @@ The containers data location is set as /opt/data. A Docker [volume][tooltip] is 
 
 [tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
 
-!!! info
-    You have the <font color="orange"> option </font> to define a User and Group ID for running the container. Maintainerr will utilize the user:group setting as it's running user (inside the container), and any files it generates within your host data volume will be associated with this designated user and group. If not explicitly specified, the default UID:GID is set to 1000:1000.
-    <font color="red">See [Run](#run) and [Compose](#compose) below for examples.</font>
+:::note
+You have the <font color="orange"> option </font> to define a User and Group ID for running the container. Maintainerr will utilize the user:group setting as it's running user (inside the container), and any files it generates within your host data volume will be associated with this designated user and group. If not explicitly specified, the default UID:GID is set to 1000:1000.
+<font color="red">See [Run](#run) and [Compose](#compose) below for examples.</font>
 
-!!! tip
+:::
+:::tip
 
-    **Make sure your data volume is read/writeable by this UID:GID!**
+**Make sure your data volume is read/writeable by this UID:GID!**
 
-    It is possible that you will need to change permissions on the host's data directory.
+It is possible that you will need to change permissions on the host's data directory.
 
-    `chown -R 1000:1000 /opt/data`  This is a "change owner" command that changes the owner of `/opt/data` to `1000:1000`.
+`chown -R 1000:1000 /opt/data`  This is a "change owner" command that changes the owner of `/opt/data` to `1000:1000`.
 
+:::
 Setting the host data directory largely depends on how you are installing Maintainerr. If using Docker, these are the two places where you would set the host data directory, depending on your method.
 
-=== "Run Command"
+### Run Command
 
-    `-v <your host location>:/opt/data \`
+`-v <your host location>:/opt/data \`
 
-=== "Compose"
+### Compose
 
-    ``` markdown
-    volumes:
-      - type: bind
-        source: <your host location>
-        target: /opt/data
-    ```   
+``` markdown
+volumes:
+  - type: bind
+    source: <your host location>
+    target: /opt/data
+```   
 
 ## Run
 
-``` {.bash .annotate}
+```bash
     docker run -d \
     --name maintainerr \
     -e TZ=Europe/Brussels \
@@ -54,14 +59,15 @@ Setting the host data directory largely depends on how you are installing Mainta
 2. For this line, you could also use `maintainerr/maintainerr` instead, to use the DockerHub image.
 3. In Docker containers, you are able to bind a host directory to a directory inside the container. This allows for persistent data when a container is restarted or reset.
 
-??? note "Development Versions"
-    Whilst the development version contains all of the latest features and bug fixes, there is a chance things will break. By using a development version you must be willing to report any issues you come across to the development team and provide them as much information as possible to help us resolve the issue.
+:::note Development Versions
+Whilst the development version contains all of the latest features and bug fixes, there is a chance things will break. By using a development version you must be willing to report any issues you come across to the development team and provide them as much information as possible to help us resolve the issue.
 
-    Changing from a development version to a stable version is not supported.
+Changing from a development version to a stable version is not supported.
 
-    - `ghcr.io/maintainerr/maintainerr:main` for the develop branch
-    - `maintainerr/maintainerr:main` for the Docker Hub development image.
+- `ghcr.io/maintainerr/maintainerr:main` for the develop branch
+- `maintainerr/maintainerr:main` for the Docker Hub development image.
 
+:::
 ### Updating
 
 Stop and remove the existing container:
@@ -104,14 +110,15 @@ services:
 2. This is defined as `host:container`.
 3. In Docker containers, you are able to bind a host directory to a directory inside the container. This allows for persistent data when a container is restarted or reset.
 
-??? note "Development Versions"
-    Whilst the development version contains all of the latest features and bug fixes, there is a chance things will break. By using a development version you must be willing to report any issues you come across to the development team and provide them as much information as possible to help us resolve the issue.
+:::note Development Versions
+Whilst the development version contains all of the latest features and bug fixes, there is a chance things will break. By using a development version you must be willing to report any issues you come across to the development team and provide them as much information as possible to help us resolve the issue.
 
-    Changing from a development version to a stable version is not supported.
+Changing from a development version to a stable version is not supported.
 
-    - `ghcr.io/maintainerr/maintainerr:main` for the develop branch
-    - `maintainerr/maintainerr:main` for the Docker Hub development image.
+- `ghcr.io/maintainerr/maintainerr:main` for the develop branch
+- `maintainerr/maintainerr:main` for the Docker Hub development image.
 
+:::
 Save your docker-compose.yml file.
 Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
 
