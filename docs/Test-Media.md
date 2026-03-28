@@ -1,54 +1,57 @@
 ---
 id: test-media
 slug: /test-media
-description: Information on how to use the Test Media function.
+description: Use Test Media to see whether a specific item matches a rule and why.
 title: Test Media
 ---
 
+Test Media lets you run a single item against a rule and inspect the result before the normal rule jobs run. It is useful when you want to answer questions like:
 
+- Why was this movie added to a collection?
+- Why was this show not added?
+- Which part of the rule failed?
 
-Maintainerr comes with a built-in feature to test your ruleset against your media, and display the results to you. This can be done without ever running a rule or creating collections in Plex. Sometimes, it is hard for you to determine why something was or wasn't added to a collection. Using the Test Media feature can be an extremely useful tool in helping you figure out what is going on.
+Using Test Media does not create or update collections by itself. It only evaluates the selected media item and shows the result.
 
-## Test Media button
+## Before you start
 
-The first thing you must do, in order to use this function, is to create a rule. More on that can be found in the Rules documentation, as well as in the Walkthroughs.
+You need an existing rule before you can use Test Media.
 
-<p align="center" markdown>
+- If you have not created one yet, start with [Rules](/rules).
+- If you want a guided example, see the [Walkthroughs](/blog).
 
-[Rules](https://docs.maintainerr.info/latest/Rules/)
+## Where to find it
 
-[Walkthroughs](https://docs.maintainerr.info/latest/blog/)
+After creating and saving a rule, open the collection that belongs to that rule. On the collection page, use the `Test Media` button in the top-left area.
 
-</p>
+![Test Media button](/img/test-media-button.png)
 
-After creating your rule, and saving it, you will be brought back to the Rules page. Now you want to click on the Collections tab on the left menu. Here you will be shown all of your collections.
+## What you can test
 
-Click on the name of the collection that you want to test rules for. You will be taken to the Collection's page. Here you will see the Test Media button at the top left. You can also see any exclusions that you may have setup for this collection, as well as information regarding the collection items.
+The options shown in the Test Media dialog depend on the rule's library and media type.
 
- ![test-media](/img/test-media-button.png)
+| Field | Description |
+| ----- | ----------- |
+| Media | The movie or show you want to test |
+| Season | The season to test for TV rules when applicable |
+| Episode | The episode to test for episode-level rules when applicable |
+| Output | The YAML result showing how Maintainerr evaluated the rule |
 
-## Test Media popup
+### Search behavior
 
-Depending on what type of library/media this collection is for, you will have different options at the top of this popup.
+Start typing in the `Media` field to search your library.
 
-| Item  | Value   |
-| ----- | ------- |
-| Media | Name of a Movie or TVShow that you want to test |
-| Season | Select which season you want to test (if TV) |
-| Episode | Select the episode you want to test (if TV) |
-| Output | The test results in YAML format |
+- For movie rules, you can test movies.
+- For TV rules, you can test shows, seasons, or episodes depending on the rule's configured media type.
+- You cannot test a movie against a TV rule, or TV content against a movie rule.
 
-### Test your media
+After selecting the media item, choose a season or episode if needed, then run the test.
 
-When you first come to the Test Media page the media field will say `Start typing...`. This is where you will start typing the name of a Movie or TVShow. As you type there will be options that popup (from your library), similar to how Google search works. 
+## Reading the output
 
-You can search for any Movie or any TVShow, regardless of what library the rule is tied to, as long as the type is the same. You can't search for a Movie if the type of library is TV. 
+The result is shown as YAML. It includes the overall result and the nested results for each section and rule that Maintainerr actually evaluated.
 
-Select the item, choose the season and episode if applicable, then click on test at the bottom.
-
-### Test output
-
-Below is an example of your test's output.
+Example:
 
 ```yaml
 - plexId: 73061
@@ -66,57 +69,49 @@ Below is an example of your test's output.
           result: false
 ```
 
-### Test Output breakdown
+### What the main fields mean
 
+| Field | Meaning |
+| ----- | ------- |
+| `plexId` | The media server ID of the item you tested |
+| `result` | The overall result for the test item |
+| `sectionResults` | The results for each evaluated section |
+| `ruleResults` | The detailed comparison output for each evaluated rule |
+| `firstValue` | The actual value Maintainerr retrieved from Plex, Jellyfin, Overseerr, Sonarr, Radarr, or another source |
+| `secondValue` | The value configured in your rule |
 
+### How to interpret it
 
-``` title="this is the plexid of the tested item, and the overall result"
-- plexId: 73061
-  result: false
-```
+In the example above:
 
-``` title="this is the overall result of the rule's section 1 (with an `id` of 0)"
-- id: 0
-  result: false
-```
+- the overall `result` is `false`
+- the rule action is `contains_partial`
+- `firstValue` is `null`
+- `secondValue` is `ydkmlt84`
 
-``` title="this is the output of the rule from that section"
-ruleResults:
-  - operator: OR
-    action: contains_partial
-    firstValueName: Overseerr - Requested by user (Plex or local username)
-    firstValue: null
-    secondValueName: text
-    secondValue: ydkmlt84
-    result: false
-```
+That means Maintainerr checked whether `Overseerr - Requested by user (Plex or local username)` contained `ydkmlt84`, and it did not. In this case, the returned value was `null`, which means there was no matching request data for that item in Overseerr.
 
+## Why some rules do not appear in the output
 
+Test Media does not always show every rule in the ruleset. Maintainerr stops evaluating when the remaining result is already determined.
 
-As you can see, the overall test result was false. This is because this specific rule is testing to see if `Overseerr - Requested by user (Plex or local username)` contains_partial `ydkmlt84`. Which it did not.
+For example:
 
-Test media results show you the `firstValue` which is the information returned from the service, in this case Overseerr.
+- if Rule 1 is `false`
+- and Rule 2 is joined with `AND`
 
-Then it shows you the comparative, the `secondValue`, which is the custom text that you put in the rule to look for.
+Then Rule 2 may not be evaluated at all, because `false AND anything` will still be `false`.
 
-In this case the `firstValue` returned a null value because this item was not requested in Overseerr, therefore there is no data on who requested it in Overseerr.
+The same logic applies to sections. This is normal and does not mean Test Media is missing data.
 
-## Test Media results
+## When to use Test Media
 
-Using this information we can tell that this specific Movie would not be added to this rule's collection, because it did not meet the criteria that we setup in the rule. If we expected to see this Movie in the collection, we now know why it wouldn't have been added.
+Test Media is most useful when:
 
-If we did not know why a tested item was added to the collection, we can use Test Media to see why it was.
+- a specific item is not being added and you need to know why
+- an item was added unexpectedly and you want to see which rule matched
+- you are building a more complex rule and want quick feedback before waiting for the next scheduled rule run
 
-This is helpful when you are trying to test a specific rule, usually one that is complex. You can test against a Movie to see if, when that rule would be executed, would it add a specific Movie to the collection. Or, would it not add it if that is what we are testing.
-
-## Note about Test Media Results
-
-Test Media results do not always include the result of every rule in your ruleset. As mentioned elsewhere, the rules run in order.
-
-For example:  If Rule 2 is an AND to Rule 1, and Rule 1 is determined to be `FALSE`, then only the output of Rule 1 will be shown. This is because Maintainerr didn't even test Rule 2.
-
-It is logically impossible for something to be `1 AND 2`, if it is not `1` to begin with. There is no point in testing Rule 2, because it will not have an impact on the results.
-
-This same thing occurs between Sections as well.
-
-The only time this will not be the case is when the OR operator is used. It IS logically possible for the results to be 2, even when it isn't 1, when using `1 OR 2` logic.
+:::tip
+If you are trying to validate a new rule safely, keep `Take action after days` high enough that you have time to inspect the collection before any cleanup action runs.
+:::

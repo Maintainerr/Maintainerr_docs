@@ -8,7 +8,7 @@ title: Configuration
 
 All configuration is done inside the application. No extra config files are required.
 
-When you first access the web UI, you should be redirected to the settings page. If that does not happen, refresh the page.
+When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
 
 :::note
 All Base URL settings are to be entered without the leading slash.
@@ -17,6 +17,7 @@ All Base URL settings are to be entered without the leading slash.
 - Wrong: `/tautulli`
 
 :::
+
 ## General
 
 These settings are OK for most installations.
@@ -28,7 +29,7 @@ These settings are OK for most installations.
 
 ## Media Server
 
-Maintainerr requires at least one configured media server connection.
+You need to configure either Plex or Jellyfin. Both are not supported simultaneously.
 
 ## Plex
 
@@ -94,13 +95,13 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 
 ## Tautulli
 
+:::note
+Tautulli is only available for Plex users
+:::
+
 Tautulli's configuration is required to use its parameters in rules.
 
 | Setting | Description |
 | --- | --- |
 | URL| The domain name or local IP address of the host running Tautulli |
 | API key | The API key from Tautulli settings |
-
-:::note
-Tautulli is only available for Plex users
-:::

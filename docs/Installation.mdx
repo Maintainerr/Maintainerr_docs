@@ -1,0 +1,207 @@
+---
+id: installation
+slug: /installation
+description: Install methods and information.
+title: Installation
+---
+
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+import Details from '@theme/Details'
+import AnnotatedCodeBlock from '../src/components/AnnotatedCodeBlock'
+
+Docker is Maintainerr's supported method of installation.
+
+Images for amd64 & arm64 are available under `maintainerr/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
+The container's data location is `/opt/data`. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
+
+[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume 'Click here to be taken to the Docker documentation page on volumes.'
+
+:::note
+You can define a user and group ID for the container runtime. Maintainerr uses that `user:group` as its running user inside the container, and any files it creates in your host data directory will be owned by that user and group.
+
+If not explicitly specified, the default `UID:GID` is `1000:1000`.
+
+See [Run](#run) and [Compose](#compose) below for examples.
+:::
+:::tip
+
+**Make sure your data volume is read/writeable by this UID:GID!**
+
+It is possible that you will need to change permissions on the host's data directory.
+
+`chown -R 1000:1000 /opt/data` This is a "change owner" command that changes the owner of `/opt/data` to `1000:1000`.
+
+:::
+Setting the host data directory largely depends on how you are installing Maintainerr. If using Docker, these are the two places where you would set the host data directory, depending on your method.
+
+<Tabs>
+  <TabItem value="run-command" label="Run Command" default>
+
+```yaml
+-v <your host location>:/opt/data \
+```
+
+  </TabItem>
+  <TabItem value="compose" label="Compose">
+
+```yaml
+volumes:
+  - type: bind
+    source: <your host location>
+    target: /opt/data
+```
+
+  </TabItem>
+</Tabs>
+
+## Run
+
+<AnnotatedCodeBlock
+  language="bash"
+  code={`docker run -d \\
+  --name maintainerr \\
+  -e TZ=Europe/Brussels \\
+  -v <yourhostlocation>:/opt/data \\
+  -u 1000:1000 \\
+  -p 6246:6246 \\
+  --restart unless-stopped \\
+  ghcr.io/maintainerr/maintainerr:latest`}
+  annotations={[
+    {
+      line: 4,
+      label: '+',
+      tooltip:
+        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
+    },
+    {
+      line: 6,
+      label: '+',
+      tooltip: 'Port mappings are defined as host:container.',
+    },
+    {
+      line: 8,
+      label: '+',
+      tooltip:
+        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
+    },
+  ]}
+/>
+
+<Details summary="Development Versions">
+
+While the development version contains all of the latest features and bug
+fixes, there is a chance things will break. By using a development version
+you must be willing to report any issues you come across, to the development
+team, and provide as much information as possible to help resolve the issue.
+
+Changing from a development version to a stable version is not supported.
+
+- `ghcr.io/maintainerr/maintainerr:development` for the develop branch.
+- `maintainerr/maintainerr:development` for the Docker Hub development image.
+
+</Details>
+
+### Updating
+
+Stop and remove the existing container:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+Pull the latest image:
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
+Finally, run the container with the same parameters you originally used to create/start the container.
+
+## Compose
+
+Define the Maintainerr service in your docker-compose.yml as follows.
+
+<AnnotatedCodeBlock
+  language="yaml"
+  code={`services:
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: <your host location>
+        target: /opt/data
+    environment:
+      - TZ=Europe/Brussels
+    ports:
+      - 6246:6246
+    restart: unless-stopped`}
+  annotations={[
+    {
+      line: 3,
+      label: '+',
+      tooltip:
+        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
+    },
+    {
+      line: 7,
+      label: '+',
+      tooltip:
+        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
+    },
+    {
+      line: 11,
+      label: '+',
+      tooltip: 'Port mappings are defined as host:container.',
+    },
+  ]}
+/>
+
+<Details summary="Development Versions">
+
+While the development version contains all of the latest features and bug
+fixes, there is a chance things will break. By using a development version
+you must be willing to report any issues you come across, to the development
+team, and provide as much information as possible to help resolve the issue.
+
+Changing from a development version to a stable version is not supported.
+
+- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
+- `maintainerr/maintainerr:development` for the Docker Hub development image.
+
+</Details>
+
+Save your docker-compose.yml file.
+Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
+
+```bash
+docker compose up -d
+```
+
+### Updating
+
+Pull the latest image:
+
+```bash
+docker compose pull
+```
+
+Then, restart all services defined in the Compose file:
+
+```bash
+docker compose up -d
+```
+
+## Environment Variables
+
+A list of all available environment variables are below. No other env variables are officially supported by Maintainerr. These are added either into the compose file or your docker run command.
+
+| Variable     | Default Value   | Description                                                                                         |
+| ------------ | --------------- | --------------------------------------------------------------------------------------------------- |
+| TZ           | _host timezone_ | Controls date formatting in logs.                                                                   |
+| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                       |
+| UI_PORT      | 6246            | The listen port of the web server.                                                                  |
+| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder` |
+| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                             |

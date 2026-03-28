@@ -38,6 +38,10 @@ image: maintainerr/maintainerr:2.10.0
 
 Stop the running container before replacing the database file.
 
+```bash
+docker stop maintainerr
+```
+
 ## 3. Restore your database backup
 
 Your data lives in `/opt/data` inside the container (your host bind/volume target).

@@ -17,8 +17,10 @@ These suggestions will not solve every issue, but they cover the most common pro
 This is usually a permissions problem. The container runs as user `1000` by default, and the host directory mounted to `/opt/data` often does not allow that user to read or write correctly.
 
 :::tip Fix
+
 - Check the logs with `docker logs -f maintainerr` and look for permission-related errors.
 - Update ownership on the mounted data directory: `sudo chown -R 1000:1000 <host-directory for /opt/data>`
+
 :::
 
 ## Webpage is stuck

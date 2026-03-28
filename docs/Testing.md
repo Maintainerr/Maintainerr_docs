@@ -13,6 +13,7 @@ We have implemented a way to test a specific pull request (new feature), using *
   :fire::fire: These PR images are HIGHLY volatile and should not be used in production. These are only created to test a specific feature that we are working on, and can break at any moment.
 
 :::
+
 ## Testing
 
 ### Install Method
@@ -25,9 +26,10 @@ You can run the PR image using either docker run, or docker compose. Compose is 
 
 :::note
   If you need too much more than what is outlined in this page, as far as installing the PR image...maybe you shouldn't be testing such bleeding edge features. Anywhere you see `<xxxx-xxxx>`, is considered a placeholder for *variable* information. Don't exactly copy and paste what is here, as it won't work without you making some changes first.
-  All of the same applies, as far as file/folder permissions, from the main [Installation](Installation.md) page.
+  All of the same applies, as far as file/folder permissions, from the main [Installation](Installation.mdx) page.
 
 :::
+
 #### Docker Run
 
 ```bash

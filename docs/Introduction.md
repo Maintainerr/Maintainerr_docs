@@ -30,22 +30,22 @@ Maintainerr is beta software, please report any bugs or issues.
 
 ## Features
 
-- Make Plex collections from a specific set of rules, defined by you.
-- Configure those rules to match your needs. (i.e. `Plex last viewed 30 days ago`)
-- See an overview of your Plex library contents.
+- Make collections on your media server from a specific set of rules, defined by you.
+- Configure those rules to match your needs. (i.e. `Last viewed 30 days ago`)
+- See an overview of your media server library contents.
 - Manually add an item to one of the above mentioned collections.
 - Manually exclude an item from one of the collections, even if it meets the rule criteria.
-- Show your new collection on the *Plex Home* screen.
+- Show your new collection on the *Home* screen.
 - Set a number of days the collection will exist before it is deleted.
 - Set Radarr and Sonarr to either **remove** or **unmonitor** media in the collection.
-- Auto clear requests from Overseerr/Jellyseerr
+- Auto clear requests from Seerr
 - Remove media from disk
+- Switch between Plex and Jellyfin with automatic rule migration
 
 Maintainerr supports rules across these apps :
 
-- Plex
-- Overseerr
-- Jellyseerr
+- Plex or Jellyfin (choose one)
+- Seerr
 - Radarr
 - Sonarr
 - Tautulli
@@ -60,5 +60,5 @@ docker run -d \
   -u 1000:1000 \
   -p 6246:6246 \
   --restart unless-stopped \
-  ghcr.io/maintainerr/maintainerr:2
+  ghcr.io/maintainerr/maintainerr:latest
 ```
