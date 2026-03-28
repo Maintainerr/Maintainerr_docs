@@ -14,6 +14,18 @@ const config = {
       onBrokenMarkdownLinks: 'warn',
     },
   },
+  plugins: [
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        hashed: true,
+        indexDocs: true,
+        indexBlog: true,
+        docsRouteBasePath: '/',
+        blogRouteBasePath: '/blog',
+      },
+    ],
+  ],
   presets: [
     [
       'classic',
