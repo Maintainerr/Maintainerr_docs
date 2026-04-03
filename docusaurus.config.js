@@ -6,6 +6,16 @@ const config = {
   baseUrl: '/',
   organizationName: 'Maintainerr',
   projectName: 'Maintainerr_docs',
+  customFields: {
+    feedbackIssueUrl:
+      'https://github.com/Maintainerr/Maintainerr_docs/issues/new/choose',
+    privacyPolicyUrl: 'https://maintainerr.info/privacy',
+    matomo: {
+      siteId: '2',
+      trackerUrl: 'https://analytics.maintainerr.info/',
+      enabled: true,
+    },
+  },
   trailingSlash: true,
   onBrokenLinks: 'warn',
   staticDirectories: ['static'],
@@ -36,6 +46,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
+          includeCurrentVersion: false,
         },
         blog: {
           blogTitle: 'Maintainerr Walkthroughs',
@@ -57,7 +68,11 @@ const config = {
       respectPrefersColorScheme: false,
     },
     image: 'img/docs_image.png',
+    tableOfContents: {
+      maxHeadingLevel: 4,
+    },
     navbar: {
+      hideOnScroll: true,
       title: 'Maintainerr Docs',
       logo: {
         alt: 'Maintainerr logo',
@@ -67,6 +82,11 @@ const config = {
         { to: '/installation', label: 'Get Started', position: 'left' },
         { to: '/configuration', label: 'Configuration', position: 'left' },
         { to: '/rules', label: 'Rules', position: 'left' },
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          dropdownActiveClassDisabled: true,
+        },
         { to: '/blog', label: 'Walkthroughs', position: 'left' },
         {
           href: 'https://github.com/maintainerr/maintainerr',
@@ -89,8 +109,18 @@ const config = {
         {
           title: 'Community',
           items: [
-            { label: 'Introduction', to: '/' },
-            { label: 'Contributing', to: '/contributing' },
+            {
+              label: 'Changelog',
+              href: 'https://github.com/Maintainerr/Maintainerr/releases',
+            },
+            {
+              label: 'Status of Services',
+              href: 'https://status.maintainerr.info',
+            },
+            {
+              label: 'Feature Requests',
+              href: 'https://features.maintainerr.info/?view=most-wanted',
+            },
             {
               label: 'Discord',
               href: 'https://discord.maintainerr.info',
@@ -101,16 +131,22 @@ const config = {
           title: 'More',
           items: [
             {
-              label: 'GitHub',
-              href: 'https://github.com/maintainerr/maintainerr',
-            },
-            {
               label: 'Docker Hub',
               href: 'https://hub.docker.com/r/maintainerr/maintainerr/',
+            },
+            {
+              label: 'GHCR Package',
+              href: 'https://ghcr.io/maintainerr/maintainerr',
             },
           ],
         },
       ],
+      logo: {
+        alt: 'Maintainerr logo',
+        src: 'img/logo.svg',
+        width: 250,
+        height: 72,
+      },
       copyright: `Copyright (c) ${new Date().getFullYear()} Maintainerr`,
     },
   },

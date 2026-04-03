@@ -1,0 +1,25 @@
+.feedback {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+.title {
+  margin: 0 0 0.75rem;
+  font-weight: 700;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.active {
+  border-color: var(--ifm-color-primary) !important;
+  color: var(--ifm-color-primary) !important;
+}
+
+.note {
+  margin: 0.75rem 0 0;
+  color: var(--ifm-font-color-base);
+}

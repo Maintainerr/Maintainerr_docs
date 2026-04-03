@@ -32,7 +32,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Community',
-      items: ['contributing', 'testing', 'changelog'],
+      items: ['contributing', 'changelog'],
     },
     {
       type: 'category',

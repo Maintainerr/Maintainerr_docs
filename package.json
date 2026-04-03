@@ -7,7 +7,8 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve --dir build",
-    "clear": "docusaurus clear"
+    "clear": "docusaurus clear",
+    "docs:version": "docusaurus docs:version"
   },
   "repository": {
     "type": "git",
