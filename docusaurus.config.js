@@ -46,7 +46,7 @@ const config = {
           sidebarPath: require.resolve('./sidebars.js'),
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
-          includeCurrentVersion: false,
+          includeCurrentVersion: true,
         },
         blog: {
           blogTitle: 'Maintainerr Walkthroughs',
