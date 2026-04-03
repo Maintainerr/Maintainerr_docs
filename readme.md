@@ -1,41 +1,42 @@
 <p align="center">
-  <img src="/docs/images/docs_image.png" alt="Maintainerr's docs image" width="50%">
+  <img src="./static/img/docs_image.png" alt="Maintainerr docs" width="50%">
 </p>
 
-<p align="center" >
-  <a href="https://discord.gg/WP4ZW2QYwk"><img alt="Discord" src="https://img.shields.io/discord/1152219249549512724?style=flat&logo=discord&logoColor=white&label=Maintainerr"></a>
-  <picture><img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/ydkmlt84/maintainerr_docs?style=flat&logo=github&logoColor=white"></picture>
-  <a href="https://ko-fi.com/maintainerr_app"><img alt="Static Badge" src="https://img.shields.io/badge/DONATE-kofi-red?style=flat&logo=ko-fi&logoColor=white"></a>
-  <picture><img alt="Doc changes updated" src=https://img.shields.io/github/actions/workflow/status/ydkmlt84/maintainerr_docs/mkdocs_ci.yml></picture>
+<p align="center">
+  <a href="https://discord.maintainerr.info"><img alt="Discord" src="https://img.shields.io/discord/1152219249549512724?style=flat&logo=discord&logoColor=white&label=Maintainerr"></a>
+  <a href="https://github.com/maintainerr/Maintainerr_docs/issues"><img alt="Docs issues" src="https://img.shields.io/github/issues/maintainerr/Maintainerr_docs?style=flat&logo=github&logoColor=white&label=Docs%20Issues"></a>
+  <a href="https://github.com/maintainerr/maintainerr"><img alt="App repo" src="https://img.shields.io/github/stars/maintainerr/maintainerr?style=flat&logo=github&logoColor=white&label=App%20Stars"></a>
+  <a href="https://ko-fi.com/maintainerr_app"><img alt="Donate" src="https://img.shields.io/badge/DONATE-kofi-red?style=flat&logo=ko-fi&logoColor=white"></a>
 </p>
 
-<b>[Maintainerr](https://maintainerr.info)</b> makes managing your media easy.
+**[Maintainerr](https://maintainerr.info)** makes managing your media easier.
 
 - Do you hate being the janitor of your server?
-- Do you have a lot of media that never gets watched?
-- Do your users constantly request media, and let it sit there afterward never to be touched again?
+- Do you have media that never gets watched?
+- Do your users constantly request media and then ignore it once it lands?
 
-If you answered yes to any of those questions.. You NEED <b>[Maintainerr](https://maintainerr.info)</b>.
-It's a one-stop-shop for handling those outlying shows and movies that take up precious space on your server.
+If yes, **[Maintainerr](https://maintainerr.info)** is built for exactly that problem. It helps you identify stale media, build cleanup rules, and automate collection handling around the content that is just sitting there taking up space.
 
-This repo exists solely for the documentation of **Maintainerr**.
+This repository contains the documentation site for Maintainerr.
 
-# The "Docs"
-- These docs are made using the lovely [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) project. 
+# The Docs
 
-- Roughly 95% percent of the documentation is written using the markdown syntax. 
+The site is built with [Docusaurus](https://docusaurus.io/).
 
-- There is a ton of documentation out there for markdown but this one is my favorite. -> [MarkdownGuide](https://www.markdownguide.org/).
-
+Most of the documentation is written in Markdown, with Docusaurus handling the site structure, navigation, blog, and static assets.
 
 # Contributing
 
-The docs website itself runs on a Material for Mkdocs docker container, and is self hosted. It also uses the *Insiders* edition of the previously mentioned project. 
+If you want to improve the docs, open a pull request with your changes.
 
-If you would like to add anything to the docs, especially a guide/tutorial, please feel free to make a PR on Github. You can see the structure of the site in the repo directory.
+Guides, walkthroughs, corrections, screenshots, structural cleanup, and wording improvements are all useful contributions.
 
-There are a TON of options in the Material for Mkdocs project, and they are outlined here -> [Getting Started](https://squidfunk.github.io/mkdocs-material/getting-started/). If you want to include something that is an ***insiders only*** option, you can do that and I will take a look on my end. You will have to purchase it though, if you want to test it before pushing your PR.
+For local setup, project structure, and contribution guidance, see the docs page:
+
+- [Contributing Guide](https://docs.maintainerr.info/contributing)
 
 # Credits
 
-I have personally added and tweaked some things here, but thanks goes out the Maintainerr dev who made the wise decision to document his work. Please check out [Maintainerr](https://maintainerr.info), and if you love it, consider donating with the [KOFI](https://ko-fi.com/maintainerr_app) link at the top of this README.
+The docs have gone through multiple iterations, but the goal has stayed the same: make Maintainerr easier to understand and easier to use.
+
+Thanks to the Maintainerr contributors and community members who keep improving both the app and the documentation around it.

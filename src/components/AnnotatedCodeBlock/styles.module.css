@@ -1,0 +1,44 @@
+.wrapper {
+  margin: 1rem 0;
+  position: relative;
+  z-index: 0;
+}
+
+.scroller {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.pre {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 0.75rem;
+  background: var(--ifm-code-background);
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+}
+
+.code {
+  display: block;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+}
+
+.line {
+  display: block;
+  min-height: 1.6rem;
+}
+
+.lineText {
+  white-space: pre;
+  display: inline;
+}
+
+.annotationGroup {
+  display: inline-flex;
+  gap: 0.35rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
