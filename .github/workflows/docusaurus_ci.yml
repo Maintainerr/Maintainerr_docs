@@ -7,7 +7,7 @@ on:
     inputs:
       versionInput:
         description: 'Input version from Maintainerr release'
-        required: true
+        required: false
 
 permissions:
   contents: write

@@ -65,12 +65,14 @@ export default function SiteConsent() {
   const {siteConfig} = useDocusaurusContext()
   const location = useLocation()
   const [consent, setConsent] = useState(null)
+  const [isReady, setIsReady] = useState(false)
   const matomoConfig = useMemo(() => siteConfig.customFields?.matomo ?? {}, [siteConfig])
   const privacyPolicyUrl =
     siteConfig.customFields?.privacyPolicyUrl ?? 'https://maintainerr.info/privacy.html'
 
   useEffect(() => {
     setConsent(getStoredConsent())
+    setIsReady(true)
   }, [])
 
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function SiteConsent() {
     }
   }
 
-  if (consent !== null) {
+  if (!isReady || consent !== null) {
     return null
   }
 
