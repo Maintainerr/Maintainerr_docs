@@ -19,6 +19,15 @@ A collection will be reflected in your media server when it contains media. When
 
 If the `Show on home` option was checked, the collection will be shown on all users' home screens. This allows you to create, for instance, a 'Leaving soon' list.
 
+## Calendar and overlays
+
+Collections now power additional Maintainerr views beyond cleanup.
+
+- The [Calendar](./Calendar.md) page shows when collection media is scheduled to reach its configured action date.
+- Overlay-enabled collections can apply poster or title card artwork to help identify queued media in your media server.
+
+In the rule or collection form, you can enable overlays per collection and optionally choose a specific overlay template. Movies, shows, and seasons use poster templates. Episode collections use title card templates.
+
 ## Manual actions
 
 ### Adding
@@ -47,6 +56,24 @@ Here you're able to remove the media's current exclusions, exclude for all colle
 
 When media has exclusions, an `Excl` badge will be shown on the top-right side of the card.
 
+Collections also have a dedicated `Exclusions` view. Open a collection, then switch to the `Exclusions` tab to review everything excluded from that collection, sort the list, and open the same media test flow from the collection context.
+
+On a collection's media page, the `Remove` action also manages collection-level exclusions:
+
+- removing an item from a collection creates an exclusion for that collection so rules do not immediately add it back
+- if the item is already excluded for that collection, the same control removes that exclusion instead
+- removing a global exclusion shows a warning because it affects every collection, not just the one you are viewing
+
+If you open the media details modal, Maintainerr also shows where the item is excluded from. That modal is informational for exclusions; you still manage exclusion changes from the card actions or the collection views.
+
+For collection items that are still eligible for action, the media details modal also shows a `Trigger Rule Action` button.
+
+- it runs the collection's configured action for that single item immediately instead of waiting for the normal collection schedule
+- the confirmation dialog tells you which action will run, such as delete, unmonitor, or change quality profile
+- on success, the item is removed from the collection right away
+
+This button is only shown when the collection has a real action configured and the item is not already excluded or manually added.
+
 ### Data syncing from media server
 
 If media is added to the collection outside of Maintainerr, it will be added to the associated Maintainerr collection. These manually added items will be ignored by the rule processor.
@@ -58,3 +85,5 @@ If you delete media from the collection outside of Maintainerr, it will be remov
 - By clicking on the collection's name you can see all media currently added to the collection. On the top-right side there'll be a number indicating the number of days before removal.
 
 - Maintainerr will never remove the collection from your media server if you specified a manual collection.
+
+- Collections with `Do nothing` are not shown on the [Calendar](./Calendar.md) page because they do not schedule a cleanup action.

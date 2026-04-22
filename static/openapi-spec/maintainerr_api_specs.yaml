@@ -126,6 +126,135 @@ paths:
           description: ''
       tags:
         - /settings
+  /api/settings/tmdb:
+    get:
+      operationId: SettingsController_getTmdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved TMDB API key state.
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateTmdbSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Saves a TMDB API key.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeTmdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved TMDB API key.
+      tags:
+        - /settings
+  /api/settings/test/tmdb:
+    post:
+      operationId: SettingsController_testTmdb
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Tests a TMDB API key.
+      tags:
+        - /settings
+  /api/settings/tvdb:
+    get:
+      operationId: SettingsController_getTvdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved TVDB API key state.
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateTvdbSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Saves a TVDB API key.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeTvdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved TVDB API key.
+      tags:
+        - /settings
+  /api/settings/test/tvdb:
+    post:
+      operationId: SettingsController_testTvdb
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Tests a TVDB API key.
+      tags:
+        - /settings
+  /api/settings/metadata-provider:
+    get:
+      operationId: SettingsController_getMetadataProviderPreference
+      parameters: []
+      responses:
+        '200':
+          description: Returns the current primary metadata provider.
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateMetadataProviderPreference
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Updates the primary metadata provider.
+      tags:
+        - /settings
+  /api/settings/metadata/refresh/{provider}:
+    post:
+      operationId: SettingsController_refreshMetadataCache
+      parameters:
+        - name: provider
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Clears cached metadata for the provider and starts a media refresh pass.
+      tags:
+        - /settings
   /api/settings/plex/devices/servers:
     get:
       operationId: SettingsController_getPlexServers
@@ -888,6 +1017,21 @@ paths:
           description: ''
       tags:
         - /collections
+  /api/collections/media/handle:
+    post:
+      operationId: CollectionsController_handleCollectionMedia
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Runs the configured collection action for one item immediately.
+      tags:
+        - /collections
   /api/collections/media/{id}/content/{page}:
     get:
       operationId: CollectionsController_getLibraryContent
@@ -975,6 +1119,422 @@ paths:
           description: ''
       tags:
         - /collections
+  /api/collections/overlay-data:
+    get:
+      operationId: CollectionsController_getCollectionsForOverlayData
+      parameters:
+        - name: libraryId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: typeId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns collections with full media membership for overlay consumers.
+      tags:
+        - /collections
+  /api/metadata/backdrop/{type}:
+    get:
+      operationId: MetadataController_getBackdropImage
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: tmdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: tvdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: imdbId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resolves a backdrop image URL from the configured metadata providers.
+      tags:
+        - /metadata
+  /api/metadata/image/{type}:
+    get:
+      operationId: MetadataController_getImage
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: tmdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: tvdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: imdbId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resolves a poster image URL from the configured metadata providers.
+      tags:
+        - /metadata
+  /api/overlays/settings:
+    get:
+      operationId: OverlaysController_getSettings
+      parameters: []
+      responses:
+        '200':
+          description: Returns current overlay settings.
+      tags:
+        - /overlays
+    put:
+      operationId: OverlaysController_updateSettings
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updates and returns overlay settings.
+      tags:
+        - /overlays
+  /api/overlays/sections:
+    get:
+      operationId: OverlaysController_getSections
+      parameters: []
+      responses:
+        '200':
+          description: Lists media server library sections for overlay preview.
+      tags:
+        - /overlays
+  /api/overlays/random-item:
+    get:
+      operationId: OverlaysController_getRandomItem
+      parameters:
+        - name: sectionId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a random media item for poster-template preview.
+      tags:
+        - /overlays
+  /api/overlays/random-episode:
+    get:
+      operationId: OverlaysController_getRandomEpisode
+      parameters:
+        - name: sectionId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a random episode for title-card preview.
+      tags:
+        - /overlays
+  /api/overlays/poster:
+    get:
+      operationId: OverlaysController_getPoster
+      parameters:
+        - name: plexId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Streams artwork used for overlay preview.
+      tags:
+        - /overlays
+  /api/overlays/status:
+    get:
+      operationId: OverlaysController_getStatus
+      parameters: []
+      responses:
+        '200':
+          description: Returns current overlay processor status.
+      tags:
+        - /overlays
+  /api/overlays/process:
+    post:
+      operationId: OverlaysController_processAll
+      parameters: []
+      responses:
+        '201':
+          description: Runs overlay processing for all eligible collections.
+      tags:
+        - /overlays
+  /api/overlays/process/{collectionId}:
+    post:
+      operationId: OverlaysController_processCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Runs overlay processing for one collection.
+      tags:
+        - /overlays
+  /api/overlays/revert/{collectionId}:
+    post:
+      operationId: OverlaysController_revertCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Reverts overlays for one collection.
+      tags:
+        - /overlays
+  /api/overlays/reset:
+    delete:
+      operationId: OverlaysController_resetAll
+      parameters: []
+      responses:
+        '200':
+          description: Reverts all overlays.
+      tags:
+        - /overlays
+  /api/overlays/fonts:
+    get:
+      operationId: OverlaysController_listFonts
+      parameters: []
+      responses:
+        '200':
+          description: Lists available overlay fonts.
+      tags:
+        - /overlays
+    post:
+      operationId: OverlaysController_uploadFont
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Uploads a custom overlay font.
+      tags:
+        - /overlays
+  /api/overlays/fonts/{name}:
+    get:
+      operationId: OverlaysController_getFont
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Streams a bundled or uploaded font file.
+      tags:
+        - /overlays
+  /api/overlays/templates:
+    get:
+      operationId: OverlaysController_listTemplates
+      parameters: []
+      responses:
+        '200':
+          description: Lists overlay templates.
+      tags:
+        - /overlays
+    post:
+      operationId: OverlaysController_createTemplate
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Creates an overlay template.
+      tags:
+        - /overlays
+  /api/overlays/templates/import:
+    post:
+      operationId: OverlaysController_importTemplate
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Imports an overlay template from JSON.
+      tags:
+        - /overlays
+  /api/overlays/templates/{id}:
+    get:
+      operationId: OverlaysController_getTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Returns one overlay template.
+      tags:
+        - /overlays
+    put:
+      operationId: OverlaysController_updateTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Updates an overlay template.
+      tags:
+        - /overlays
+    delete:
+      operationId: OverlaysController_deleteTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Deletes a non-preset overlay template.
+      tags:
+        - /overlays
+  /api/overlays/templates/{id}/duplicate:
+    post:
+      operationId: OverlaysController_duplicateTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Duplicates an overlay template.
+      tags:
+        - /overlays
+  /api/overlays/templates/{id}/default:
+    post:
+      operationId: OverlaysController_setDefaultTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Sets an overlay template as the default for its mode.
+      tags:
+        - /overlays
+  /api/overlays/templates/{id}/export:
+    post:
+      operationId: OverlaysController_exportTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Exports an overlay template as JSON.
+      tags:
+        - /overlays
+  /api/overlays/templates/{id}/preview:
+    post:
+      operationId: OverlaysController_previewTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: plexId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Renders a preview for an overlay template.
+      tags:
+        - /overlays
+  /api/storage-metrics:
+    get:
+      operationId: StorageMetricsController_getMetrics
+      parameters: []
+      responses:
+        '200':
+          description: Returns aggregated storage metrics.
+      tags:
+        - /storage-metrics
+  /api/storage-metrics/library-sizes:
+    get:
+      operationId: StorageMetricsController_getLibrarySizes
+      parameters: []
+      responses:
+        '200':
+          description: Computes accurate per-library sizes on demand.
+      tags:
+        - /storage-metrics
 info:
   title: Maintainerr API
   description: API documentation for Maintainerr

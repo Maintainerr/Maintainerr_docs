@@ -26,6 +26,11 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Features',
+      items: ['calendar-feature', 'overlays-feature', 'storage-metrics-feature'],
+    },
+    {
+      type: 'category',
       label: 'Notifications',
       items: ['notifications'],
     },
