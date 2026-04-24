@@ -10,7 +10,7 @@ on:
         required: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   deploy:
@@ -21,11 +21,29 @@ jobs:
       DISPATCH_BRANCH: ${{ github.event.client_payload.target_branch }}
       DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
     steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.DOCS_APP_ID }}
+          private-key: ${{ secrets.DOCS_APP_KEY }}
+
+      - name: Resolve bot identity
+        id: bot
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          user_id=$(gh api "/users/${APP_SLUG}[bot]" --jq .id)
+          echo "name=${APP_SLUG}[bot]" >> "$GITHUB_OUTPUT"
+          echo "email=${user_id}+${APP_SLUG}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.ref || github.ref }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Resolve source branch
         id: branch
@@ -63,8 +81,8 @@ jobs:
       - name: Configure Git credentials
         if: env.RELEASE_VERSION != ''
         run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git config user.name "${{ steps.bot.outputs.name }}"
+          git config user.email "${{ steps.bot.outputs.email }}"
 
       - name: Create docs version snapshot
         if: env.RELEASE_VERSION != ''
@@ -96,7 +114,9 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ steps.app-token.outputs.token }}
           publish_dir: ./build
           publish_branch: gh-pages
           force_orphan: true
+          user_name: ${{ steps.bot.outputs.name }}
+          user_email: ${{ steps.bot.outputs.email }}
