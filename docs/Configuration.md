@@ -37,18 +37,40 @@ Plex can be used as your media server connection.
 
 When using a local Plex instance, make sure Plex's `Secure connections` network setting is set to `Preferred` instead of `Required`.
 
-If you want Maintainerr to connect securely, use your `*.plex.direct` URL as the hostname and include `https://`. You can usually copy this from Seerr if that service is already connected to the same Plex server.
+Maintainerr's normal Plex setup uses Plex authentication and server discovery instead of a manual host/port form.
 
-| Setting | Description |
-| --- | --- |
-| Name | A friendly name for this server |
-| Hostname or IP | The domain name or local IP address of the host running Plex |
-| Port | The port Plex runs on. Default: `32400` |
-| Authentication | Authenticate with your Plex server using an **admin** account |
+After you authenticate with a Plex **admin** account, Maintainerr validates the token, loads the servers available to that account, and lets you choose from discovered connection candidates. This is the recommended setup because Maintainerr can use the discovered server details directly and keep automatic reconnection behavior enabled.
 
 :::tip
-Typical setup flow: authenticate with Plex, click the refresh icon, choose your server from the dropdown, click `Save Changes`, then click `Test Saved`.
+Proper DNS is preferred. Plex discovery and failover can depend on resolvable Plex endpoints, and Docker users in particular may run into intermittent connection or discovery problems when container DNS is unstable. If possible, make sure your environment has working DNS resolution for Plex-related hostnames and service names.
 :::
+
+| Setting / Control | Description |
+| --- | --- |
+| Authentication | Authenticate with Plex using an **admin** account. Until this succeeds, the Plex server controls stay disabled. |
+| Server | Shows the currently selected discovered server, or lets you choose one from the discovered server list. |
+| Refresh icon | Re-runs Plex server discovery for the authenticated account. Use this if the server list is stale or discovery failed the first time. |
+
+:::tip
+`Test Connection` is disabled until you are authenticated and have either selected a discovered server or enabled manual override with saved settings.
+:::
+
+<details>
+<summary>Advanced: manual connection override</summary>
+
+Most users should leave this closed and use the normal Plex authentication and discovery flow.
+
+If discovery does not give you the connection you want, open `Advanced Settings` and enable `Manual connection override`. That lets you enter the hostname, port, and TLS mode directly.
+
+Manual mode is a fallback option:
+
+- Plex authentication is still required.
+- It overrides the discovered Plex connection.
+- It disables automatic reconnection for that Plex entry until you switch back.
+
+If you want Maintainerr to connect securely in manual mode, use your `*.plex.direct` URL as the hostname and enable TLS. You can usually copy the correct address from Seerr if that service is already connected to the same Plex server.
+
+</details>
 
 ## Jellyfin
 
@@ -92,6 +114,34 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 | Port | The port Sonarr runs on |
 | Base URL | The URL base configured in Sonarr, if one is set |
 | API key | The API key from Sonarr settings |
+
+## Metadata
+
+Maintainerr has a separate `Settings -> Metadata` page for poster, backdrop, and metadata-provider settings used across the UI.
+
+This page is mainly useful when you want better artwork fallback, more reliable cross-provider ID resolution, or more control over which metadata source Maintainerr prefers.
+
+| Setting | Description |
+| --- | --- |
+| TMDB API key | Optional. If you leave this empty, Maintainerr uses its built-in shared TMDB key. Add your own key if you want an isolated quota or your own TMDB account access. |
+| TVDB API key | Optional. Enables TVDB as an additional metadata source and fallback for ID cross-references. TVDB cannot be selected as primary until it is configured. |
+| Primary | Chooses whether Maintainerr prefers TMDB or TVDB first when resolving posters, backdrops, and related metadata lookups. |
+| Refresh metadata | Clears cached metadata for that provider and asks your media server to refresh matching items that already have provider IDs stored. |
+
+Typical usage:
+
+- Leave TMDB on its default setup if you just want Maintainerr to work out of the box.
+- Add a TVDB key if you want another source for artwork and metadata cross-references.
+- Switch the primary provider if you prefer one source's results over the other.
+- Use `Refresh metadata` after changing provider settings, when testing a new provider, or when provider artwork and IDs look stale.
+
+The metadata refresh action runs in the background. It clears Maintainerr's cached provider responses first, then asks your configured media server to refresh items that are already linked to that metadata provider.
+
+In practice:
+
+- changing the API key or primary provider affects future metadata lookups
+- `Refresh metadata` is the manual "re-check existing linked items" action
+- refresh may take longer on larger libraries because Maintainerr asks the media server to refresh existing items that already have matching provider IDs
 
 ## Tautulli
 

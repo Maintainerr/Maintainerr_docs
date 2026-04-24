@@ -96,11 +96,26 @@ The number of collections the Plex item is present in. For seasons and episodes,
 :::info
 The date when the Plex item was last viewed.
 
+If the item has no recorded watch history, this value is simply missing.
+
+If Plex watch history cannot be fetched at all, Maintainerr treats this value as unknown instead of assuming the item was never watched. In other words, a lookup failure is kept separate from a genuinely missing `lastViewedAt` value.
+
 :::
 
 - Key: Plex.lastViewedAt
 - Availability: movies, shows, seasons, episodes
 - Type: date
+
+#### Is Watched
+
+:::info
+Indicates whether the Plex item has been watched. For TV libraries, this property is only available when the rule targets episodes.
+
+:::
+
+- Key: Plex.isWatched
+- Availability: movies, episodes
+- Type: boolean
 
 #### Media file resolution (4k, 1080,..)
 
@@ -487,12 +502,23 @@ List of collection titles the Plex item is present in, including smart collectio
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
 
+#### Newest view date across collection
+
+:::info
+The newest `lastViewedAt` value across all movies that share a Plex collection with the current movie. This is useful when you want one recently watched movie to protect the rest of a collection.
+
+:::
+
+- Key: Plex.collection_siblings_lastViewedAt
+- Availability: movies
+- Type: date
+
 ---
 
 ### Jellyfin
 
 :::note
-Jellyfin shares many rule properties with Plex. When switching between Plex and Jellyfin, compatible rules are automatically migrated. Jellyfin does not support watchlists, IMDb ratings (use TMDb instead), or smart collections.
+Jellyfin shares many rule properties with Plex. When switching between Plex and Jellyfin, compatible rules are automatically migrated. Jellyfin does not support watchlists or smart collections.
 
 :::
 
@@ -600,11 +626,26 @@ The number of collections the Jellyfin item is present in. For seasons and episo
 :::info
 The date when the Jellyfin item was last viewed.
 
+If the item has no recorded watch history, this value is simply missing.
+
+If Jellyfin watch history cannot be fetched at all, Maintainerr treats this value as unknown instead of assuming the item was never watched. In other words, a lookup failure is kept separate from a genuinely missing `lastViewedAt` value.
+
 :::
 
 - Key: Jellyfin.lastViewedAt
 - Availability: movies, shows, seasons, episodes
 - Type: date
+
+#### Is Watched
+
+:::info
+Indicates whether the Jellyfin item has been watched. For TV libraries, this property is only available when the rule targets episodes.
+
+:::
+
+- Key: Jellyfin.isWatched
+- Availability: movies, episodes
+- Type: boolean
 
 #### Media file resolution (4k, 1080,..)
 
@@ -837,6 +878,17 @@ List of collection titles the Jellyfin item is present in, including parent coll
 - Availability: seasons, episodes
 - Type: text[]
 
+#### Newest view date across collection
+
+:::info
+The newest `lastViewedAt` value across all movies that share a Jellyfin collection with the current movie. This is useful when you want one recently watched movie to protect the rest of a collection.
+
+:::
+
+- Key: Jellyfin.collection_siblings_lastViewedAt
+- Availability: movies
+- Type: date
+
 #### RottenTomatoes critic rating (scale 1-10)
 
 :::info
@@ -867,6 +919,17 @@ The Movie Database (TMDb) rating on a scale of 1 to 10. Sourced from Jellyfin's 
 :::
 
 - Key: Jellyfin.rating_tmdb
+- Availability: movies, shows, episodes
+- Type: number
+
+#### IMDb rating (scale 1-10)
+
+:::info
+The IMDb rating on a scale of 1 to 10, when that metadata is available from your Jellyfin providers.
+
+:::
+
+- Key: Jellyfin.rating_imdb
 - Availability: movies, shows, episodes
 - Type: number
 
@@ -1218,7 +1281,7 @@ The number of votes for the IMDb rating.
 #### Remaining disk space (GB)
 
 :::info
-The remaining disk space on the root folder in gigabytes.
+The remaining disk space on the selected Radarr root folder in gigabytes. When you use this rule in the UI, Maintainerr lets you choose which Radarr path to check.
 
 :::
 
@@ -1229,7 +1292,7 @@ The remaining disk space on the root folder in gigabytes.
 #### Total disk space (GB)
 
 :::info
-The total disk space on the root folder in gigabytes.
+The total disk space on the selected Radarr root folder in gigabytes. When you use this rule in the UI, Maintainerr lets you choose which Radarr path to check.
 
 :::
 
@@ -1541,7 +1604,7 @@ The series type as configured in Sonarr (e.g. "standard", "anime", "daily").
 #### Remaining disk space (GB)
 
 :::info
-The remaining disk space on the root folder in gigabytes.
+The remaining disk space on the selected Sonarr root folder in gigabytes. When you use this rule in the UI, Maintainerr lets you choose which Sonarr path to check.
 
 :::
 
@@ -1552,11 +1615,33 @@ The remaining disk space on the root folder in gigabytes.
 #### Total disk space (GB)
 
 :::info
-The total disk space on the root folder in gigabytes.
+The total disk space on the selected Sonarr root folder in gigabytes. When you use this rule in the UI, Maintainerr lets you choose which Sonarr path to check.
 
 :::
 
 - Key: Sonarr.diskspace_total_gb
+- Availability: shows, seasons, episodes
+- Type: number
+
+#### Number of missing episodes in season
+
+:::info
+The number of missing episodes in the current season.
+
+:::
+
+- Key: Sonarr.missing_episodes_season
+- Availability: seasons, episodes
+- Type: number
+
+#### Number of missing episodes in show
+
+:::info
+The total number of missing episodes across the current show.
+
+:::
+
+- Key: Sonarr.missing_episodes_show
 - Availability: shows, seasons, episodes
 - Type: number
 
