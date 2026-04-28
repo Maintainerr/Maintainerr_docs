@@ -28,6 +28,22 @@ Collections now power additional Maintainerr views beyond cleanup.
 
 In the rule or collection form, you can enable overlays per collection and optionally choose a specific overlay template. Movies, shows, and seasons use poster templates. Episode collections use title card templates.
 
+## Custom Poster
+
+Maintainerr can store one custom poster per Maintainerr-managed collection and push it to the current media server. The stored file survives normal collection recreation, so you don't need to re-upload artwork after Plex or Jellyfin drops a collection and Maintainerr creates it again.
+
+The poster picker is available in the rule group's edit modal once the collection exists in Maintainerr.
+
+- Uploads accept JPEG, PNG, or WebP up to 500 KB. The image is normalized to JPEG before being stored.
+- The poster is pushed to the media server immediately on upload when the collection has a live media-server id. If the live push fails or the collection has no live id yet, the local file is still kept and pushed automatically when Maintainerr next recreates the collection.
+- Clearing a poster removes Maintainerr's stored file and sends a best-effort metadata refresh request to the media server. Whether the server replaces the artwork depends on its configured metadata/image agents.
+- Deleting a Maintainerr collection also removes its stored poster file.
+
+:::note One-shot writer
+Maintainerr writes the poster on upload and on collection recreation, then stops. It does not poll or reapply on a schedule, so it won't fight other artwork tools (e.g. Kometa, Posterizarr) or manual changes made directly in Plex or Jellyfin after the upload.
+
+:::
+
 ## Manual actions
 
 ### Adding

@@ -112,6 +112,20 @@ You'll need the LunaSea mobile app installed and configured. The webhook setup d
 | Webhook URL | Yes | LunaSea webhook URL |
 | Profile Name | No | Specific profile name (if not using default) |
 
+### ntfy
+
+Send notifications to an [ntfy](https://ntfy.sh) server.
+
+:::note Setup Required
+You can use the public [ntfy.sh](https://ntfy.sh) server or a self-hosted instance. Pick a topic name (any string) and, if your server requires authentication, generate an access token. See the [ntfy docs](https://docs.ntfy.sh/) for setup details.
+
+:::
+| Parameter | Required | Description |
+| --------- | -------- | ----------- |
+| URL | Yes | Base URL of the ntfy server (e.g. `https://ntfy.sh`) |
+| Topic | Yes | Topic name to publish notifications to |
+| Token | No | Bearer access token for protected topics |
+
 ### Pushbullet
 
 Send notifications via Pushbullet.

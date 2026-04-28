@@ -161,10 +161,10 @@ List of genres associated with the Plex item.
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
 
-#### Users that saw all available episodes
+#### Users that watched every episode
 
 :::info
-List of users who have seen all available episodes of the Plex item. This rule is only available for shows.
+List of users who have watched every available episode of the Plex item. This rule is only available for shows.
 
 :::
 
@@ -249,10 +249,10 @@ The total number of views for the Plex item. This rule is only available for sho
 - Availability: shows, seasons, episodes
 - Type: number
 
-#### Users that watch the show/season/episode
+#### Users that watched at least one episode
 
 :::info
-List of users who watch the Plex item. This rule is only available for shows.
+List of users who have watched at least one episode of the Plex item. This rule is only available for shows.
 
 :::
 
@@ -691,10 +691,10 @@ List of genres associated with the Jellyfin item.
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
 
-#### Users that saw all available episodes
+#### Users that watched every episode
 
 :::info
-List of users who have seen all available episodes of the Jellyfin item.
+List of users who have watched every available episode of the Jellyfin item.
 
 :::
 
@@ -779,10 +779,10 @@ The total number of views for the Jellyfin item. This rule is only available for
 - Availability: shows, seasons, episodes
 - Type: number
 
-#### Users that watch the show/season/episode
+#### Users that watched at least one episode
 
 :::info
-List of users who watch the Jellyfin item. This rule is only available for shows.
+List of users who have watched at least one episode of the Jellyfin item. This rule is only available for shows.
 
 :::
 
@@ -1741,10 +1741,10 @@ List of Plex usernames who have viewed (according to Tautulli) the Plex item. Th
 - Availability: movies
 - Type: text[]
 
-#### Users that saw all available episodes
+#### Users that watched every episode
 
 :::info
-List of users who have seen (according to Tautulli) all available episodes of the Plex item. The percentage for an episode to be considered as viewed is configured in the Tautulli settings.
+List of users who have watched (according to Tautulli) every available episode of the Plex item. The percentage for an episode to be considered as viewed is configured in the Tautulli settings.
 
 :::
 
@@ -1752,10 +1752,10 @@ List of users who have seen (according to Tautulli) all available episodes of th
 - Availability: shows, seasons
 - Type: text[]
 
-#### Users that watch the show/season/episode
+#### Users that watched at least one episode
 
 :::info
-List of users who watch (according to Tautulli) the Plex item. The percentage for an episode to be considered as viewed is configured in the Tautulli settings. This rule is only available for shows.
+List of users who have watched (according to Tautulli) at least one episode of the Plex item. The percentage for an episode to be considered as viewed is configured in the Tautulli settings. This rule is only available for shows.
 
 :::
 

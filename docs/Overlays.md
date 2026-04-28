@@ -93,6 +93,18 @@ Overlay processing only applies when all of these are true:
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
 
+## Coexisting with other artwork tools
+
+Maintainerr is one writer among several. Tools like [Kometa](https://kometa.wiki) and [Posterizarr](https://github.com/fscorrupt/Posterizarr), or manual uploads in Plex/Jellyfin, may replace Maintainerr's overlaid artwork between runs.
+
+Per-item overlays carry day-counter state, so they're re-applied on every cron tick (and on demand via `Run Now`). That means:
+
+- If Kometa restores its own artwork after Maintainerr writes an overlay, Maintainerr will reapply the overlay on the next run.
+- The cron interval determines how quickly that reconciliation happens — set it to match how often Kometa or other tools touch artwork.
+- After `Reset All Overlays`, Maintainerr restores its saved originals and stops re-writing. Other tools may still overwrite the artwork afterwards; that's expected.
+
+Collection posters (see [Collections — Custom Poster](./Collections.md#custom-poster)) behave differently: they're a one-shot write with no schedule, so other artwork tools can win against them permanently until you re-upload.
+
 ## Upgrade notes
 
 Recent Maintainerr releases add overlay tables and new collection fields to the database. On first startup after upgrading, allow database migration to finish before opening the Overlays pages.
