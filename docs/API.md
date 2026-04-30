@@ -68,6 +68,10 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | `GET /api/overlays/fonts` | List available fonts |
 | `GET /api/overlays/fonts/:name` | Read a bundled or uploaded font file |
 | `POST /api/overlays/fonts` | Upload a `.ttf`, `.otf`, or `.woff` font |
+| `GET /api/overlays/images` | List uploaded overlay image assets |
+| `GET /api/overlays/images/:name` | Read an uploaded overlay image asset |
+| `POST /api/overlays/images` | Upload a `.png`, `.jpg`/`.jpeg`, or `.webp` image for template image elements |
+| `DELETE /api/overlays/images/:name` | Delete an uploaded overlay image asset |
 | `GET /api/overlays/templates` | List overlay templates |
 | `GET /api/overlays/templates/:id` | Fetch one template |
 | `POST /api/overlays/templates` | Create a template |
@@ -83,5 +87,7 @@ These are some of the newer user-facing API groups that are relevant to the curr
 
 | Endpoint | Purpose |
 | --- | --- |
-| `GET /api/storage-metrics` | Return aggregated disk usage, instance health, and collection-size summaries |
+| `GET /api/storage-metrics` | Return aggregated disk usage, instance health, collection-size summaries, and cumulative cleanup totals |
 | `GET /api/storage-metrics/library-sizes` | Compute per-library sizes on demand; potentially slow on large libraries |
+
+`GET /api/storage-metrics` now includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`.

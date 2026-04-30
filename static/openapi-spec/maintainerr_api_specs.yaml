@@ -1372,6 +1372,56 @@ paths:
           description: Streams a bundled or uploaded font file.
       tags:
         - /overlays
+  /api/overlays/images:
+    get:
+      operationId: OverlaysController_listImages
+      parameters: []
+      responses:
+        '200':
+          description: Lists uploaded overlay image assets.
+      tags:
+        - /overlays
+    post:
+      operationId: OverlaysController_uploadImage
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Uploads a PNG, JPG, or WebP overlay image asset.
+      tags:
+        - /overlays
+  /api/overlays/images/{name}:
+    get:
+      operationId: OverlaysController_getImage
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Streams an uploaded overlay image asset.
+      tags:
+        - /overlays
+    delete:
+      operationId: OverlaysController_deleteImage
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deletes an uploaded overlay image asset.
+      tags:
+        - /overlays
   /api/overlays/templates:
     get:
       operationId: OverlaysController_listTemplates
@@ -1523,7 +1573,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: Returns aggregated storage metrics.
+          description: Returns aggregated storage metrics, including cleanupTotals counters for handled media.
       tags:
         - /storage-metrics
   /api/storage-metrics/library-sizes:

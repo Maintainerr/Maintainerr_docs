@@ -12,6 +12,7 @@ The `Storage` page shows how much space your configured services are using and h
 Storage Metrics combines several views:
 
 - total capacity, used space, and free space across configured mounts
+- cumulative cleanup totals for media Maintainerr has already handled, split by collection type
 - reclaimable bytes from active collections
 - disk usage grouped by Radarr and Sonarr instance
 - media server library counts and optional library size estimates
@@ -26,6 +27,14 @@ To get useful data here:
 - let collection processing run so cached collection sizes stay fresh
 
 If Maintainerr cannot reach a configured service, the page will show an error or partial data instead of blocking the whole view.
+
+## Cleanup totals
+
+The `Cleanup totals` cards are counters, not space estimates.
+
+They show the cumulative number of media items Maintainerr has already handled across all collections, broken out into movie, show, season, and episode collections.
+
+These counters increase when collection actions remove, unmonitor, or otherwise process media. They do not reset when a collection later becomes inactive, so they are best read as lifetime activity totals for the current Maintainerr database.
 
 ## Compute library sizes
 

@@ -57,9 +57,12 @@ The editor lets you design overlay elements on top of a preview image.
 - For poster templates, Maintainerr can load a random item from a media server library section.
 - For title card templates, Maintainerr can load a random episode from a media server library section.
 - You can upload custom fonts in `.ttf`, `.otf`, or `.woff` format.
+- Image elements can use uploaded `.png`, `.jpg`/`.jpeg`, or `.webp` assets up to `500 KB`.
 - Template previews are rendered server-side against real media artwork.
 
 If you leave a collection without a specific overlay template selected, Maintainerr uses the current default template for that mode.
+
+Uploaded image assets are stored by filename and appear in the image-element picker after upload. Maintainerr validates both the filename and the file contents, so renamed or unsupported files are rejected instead of being served back later with the wrong content type.
 
 ## How template selection works
 
