@@ -26,6 +26,9 @@ When Plex is your configured media server, the rule group or collection form can
 - This is a Plex-only feature. Jellyfin does not expose a safe collection reorder API, so the sort control is not available there.
 - `Default (no custom sort)` leaves the collection order alone.
 - Custom sort options include title, air date or release date, rating, watch count, manual items first, excluded items first, and delete soonest or latest.
+- Saving a new or changed sort applies it to Plex immediately; you do not need to wait for the next collection add cycle.
+- Air date / release date, rating, watch count, and delete soonest / latest sorts break ties by title so Plex keeps the same order you see in Maintainerr.
+- `Manual items first` and `Excluded items first` only partition those flagged items to the front; within each group Maintainerr preserves the current relative order.
 
 :::note
 Turning the custom sort back off does not restore Plex's previous order automatically. If you want the old order back, change it directly in Plex.

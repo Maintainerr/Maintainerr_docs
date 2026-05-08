@@ -35,6 +35,7 @@ The `Cleanup totals` cards are counters paired with reclaimed-byte totals, not f
 They show the cumulative number of media items Maintainerr has already handled across all collections, broken out into movie, show, season, and episode collections, plus the reclaimed on-disk bytes for each type.
 
 Item counters increase when collection actions process media. Reclaimed-byte totals only increase for delete-style actions that actually free disk space; unmonitor and quality-profile changes do not add reclaimed bytes.
+If an item's cached size is still empty when a delete runs, Maintainerr tries to resolve the file size just before the action so the reclaimed-byte total can still be credited.
 
 These totals do not reset when a collection later becomes inactive, so they are best read as lifetime activity totals for the current Maintainerr database.
 
