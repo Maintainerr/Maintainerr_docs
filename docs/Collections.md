@@ -19,6 +19,18 @@ A collection will be reflected in your media server when it contains media. When
 
 If the `Show on home` option was checked, the collection will be shown on all users' home screens. This allows you to create, for instance, a 'Leaving soon' list.
 
+## Collection items sort
+
+When Plex is your configured media server, the rule group or collection form can also save a `Collection items sort` value for Maintainerr-managed collections.
+
+- This is a Plex-only feature. Jellyfin does not expose a safe collection reorder API, so the sort control is not available there.
+- `Default (no custom sort)` leaves the collection order alone.
+- Custom sort options include title, air date or release date, rating, watch count, manual items first, excluded items first, and delete soonest or latest.
+
+:::note
+Turning the custom sort back off does not restore Plex's previous order automatically. If you want the old order back, change it directly in Plex.
+:::
+
 ## Calendar and overlays
 
 Collections now power additional Maintainerr views beyond cleanup.

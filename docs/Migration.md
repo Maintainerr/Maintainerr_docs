@@ -128,7 +128,7 @@ Compatible rules convert automatically, incompatible ones are dropped.
 Recent Maintainerr releases also add database support for overlays.
 
 - new overlay template, overlay settings, and overlay item state tables
-- new collection fields for `overlayEnabled` and `overlayTemplateId`
+- new collection fields for `overlayEnabled`, `overlayTemplateId`, and `mediaServerSort`
 
 No manual database work should be required, but you should still keep a backup of `/opt/data/maintainerr.db` before upgrading and allow startup migrations to complete before using the new overlay screens.
 

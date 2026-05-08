@@ -90,4 +90,8 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | `GET /api/storage-metrics` | Return aggregated disk usage, instance health, collection-size summaries, and cumulative cleanup totals |
 | `GET /api/storage-metrics/library-sizes` | Compute per-library sizes on demand; potentially slow on large libraries |
 
-`GET /api/storage-metrics` now includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`.
+`GET /api/storage-metrics` now includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`, plus reclaimed-byte totals in `bytesHandled`, `movieBytesHandled`, `showBytesHandled`, `seasonBytesHandled`, and `episodeBytesHandled`.
+
+The same response also includes `collectionSummary` type breakdowns for `movieSizeBytes`, `showSizeBytes`, `seasonSizeBytes`, `episodeSizeBytes`, and per-type reclaimable collection counts such as `reclaimableMovieCount`.
+
+Collection payloads also now carry an optional `mediaServerSort` key. It stores the collection's saved media-server sort order as `{field}.{order}` (for example `deleteSoonest.asc`) when the connected server supports collection sorting.
