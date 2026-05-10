@@ -30,11 +30,25 @@ If Maintainerr cannot reach a configured service, the page will show an error or
 
 ## Cleanup totals
 
-The `Cleanup totals` cards are counters, not space estimates.
+The `Cleanup totals` cards are counters paired with reclaimed-byte totals, not future space estimates.
 
-They show the cumulative number of media items Maintainerr has already handled across all collections, broken out into movie, show, season, and episode collections.
+They show the cumulative number of media items Maintainerr has already handled across all collections, broken out into movie, show, season, and episode collections, plus the reclaimed on-disk bytes for each type.
 
-These counters increase when collection actions remove, unmonitor, or otherwise process media. They do not reset when a collection later becomes inactive, so they are best read as lifetime activity totals for the current Maintainerr database.
+Item counters increase when collection actions process media. Reclaimed-byte totals only increase for delete-style actions that actually free disk space; unmonitor and quality-profile changes do not add reclaimed bytes.
+If an item's cached size is still empty when a delete runs, Maintainerr tries to resolve the file size just before the action so the reclaimed-byte total can still be credited.
+
+These totals do not reset when a collection later becomes inactive, so they are best read as lifetime activity totals for the current Maintainerr database.
+
+## Potential reclaim by type
+
+The `Potential reclaim by type` section breaks reclaimable collection space into separate movie, show, season, and episode panels.
+
+Each panel shows:
+
+- the estimated reclaimable bytes for that media type
+- how many active delete-rule collections of that type contribute to the estimate
+
+If Maintainerr is still backfilling per-item size data, these panels temporarily fall back to cached per-collection totals. In that mode duplicates across multiple collections are not fully deduplicated yet, so the estimate can be higher until the next collection size refresh completes.
 
 ## Compute library sizes
 

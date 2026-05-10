@@ -1573,7 +1573,7 @@ paths:
       parameters: []
       responses:
         '200':
-          description: Returns aggregated storage metrics, including cleanupTotals counters for handled media.
+          description: Returns aggregated storage metrics, including cleanupTotals handled counters and reclaimed-byte totals plus collectionSummary per-type reclaim breakdowns.
       tags:
         - /storage-metrics
   /api/storage-metrics/library-sizes:
