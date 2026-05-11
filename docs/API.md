@@ -83,6 +83,10 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | `POST /api/overlays/templates/import` | Import a template from JSON |
 | `POST /api/overlays/templates/:id/preview` | Render a server-side preview of a template on real artwork |
 
+`POST /api/overlays/process` accepts an optional `{ force: true }` body to reapply overlays even when the saved day-count state is already current. Its run summary now always reports `processed`, `reverted`, `skipped`, and `errors`.
+
+`POST /api/overlays/process` and `DELETE /api/overlays/reset` both return `409 Conflict` if another overlay-processing run is already active.
+
 ### Storage Metrics
 
 | Endpoint | Purpose |

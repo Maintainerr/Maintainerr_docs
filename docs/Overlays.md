@@ -24,12 +24,12 @@ Maintainerr exposes three overlay screens:
 The `Settings` tab contains the global controls for overlay processing.
 
 - `Enable overlays` is the master switch.
-- `Run Now` starts overlay processing immediately.
+- `Run Now` starts an immediate forced reapply pass for all eligible collections, even if an item's saved overlay state already matches the current days-left value.
 - `Reset All Overlays` reverts posters that Maintainerr has changed.
 
 Overlay settings are stored globally, while template selection is stored per collection.
 
-Use `Reset All Overlays` carefully. It is intended to undo Maintainerr-managed overlay artwork across collections.
+Use `Reset All Overlays` carefully. It is intended to undo Maintainerr-managed overlay artwork across collections, and it is unavailable while another overlay-processing run is already in progress.
 
 ## Templates
 
@@ -95,6 +95,8 @@ Overlay processing only applies when all of these are true:
 - a matching template can be resolved
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
+
+Normal scheduled runs skip items whose saved overlay state already matches the current visible day count. `Run Now` uses the forced path instead, so you can reapply overlays after another artwork tool or a manual media-server edit replaced them without waiting for the countdown to change first.
 
 ## Coexisting with other artwork tools
 
