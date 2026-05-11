@@ -1293,9 +1293,21 @@ paths:
     post:
       operationId: OverlaysController_processAll
       parameters: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                force:
+                  type: boolean
+                  description: Force a reapply pass even when overlay state already matches the current day count.
       responses:
         '201':
-          description: Runs overlay processing for all eligible collections.
+          description: Runs overlay processing for all eligible collections and returns processed, reverted, skipped, and error counts.
+        '409':
+          description: Returned when another overlay-processing run is already active.
       tags:
         - /overlays
   /api/overlays/process/{collectionId}:
@@ -1333,6 +1345,8 @@ paths:
       responses:
         '200':
           description: Reverts all overlays.
+        '409':
+          description: Returned when another overlay-processing run is already active.
       tags:
         - /overlays
   /api/overlays/fonts:
