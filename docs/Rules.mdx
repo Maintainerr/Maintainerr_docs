@@ -105,7 +105,7 @@ This is separate from `Use rules`, which controls whether the rule engine fills 
 
 Several rule groups can point at the same `Custom collection name`. They all link to the same collection on the media server, but each rule group keeps its own tracking row and per-card item count. The count on a rule group's collection card is the number of rows that rule group tracks, not the size of the underlying media-server collection.
 
-After every rule run, items present in the shared media-server collection that aren't claimed by any of the linked rule groups are imported into each linked rule group as manual rows so Maintainerr doesn't strip them out. This import is not filtered by media type — an item added to the shared collection by one rule group can show up in another linked rule group's tracked count, including rule groups whose media type doesn't match.
+After every rule run, items present in the shared media-server collection that aren't claimed by any of the linked rule groups are imported into each linked rule group as manual rows. This keeps Maintainerr from stripping those items out. The import is not filtered by media type, so an item added to the shared collection by one rule group can show up in another linked rule group's tracked count, including rule groups whose media type doesn't match.
 
 :::note
 
@@ -113,7 +113,7 @@ The per-card count therefore mixes rule-owned items with these shared manual row
 
 :::
 
-To drain items from a shared custom collection, re-enable the rule group that originally added them, change its criteria so it matches nothing, and run it — the disable warning above applies.
+To drain items from a shared custom collection, re-enable the rule group that originally added them, change its criteria so it matches nothing, and run it. As noted in the warning above, disabling an active rule group by itself does not empty its linked collection.
 
 ## Adding rules
 
