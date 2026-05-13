@@ -108,7 +108,7 @@ This button is only shown when the collection has a real action configured and t
 
 ### Data syncing from media server
 
-If media is added to the collection outside of Maintainerr, it will be added to the associated Maintainerr collection. These manually added items will be ignored by the rule processor.
+If media is added to the collection outside of Maintainerr, it will be added to the associated Maintainerr collection. These manually added items will be ignored by the rule processor. This is separate from the `Custom collection` option, which controls whether Maintainerr owns the collection itself.
 
 If you delete media from the collection outside of Maintainerr, it will be removed from the corresponding Maintainerr collection. However, if the media still matches your rules, it will be re-added to the collection in subsequent rule processing cycles.
 
@@ -116,6 +116,6 @@ If you delete media from the collection outside of Maintainerr, it will be remov
 
 - By clicking on the collection's name you can see all media currently added to the collection. On the top-right side there'll be a number indicating the number of days before removal.
 
-- Maintainerr will never remove the collection from your media server if you specified a manual collection through the `Custom collection` option.
+- Maintainerr will never remove the collection from your media server if you enabled the `Custom collection` option.
 
 - Collections with `Do nothing` are not shown on the [Calendar](./Calendar.md) page because they do not schedule a cleanup action.
