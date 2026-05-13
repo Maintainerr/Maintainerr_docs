@@ -116,6 +116,6 @@ If you delete media from the collection outside of Maintainerr, it will be remov
 
 - By clicking on the collection's name you can see all media currently added to the collection. On the top-right side there'll be a number indicating the number of days before removal.
 
-- Maintainerr will never remove the collection from your media server if you specified a custom collection.
+- Maintainerr will never remove the collection from your media server if you specified a manual collection through the `Custom collection` option.
 
 - Collections with `Do nothing` are not shown on the [Calendar](./Calendar.md) page because they do not schedule a cleanup action.

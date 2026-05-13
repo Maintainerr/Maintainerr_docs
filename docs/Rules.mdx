@@ -69,7 +69,7 @@ General info about the rule. Some of the information specified here will be show
 | Use rules                   | Disable the rule engine, for when you want to add media to the collection manually                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Force reset Seerr record    | Force resets the Seerr record by deleting any requests instead of relying on availability-sync. 'Enable CSRF Protection' needs to be disabled in Seerr's settings for this to work. <InlineTooltip label="+" tooltip="This is the old method of telling Overseerr that something has been removed. The default method now is to tell Overseerr to initiate an Availability Sync through its API. This happens automatically at the end of the collection handler job. This option is not available for Jellyseerr." /> |
 | Custom collection           | Use a manually created collection. Maintainerr will never automatically add or remove this collection from your media server.                                                                                                                                                                                                                                                                                                                                                                                          |
-| Custom collection name      | The name of the existing custom collection to use <InlineTooltip label="+" tooltip="Only shown and needed when the Custom Collection checkbox is checked." />                                                                                                                                                                                                                                                                                                                                                         |
+| Custom collection name      | The name of the existing manually managed collection to use <InlineTooltip label="+" tooltip="Only shown and needed when the Custom Collection checkbox is checked." />                                                                                                                                                                                                                                                                                                                                               |
 
 When you choose `Change quality profile and search` for Radarr or Sonarr, Maintainerr shows a quality profile selector for the chosen server. This action does not use `Take action after days`; it changes the item's quality profile immediately when the collection action runs.
 
@@ -95,9 +95,9 @@ For example, you might create a rule group that selects and deletes old or watch
 
 :::
 
-#### Custom collections
+#### Manual collections
 
-If you prefer to manage Plex collections yourself or use a different tool, you can enable the custom collection option. With this enabled, Maintainerr will not automatically create and delete that collection in Plex.
+If you prefer to manage Plex collections yourself or use a different tool, you can enable the `Custom collection` option. This uses a manually managed collection, so Maintainerr will not automatically create and delete that collection in Plex.
 
 ## Adding rules
 
