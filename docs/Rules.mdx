@@ -69,11 +69,17 @@ General info about the rule. Some of the information specified here will be show
 | Use rules                   | Disable the rule engine, for when you want to add media to the collection manually                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Force reset Seerr record    | Force resets the Seerr record by deleting any requests instead of relying on availability-sync. 'Enable CSRF Protection' needs to be disabled in Seerr's settings for this to work. <InlineTooltip label="+" tooltip="This is the old method of telling Overseerr that something has been removed. The default method now is to tell Overseerr to initiate an Availability Sync through its API. This happens automatically at the end of the collection handler job. This option is not available for Jellyseerr." /> |
 | Custom collection           | Use a manually created collection. Maintainerr will never automatically add or remove this collection from your media server.                                                                                                                                                                                                                                                                                                                                                                                          |
-| Custom collection name      | The name of the manual collection to use <InlineTooltip label="+" tooltip="Only shown and needed when the Custom Collection checkbox is checked." />                                                                                                                                                                                                                                                                                                                                                                   |
+| Custom collection name      | The name of the existing manually managed collection to use <InlineTooltip label="+" tooltip="Only shown and needed when the Custom Collection checkbox is checked." />                                                                                                                                                                                                                                                                                                                                               |
 
 When you choose `Change quality profile and search` for Radarr or Sonarr, Maintainerr shows a quality profile selector for the chosen server. This action does not use `Take action after days`; it changes the item's quality profile immediately when the collection action runs.
 
 For Sonarr season rules, additional actions are available to also clean up the parent show when it becomes empty after season processing.
+
+:::warning
+Disabling an active rule group does not empty its linked collection. Existing tracked items stay there until the rule group is re-enabled or deleted.
+
+If you want to clear the collection first, update the rule so it matches nothing, run the rule once, and then disable it.
+:::
 
 #### TV media type
 
@@ -89,9 +95,11 @@ For example, you might create a rule group that selects and deletes old or watch
 
 :::
 
-#### Manual collections
+#### Custom collections
 
-If you prefer to manage Plex collections yourself or use a different tool, you can enable the manual collection option. With this enabled, Maintainerr will not automatically create and delete collections in Plex.
+If you prefer to manage collections yourself or use a different tool, you can enable the `Custom collection` option. With this enabled, Maintainerr links the rule group to an existing collection instead of creating and deleting that collection on the media server itself.
+
+This is separate from `Use rules`, which controls whether the rule engine fills the collection automatically, and from manually added items, which are tracked per item on the collection.
 
 ## Adding rules
 
