@@ -10,7 +10,8 @@ A collection is auto generated when defining a rule. A collection holds all medi
 When the specified amount of days that media must live in the collection is passed, the collection handler job will perform the necessary cleanup actions.
 
 :::note Collection Handling
-     Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle collection` button on the Collections page.
+     Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle Collections` button on the Collections page.
+     This runs each collection's configured action (such as delete, unmonitor, or do nothing), but it does not remove items from collections on its own.
 :::
 
 ## Media Server
@@ -115,6 +116,6 @@ If you delete media from the collection outside of Maintainerr, it will be remov
 
 - By clicking on the collection's name you can see all media currently added to the collection. On the top-right side there'll be a number indicating the number of days before removal.
 
-- Maintainerr will never remove the collection from your media server if you specified a manual collection.
+- Maintainerr will never remove the collection from your media server if you specified a custom collection.
 
 - Collections with `Do nothing` are not shown on the [Calendar](./Calendar.md) page because they do not schedule a cleanup action.
