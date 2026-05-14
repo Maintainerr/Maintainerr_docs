@@ -75,6 +75,8 @@ When you choose `Change quality profile and search` for Radarr or Sonarr, Mainta
 
 For Sonarr season rules, additional actions are available to also clean up the parent show when it becomes empty after season processing.
 
+Never-downloaded later seasons do not block those parent-show cleanup actions. Maintainerr only treats a monitored season as still keeping the show active when Sonarr reports episode files for that season.
+
 :::warning
 Disabling an active rule group does not empty its linked collection. Existing tracked items stay there until the rule group is re-enabled or deleted.
 
