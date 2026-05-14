@@ -279,27 +279,27 @@ paths:
           description: ''
       tags:
         - /settings
-  /api/plex:
+  /api/media-server:
     get:
-      operationId: PlexApiController_getStatus
+      operationId: MediaServerController_getStatus
       parameters: []
       responses:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/libraries:
+        - /media-server
+  /api/media-server/libraries:
     get:
-      operationId: PlexApiController_getLibraries
+      operationId: MediaServerController_getLibraries
       parameters: []
       responses:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/{id}/content/{page}:
+        - /media-server
+  /api/media-server/library/{id}/content:
     get:
-      operationId: PlexApiController_getLibraryContent
+      operationId: MediaServerController_getLibraryContent
       parameters:
         - name: id
           required: true
@@ -307,12 +307,12 @@ paths:
           schema:
             type: string
         - name: page
-          required: true
-          in: path
+          required: false
+          in: query
           schema:
             type: number
-        - name: amount
-          required: true
+        - name: limit
+          required: false
           in: query
           schema:
             type: number
@@ -320,10 +320,10 @@ paths:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/meta/{id}:
+        - /media-server
+  /api/media-server/meta/{id}:
     get:
-      operationId: PlexApiController_getMetadata
+      operationId: MediaServerController_getMetadata
       parameters:
         - name: id
           required: true
@@ -334,10 +334,10 @@ paths:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/meta/{id}/seen:
+        - /media-server
+  /api/media-server/meta/{id}/seen:
     get:
-      operationId: PlexApiController_getSeenBy
+      operationId: MediaServerController_getWatchHistory
       parameters:
         - name: id
           required: true
@@ -348,19 +348,19 @@ paths:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/users:
+        - /media-server
+  /api/media-server/users:
     get:
-      operationId: PlexApiController_getUser
+      operationId: MediaServerController_getUsers
       parameters: []
       responses:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/meta/{id}/children:
+        - /media-server
+  /api/media-server/meta/{id}/children:
     get:
-      operationId: PlexApiController_getChildrenMetadata
+      operationId: MediaServerController_getChildrenMetadata
       parameters:
         - name: id
           required: true
@@ -371,81 +371,12 @@ paths:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/{id}/recent:
+        - /media-server
+  /api/media-server/library/{id}/recent:
     get:
-      operationId: PlexApiController_getRecentlyAdded
+      operationId: MediaServerController_getRecentlyAdded
       parameters:
         - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - /plex
-  /api/plex/library/{id}/collections:
-    get:
-      operationId: PlexApiController_getCollections
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - /plex
-  /api/plex/library/collection/{collectionId}:
-    get:
-      operationId: PlexApiController_getCollection
-      parameters:
-        - name: collectionId
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - /plex
-    delete:
-      operationId: PlexApiController_deleteCollection
-      parameters:
-        - name: collectionId
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - /plex
-  /api/plex/library/collection/{collectionId}/children:
-    get:
-      operationId: PlexApiController_getCollectionChildren
-      parameters:
-        - name: collectionId
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        '200':
-          description: ''
-      tags:
-        - /plex
-  /api/plex/search/{input}:
-    get:
-      operationId: PlexApiController_searchLibrary
-      parameters:
-        - name: input
           required: true
           in: path
           schema:
@@ -454,77 +385,145 @@ paths:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/collection/{collectionId}/child/{childId}:
-    put:
-      operationId: PlexApiController_addChildToCollection
+        - /media-server
+  /api/media-server/library/{id}/collections:
+    get:
+      operationId: MediaServerController_getCollections
       parameters:
-        - name: collectionId
+        - name: id
           required: true
           in: path
           schema:
-            type: number
-        - name: childId
-          required: true
-          in: path
-          schema:
-            type: number
+            type: string
       responses:
         '200':
           description: ''
       tags:
-        - /plex
+        - /media-server
+  /api/media-server/collection/{id}:
+    get:
+      operationId: MediaServerController_getCollection
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - /media-server
     delete:
-      operationId: PlexApiController_deleteChildFromCollection
+      operationId: MediaServerController_deleteCollection
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - /media-server
+  /api/media-server/collection/{id}/children:
+    get:
+      operationId: MediaServerController_getCollectionChildren
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - /media-server
+  /api/media-server/search/{query}:
+    get:
+      operationId: MediaServerController_searchContent
+      parameters:
+        - name: query
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - /media-server
+  /api/media-server/collection/{collectionId}/item/{itemId}:
+    put:
+      operationId: MediaServerController_addToCollection
       parameters:
         - name: collectionId
           required: true
           in: path
           schema:
-            type: number
-        - name: childId
+            type: string
+        - name: itemId
           required: true
           in: path
           schema:
-            type: number
+            type: string
       responses:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/collection/update:
+        - /media-server
+    delete:
+      operationId: MediaServerController_removeFromCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - /media-server
+  /api/media-server/collection:
     put:
-      operationId: PlexApiController_updateCollection
+      operationId: MediaServerController_updateCollection
       parameters: []
       responses:
         '200':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/collection/create:
+        - /media-server
     post:
-      operationId: PlexApiController_createCollection
+      operationId: MediaServerController_createCollection
       parameters: []
       responses:
         '201':
           description: ''
       tags:
-        - /plex
-  /api/plex/library/collection/settings:
+        - /media-server
+  /api/media-server/collection/visibility:
     put:
-      operationId: PlexApiController_UpdateCollectionSettings
+      operationId: MediaServerController_updateCollectionVisibility
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CollectionHubSettingsDto'
+              $ref: '#/components/schemas/CollectionVisibilitySettings'
       responses:
         '200':
           description: ''
       tags:
-        - /plex
+        - /media-server
   /api/overseerr/movie/{id}:
     get:
       operationId: OverseerrApiController_getMovie
@@ -1617,9 +1616,19 @@ components:
     CronScheduleDto:
       type: object
       properties: {}
-    CollectionHubSettingsDto:
+    CollectionVisibilitySettings:
       type: object
-      properties: {}
+      properties:
+        libraryId:
+          type: string
+        collectionId:
+          type: string
+        ownHome:
+          type: boolean
+        sharedHome:
+          type: boolean
+        recommended:
+          type: boolean
     RulesDto:
       type: object
       properties: {}
