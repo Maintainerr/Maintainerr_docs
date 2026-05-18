@@ -201,6 +201,11 @@ The number of episodes that have been watched for the Plex item. This rule is on
 
 :::
 
+:::note
+If an episode was marked as watched manually or via a separate tool, it will not be counted by this rule. Maintainerr can only track watch events through Plex sessions. Use the "Is Watched" rule instead if you need to include manually set play states.
+
+:::
+
 - Key: Plex.sw_viewedEpisodes
 - Availability: shows, seasons
 - Type: number
