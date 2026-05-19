@@ -325,6 +325,52 @@ paths:
           description: Authenticates against Emby with admin credentials.
       tags:
         - /settings
+  /api/settings/streamystats:
+    get:
+      operationId: SettingsController_getStreamystatsSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved Streamystats base URL.
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateStreamystatsSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StreamystatsSetting'
+      responses:
+        '201':
+          description: Saves the Streamystats base URL.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeStreamystatsSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved Streamystats base URL.
+      tags:
+        - /settings
+  /api/settings/test/streamystats:
+    post:
+      operationId: SettingsController_testStreamystats
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StreamystatsSetting'
+      responses:
+        '201':
+          description: Tests Streamystats connectivity with the configured Jellyfin API key.
+      tags:
+        - /settings
   /api/settings/cron/validate:
     post:
       operationId: SettingsController_validateSingleCron
@@ -340,6 +386,37 @@ paths:
           description: ''
       tags:
         - /settings
+  /api/streamystats/info:
+    get:
+      operationId: StreamystatsApiController_getInfo
+      parameters: []
+      responses:
+        '200':
+          description: Returns the configured Streamystats URL and resolved Jellyfin server id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamystatsInfoResponse'
+      tags:
+        - /streamystats
+  /api/streamystats/items/{itemId}:
+    get:
+      operationId: StreamystatsApiController_getItemDetails
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns Streamystats watch-history details for one Jellyfin item.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamystatsItemDetails'
+      tags:
+        - /streamystats
   /api/media-server:
     get:
       operationId: MediaServerController_getStatus
@@ -1699,6 +1776,176 @@ components:
         - emby_url
         - username
         - password
+    StreamystatsSetting:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+    StreamystatsInfoResponse:
+      type: object
+      properties:
+        url:
+          type: string
+        serverId:
+          type: number
+          nullable: true
+      required:
+        - url
+        - serverId
+    StreamystatsUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          nullable: true
+      required:
+        - id
+    StreamystatsItemUserStats:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/StreamystatsUser'
+        watchCount:
+          type: number
+        totalWatchTime:
+          type: number
+        completionRate:
+          type: number
+        firstWatched:
+          type: string
+          nullable: true
+        lastWatched:
+          type: string
+          nullable: true
+      required:
+        - user
+        - watchCount
+        - totalWatchTime
+        - completionRate
+        - firstWatched
+        - lastWatched
+    StreamystatsItemWatchHistory:
+      type: object
+      properties:
+        user:
+          allOf:
+            - $ref: '#/components/schemas/StreamystatsUser'
+          nullable: true
+        watchDate:
+          type: string
+        watchDuration:
+          type: number
+        completionPercentage:
+          type: number
+        playMethod:
+          type: string
+          nullable: true
+        deviceName:
+          type: string
+          nullable: true
+        clientName:
+          type: string
+          nullable: true
+      required:
+        - user
+        - watchDate
+        - watchDuration
+        - completionPercentage
+    StreamystatsItemWatchCountByMonth:
+      type: object
+      properties:
+        month:
+          type: number
+        year:
+          type: number
+        watchCount:
+          type: number
+        uniqueUsers:
+          type: number
+        totalWatchTime:
+          type: number
+      required:
+        - month
+        - year
+        - watchCount
+        - uniqueUsers
+        - totalWatchTime
+    StreamystatsSeriesEpisodeStats:
+      type: object
+      properties:
+        totalSeasons:
+          type: number
+        totalEpisodes:
+          type: number
+        watchedEpisodes:
+          type: number
+        watchedSeasons:
+          type: number
+      required:
+        - totalSeasons
+        - totalEpisodes
+        - watchedEpisodes
+        - watchedSeasons
+    StreamystatsItem:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          nullable: true
+        type:
+          type: string
+          nullable: true
+      required:
+        - id
+    StreamystatsItemDetails:
+      type: object
+      properties:
+        item:
+          $ref: '#/components/schemas/StreamystatsItem'
+        totalViews:
+          type: number
+        totalWatchTime:
+          type: number
+        completionRate:
+          type: number
+        firstWatched:
+          type: string
+          nullable: true
+        lastWatched:
+          type: string
+          nullable: true
+        usersWatched:
+          type: array
+          items:
+            $ref: '#/components/schemas/StreamystatsItemUserStats'
+        watchHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/StreamystatsItemWatchHistory'
+        watchCountByMonth:
+          type: array
+          items:
+            $ref: '#/components/schemas/StreamystatsItemWatchCountByMonth'
+        episodeStats:
+          allOf:
+            - $ref: '#/components/schemas/StreamystatsSeriesEpisodeStats'
+          nullable: true
+      required:
+        - item
+        - totalViews
+        - totalWatchTime
+        - completionRate
+        - firstWatched
+        - lastWatched
+        - usersWatched
+        - watchHistory
+        - watchCountByMonth
     CronScheduleDto:
       type: object
       properties: {}

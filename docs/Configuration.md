@@ -82,6 +82,16 @@ Jellyfin can also be used as your media server connection.
 | API key | A Jellyfin API key generated from your Jellyfin server |
 | Admin User | Test Connection to load the available admin users |
 
+## Streamystats
+
+Streamystats is an optional Jellyfin-only integration.
+
+The separate `Settings -> Streamystats` page only appears when Jellyfin is the active media server. Maintainerr reuses your saved Jellyfin API key for authentication, so you only need to provide the Streamystats base URL.
+
+| Setting | Description |
+| --- | --- |
+| URL | The base URL of your Streamystats instance, such as `http://localhost:3000` or `https://streamystats.example.com` |
+
 ## Emby
 
 Emby can also be used as your media server connection.

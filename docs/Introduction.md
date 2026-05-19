@@ -57,6 +57,7 @@ docker run -d \
 - Auto clear requests from Seerr
 - Remove media from disk
 - Switch between Plex, Jellyfin, and Emby with automatic rule migration
+- View Streamystats watch-history insights for Jellyfin items without leaving Maintainerr
 
 Maintainerr supports rules across these apps :
 
@@ -65,3 +66,5 @@ Maintainerr supports rules across these apps :
 - Radarr
 - Sonarr
 - Tautulli
+
+Optional integrations also include Streamystats for Jellyfin watch-history analytics.
