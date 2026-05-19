@@ -60,6 +60,17 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | `DELETE /api/settings/emby` | Remove the saved Emby connection settings |
 | `POST /api/settings/emby/login` | Authenticate with an Emby admin username/password and return an API key plus admin-user choices |
 
+### Streamystats (Jellyfin only)
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/settings/streamystats` | Read the saved Streamystats base URL |
+| `POST /api/settings/test/streamystats` | Test a Streamystats URL using the currently configured Jellyfin API key |
+| `POST /api/settings/streamystats` | Save the Streamystats base URL |
+| `DELETE /api/settings/streamystats` | Remove the saved Streamystats base URL |
+| `GET /api/streamystats/info` | Return the configured Streamystats URL plus the resolved Jellyfin server id used for deep links |
+| `GET /api/streamystats/items/:itemId` | Return Streamystats watch-history totals, per-user stats, and episode progress for one Jellyfin item |
+
 ### Overlays
 
 | Endpoint | Purpose |
