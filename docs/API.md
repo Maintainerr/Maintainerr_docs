@@ -50,6 +50,16 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | `POST /api/settings/metadata-provider` | Change the primary metadata provider |
 | `POST /api/settings/metadata/refresh/:provider` | Clear cached metadata for TMDB or TVDB and queue a media-server refresh pass |
 
+### Media server settings
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/settings/emby` | Read the saved Emby URL, API key, and selected admin user |
+| `POST /api/settings/emby/test` | Test an Emby URL and API key, and return available admin users |
+| `POST /api/settings/emby` | Save Emby connection settings |
+| `DELETE /api/settings/emby` | Remove the saved Emby connection settings |
+| `POST /api/settings/emby/login` | Authenticate with an Emby admin username/password and return an API key plus admin-user choices |
+
 ### Overlays
 
 | Endpoint | Purpose |

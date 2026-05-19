@@ -264,6 +264,67 @@ paths:
           description: ''
       tags:
         - /settings
+  /api/settings/emby:
+    get:
+      operationId: SettingsController_getEmbySetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved Emby connection settings.
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_saveEmbySettings
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbySetting'
+      responses:
+        '201':
+          description: Saves Emby connection settings.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeEmbySettings
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved Emby connection settings.
+      tags:
+        - /settings
+  /api/settings/emby/test:
+    post:
+      operationId: SettingsController_testEmby
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbySetting'
+      responses:
+        '201':
+          description: Tests Emby connectivity and returns available admin users.
+      tags:
+        - /settings
+  /api/settings/emby/login:
+    post:
+      operationId: SettingsController_loginEmby
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmbyLoginRequest'
+      responses:
+        '201':
+          description: Authenticates against Emby with admin credentials.
+      tags:
+        - /settings
   /api/settings/cron/validate:
     post:
       operationId: SettingsController_validateSingleCron
@@ -1613,6 +1674,31 @@ components:
     SettingDto:
       type: object
       properties: {}
+    EmbySetting:
+      type: object
+      properties:
+        emby_url:
+          type: string
+        emby_api_key:
+          type: string
+        emby_user_id:
+          type: string
+      required:
+        - emby_url
+        - emby_api_key
+    EmbyLoginRequest:
+      type: object
+      properties:
+        emby_url:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - emby_url
+        - username
+        - password
     CronScheduleDto:
       type: object
       properties: {}

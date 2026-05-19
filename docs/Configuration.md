@@ -29,7 +29,7 @@ These settings are OK for most installations.
 
 ## Media Server
 
-You need to configure either Plex or Jellyfin. Both are not supported simultaneously.
+You need to configure one media server: Plex, Jellyfin, or Emby. Multiple media servers are not supported simultaneously.
 
 ## Plex
 
@@ -81,6 +81,18 @@ Jellyfin can also be used as your media server connection.
 | Jellyfin URL | The domain name or local IP address of the host running Jellyfin |
 | API key | A Jellyfin API key generated from your Jellyfin server |
 | Admin User | Test Connection to load the available admin users |
+
+## Emby
+
+Emby can also be used as your media server connection.
+
+You can either enter the server URL and API key manually, or use `Sign in with Emby` to authenticate with an admin username and password and let Maintainerr populate the API key for you.
+
+| Setting | Description |
+| --- | --- |
+| Emby URL | The domain name or local IP address of the host running Emby |
+| API key | An Emby API key generated from `Dashboard -> Advanced -> API Keys`, or the token returned by `Sign in with Emby` |
+| Admin User | Test Connection to load the available admin users, or use `Sign in with Emby` to populate the saved admin-user selection automatically |
 
 ## Seerr
 

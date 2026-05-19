@@ -23,7 +23,7 @@ Storage Metrics combines several views:
 To get useful data here:
 
 - configure at least one Radarr or Sonarr instance for disk and mount reporting
-- configure Plex or Jellyfin if you want media server library counts
+- configure Plex, Jellyfin, or Emby if you want media server library counts
 - let collection processing run so cached collection sizes stay fresh
 
 If Maintainerr cannot reach a configured service, the page will show an error or partial data instead of blocking the whole view.

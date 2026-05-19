@@ -8,7 +8,7 @@ title: Rules
 import CodeBlock from '@theme/CodeBlock'
 import InlineTooltip from '@site/src/components/InlineTooltip'
 
-Rules are the core of Maintainerr. They evaluate your Plex media based on the parameters you set. If a media item matches a rule, it is added to a collection.
+Rules are the core of Maintainerr. They evaluate media from your configured media server based on the parameters you set. If a media item matches a rule, it is added to a collection.
 
 Media in a collection will remain there for the number of days you specify. After that period, Maintainerr will delete the media from disk and any connected external applications. If a collections media item no longer matches a rule, it will be removed from it.
 
@@ -18,7 +18,7 @@ Rule handling is a batch process that runs every 8 hours (this interval can be c
 :::
 
 :::info Watch History Rules
-Rules that depend on watch history, such as `Plex.lastViewedAt`, `Jellyfin.lastViewedAt`, and related watch-state properties, treat watch-history lookup failures as an unknown value. Maintainerr does not interpret a failed lookup as "never watched".
+Rules that depend on watch history, such as `Plex.lastViewedAt`, `Jellyfin.lastViewedAt`, and the equivalent Emby watch-state properties, treat watch-history lookup failures as an unknown value. Maintainerr does not interpret a failed lookup as "never watched".
 
 In practice, that means there is a difference between:
 

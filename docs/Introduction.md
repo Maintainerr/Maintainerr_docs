@@ -56,11 +56,11 @@ docker run -d \
 - Set Radarr and Sonarr to either **remove** or **unmonitor** media in the collection.
 - Auto clear requests from Seerr
 - Remove media from disk
-- Switch between Plex and Jellyfin with automatic rule migration
+- Switch between Plex, Jellyfin, and Emby with automatic rule migration
 
 Maintainerr supports rules across these apps :
 
-- Plex or Jellyfin (choose one)
+- Plex, Jellyfin, or Emby (choose one)
 - Seerr
 - Radarr
 - Sonarr

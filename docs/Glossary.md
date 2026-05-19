@@ -523,7 +523,7 @@ The newest `lastViewedAt` value across all movies that share a Plex collection w
 ### Jellyfin
 
 :::note
-Jellyfin shares many rule properties with Plex. When switching between Plex and Jellyfin, compatible rules are automatically migrated. Jellyfin does not support watchlists or smart collections.
+Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support watchlists or smart collections.
 
 :::
 
