@@ -24,7 +24,7 @@ If the `Show on home` option was checked, the collection will be shown on all us
 
 When Plex is your configured media server, the rule group or collection form can also save a `Collection items sort` value for Maintainerr-managed collections.
 
-- This is a Plex-only feature. Jellyfin does not expose a safe collection reorder API, so the sort control is not available there.
+- This is a Plex-only feature. Jellyfin and Emby do not expose a safe collection reorder API, so the sort control is not available there.
 - `Default (no custom sort)` leaves the collection order alone.
 - Custom sort options include title, air date or release date, rating, watch count, manual items first, excluded items first, and delete soonest or latest.
 - Saving a new or changed sort applies it to Plex immediately; you do not need to wait for the next collection add cycle.
@@ -46,7 +46,7 @@ In the rule or collection form, you can enable overlays per collection and optio
 
 ## Custom Poster
 
-Maintainerr can store one custom poster per Maintainerr-managed collection and push it to the current media server. The stored file survives normal collection recreation, so you don't need to re-upload artwork after Plex or Jellyfin drops a collection and Maintainerr creates it again.
+Maintainerr can store one custom poster per Maintainerr-managed collection and push it to the current media server. The stored file survives normal collection recreation, so you don't need to re-upload artwork after Plex, Jellyfin, or Emby drops a collection and Maintainerr creates it again.
 
 The poster picker is available in the rule group's edit modal once the collection exists in Maintainerr.
 
@@ -56,7 +56,7 @@ The poster picker is available in the rule group's edit modal once the collectio
 - Deleting a Maintainerr collection also removes its stored poster file.
 
 :::note One-shot writer
-Maintainerr writes the poster on upload and on collection recreation, then stops. It does not poll or reapply on a schedule, so it won't fight other artwork tools (e.g. Kometa, Posterizarr) or manual changes made directly in Plex or Jellyfin after the upload.
+Maintainerr writes the poster on upload and on collection recreation, then stops. It does not poll or reapply on a schedule, so it won't fight other artwork tools (e.g. Kometa, Posterizarr) or manual changes made directly in Plex, Jellyfin, or Emby after the upload.
 
 :::
 

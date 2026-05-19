@@ -1,5 +1,5 @@
 ---
-description: Switching between Plex and Jellyfin, rule migration for YAML and Community imports
+description: Switching between Plex, Jellyfin, and Emby, plus rule migration for YAML and Community imports
 title: Migration
 ---
 
@@ -8,7 +8,7 @@ title: Migration
 
 ## Media Server Switching
 
-Switch between Plex and Jellyfin at any time with automatic rule migration.
+Switch between Plex, Jellyfin, and Emby at any time with automatic rule migration.
 
 ### Process
 
@@ -22,14 +22,14 @@ Switch between Plex and Jellyfin at any time with automatic rule migration.
 - Exclusions
 - Collection logs
 - Collections, rule groups, and rules (if not migrating)
-- Old media server credentials (Plex or Jellyfin connection settings)
+- Old media server credentials (Plex, Jellyfin, or Emby connection settings)
 
 **Kept:**
 
 - General settings
 - Radarr/Sonarr configurations
 - Seerr settings
-- Tautulli configuration
+- Tautulli configuration (unless you are switching away from Plex)
 - Notification settings
 
 ### Rule Migration
@@ -45,7 +45,7 @@ When migrating during a switch:
 <details>
 <summary><strong>Technical Details</strong></summary>
 
-Migration compatibility is data-driven from `rules.constants.ts` — no hardcoded property ID lists. Each rule's `firstVal[0]` and `lastVal[0]` fields identify its source application: `Application.PLEX` (0) or `Application.JELLYFIN` (6). Rules from Radarr, Sonarr, Tautulli, and Seerr are not modified.
+Migration compatibility is data-driven from `rules.constants.ts` — no hardcoded property ID lists. Each rule's `firstVal[0]` and `lastVal[0]` fields identify its source application: `Application.PLEX` (0), `Application.JELLYFIN` (6), or `Application.EMBY` (7). Rules from Radarr, Sonarr, Tautulli, and Seerr are not modified.
 
 For each source property, the migration service checks (in order):
 
@@ -67,26 +67,30 @@ After migration:
 
 ### Incompatible Properties
 
-**Plex → Jellyfin incompatible (deleted):**
+**Plex → Jellyfin / Emby incompatible (deleted):**
 
 - Watchlisted by users (ID 28)
 - Is Watchlisted (ID 30)
 - IMDb rating (ID 31) — Jellyfin does not have a separate IMDb rating source
 
-**Plex → Jellyfin remapped (converted automatically):**
+**Plex → Jellyfin / Emby remapped (converted automatically):**
 
 - Smart collections → regular collections (39 → 6)
 - Smart collections incl. parents → collections incl. parents (40 → 25)
 - Smart collection names incl. parents → collection names incl. parents (41 → 26)
 - Smart collection names → collection names (42 → 19)
 
-**Plex → Jellyfin compatible:**
+**Plex → Jellyfin / Emby compatible:**
 
 - External ratings (IDs 32-38) — Rotten Tomatoes, TMDb, and IMDb show-level ratings migrate directly
 
-**Jellyfin → Plex incompatible (deleted):**
+**Jellyfin / Emby → Plex incompatible (deleted):**
 
 - Play count (ID 30) and show play count (ID 31) — Jellyfin tracks play attempts separately from completed views; Plex does not have this concept
+
+**Jellyfin ↔ Emby:**
+
+- Emby mirrors Jellyfin's rule property list, so Jellyfin ↔ Emby migration is a direct property-ID match with no special remapping.
 
 <details>
 <summary><strong>Technical Details</strong></summary>
