@@ -31,6 +31,11 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Technical Reference',
+      items: ['emby-technical-reference', 'overlays-technical-reference'],
+    },
+    {
+      type: 'category',
       label: 'Notifications',
       items: ['notifications'],
     },

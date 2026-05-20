@@ -60,6 +60,16 @@ Maintainerr writes the poster on upload and on collection recreation, then stops
 
 :::
 
+### Poster API behavior
+
+The collection-poster endpoints live under `/api/collections/:id`.
+
+- `GET /poster` returns the stored JPEG when a custom poster exists, or `404` when none has been saved yet
+- `POST /poster` accepts a multipart upload with file field `poster` and returns `{ pushed, attempted }`
+- `DELETE /poster` returns `{ cleared, refreshRequested }`
+
+`attempted: false` means Maintainerr saved the poster locally but did not try a live media-server upload because the collection had no live media-server id yet, or the current media server was unavailable. `refreshRequested` only reports whether Maintainerr sent the best-effort metadata refresh request after clearing the poster; it does not guarantee that the media server will replace the artwork.
+
 ## Manual actions
 
 ### Adding
