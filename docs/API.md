@@ -33,6 +33,9 @@ These are some of the newer user-facing API groups that are relevant to the curr
 | --- | --- |
 | `GET /api/collections/overlay-data` | Returns collections with full media membership for overlay consumers, including the Calendar page |
 | `POST /api/collections/media/handle` | Run the configured collection action immediately for one item from the collection detail modal |
+| `GET /api/collections/:id/poster` | Return the stored custom collection poster as `image/jpeg`, or `404` when none exists |
+| `POST /api/collections/:id/poster` | Upload a custom collection poster with multipart field `poster`; returns `{ pushed, attempted }` |
+| `DELETE /api/collections/:id/poster` | Clear the stored poster and return `{ cleared, refreshRequested }` |
 
 ### Metadata
 

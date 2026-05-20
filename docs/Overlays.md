@@ -98,6 +98,8 @@ Maintainerr re-renders overlays when the visible days-left value changes, and it
 
 Normal scheduled runs skip items whose saved overlay state already matches the current visible day count. `Run Now` uses the forced path instead, so you can reapply overlays after another artwork tool or a manual media-server edit replaced them without waiting for the countdown to change first.
 
+Maintainerr saves the original artwork the first time it applies an overlay, then reuses that saved original for later updates so overlays do not stack on top of previous overlays. Revert actions and `Reset All Overlays` restore those saved originals.
+
 ## Coexisting with other artwork tools
 
 Maintainerr is one writer among several. Tools like [Kometa](https://kometa.wiki) and [Posterizarr](https://github.com/fscorrupt/Posterizarr), or manual uploads in Plex/Jellyfin, may replace Maintainerr's overlaid artwork between runs.

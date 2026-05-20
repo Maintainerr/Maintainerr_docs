@@ -96,9 +96,7 @@ The separate `Settings -> Streamystats` page only appears when Jellyfin is the a
 
 ## Emby
 
-Emby can also be used as your media server connection.
-
-You can either enter the server URL and API key manually, or use `Sign in with Emby` to authenticate with an admin username and password and let Maintainerr populate the API key for you.
+Use your Emby server URL directly. Maintainerr supports either entering an API key manually or using `Sign in with Emby` to authenticate with an admin username and password and let Maintainerr populate the API key for you. Emby Connect is not supported because Maintainerr uses direct server authentication and does not implement Emby's cloud-based Connect flow.
 
 | Setting | Description |
 | --- | --- |
