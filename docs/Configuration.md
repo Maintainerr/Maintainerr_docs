@@ -84,7 +84,9 @@ Jellyfin can also be used as your media server connection.
 
 ## Streamystats
 
-Streamystats is an optional Jellyfin-only integration.
+:::note
+Streamystats is only available for Jellyfin users
+:::
 
 The separate `Settings -> Streamystats` page only appears when Jellyfin is the active media server. Maintainerr reuses your saved Jellyfin API key for authentication, so you only need to provide the Streamystats base URL.
 
