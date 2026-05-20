@@ -54,6 +54,8 @@ The poster picker is available in the rule group's edit modal once the collectio
 - The poster is pushed to the media server immediately on upload when the collection has a live media-server id. If the live push fails or the collection has no live id yet, the local file is still kept and pushed automatically when Maintainerr next recreates the collection.
 - Clearing a poster removes Maintainerr's stored file and sends a best-effort metadata refresh request to the media server. Whether the server replaces the artwork depends on its configured metadata/image agents.
 - Deleting a Maintainerr collection also removes its stored poster file.
+- If you switch media servers with `migrateRules: true`, Maintainerr keeps the same collection ids, so stored posters stay mapped correctly and are pushed again when the recreated collection gets its new live media-server id.
+- If you switch media servers with `migrateRules: false`, Maintainerr deletes those collections and removes their stored poster files as part of the cleanup.
 
 :::note One-shot writer
 Maintainerr writes the poster on upload and on collection recreation, then stops. It does not poll or reapply on a schedule, so it won't fight other artwork tools (e.g. Kometa, Posterizarr) or manual changes made directly in Plex, Jellyfin, or Emby after the upload.

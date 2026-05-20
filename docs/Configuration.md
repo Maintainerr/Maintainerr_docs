@@ -100,6 +100,8 @@ Emby can also be used as your media server connection.
 
 You can either enter the server URL and API key manually, or use `Sign in with Emby` to authenticate with an admin username and password and let Maintainerr populate the API key for you.
 
+Maintainerr does not support Emby Connect. Use your Emby server URL directly, then either paste an API key or use `Sign in with Emby`.
+
 | Setting | Description |
 | --- | --- |
 | Emby URL | The domain name or local IP address of the host running Emby |
