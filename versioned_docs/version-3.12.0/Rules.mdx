@@ -1,0 +1,278 @@
+---
+id: rules
+slug: /rules
+description: Rules configurations and basic information about using rules.
+title: Rules
+---
+
+import CodeBlock from '@theme/CodeBlock'
+import InlineTooltip from '@site/src/components/InlineTooltip'
+
+Rules are the core of Maintainerr. They evaluate media from your configured media server based on the parameters you set. If a media item matches a rule, it is added to a collection.
+
+Media in a collection will remain there for the number of days you specify. After that period, Maintainerr will delete the media from disk and any connected external applications. If a collections media item no longer matches a rule, it will be removed from it.
+
+:::note Rule Handling
+Rule handling is a batch process that runs every 8 hours (this interval can be changed in the settings). During each run, Maintainerr checks all your rules and updates collections by adding or removing media items as needed. You can manually trigger this process with the `Run Rules` button on the 'Rules' page.
+
+:::
+
+:::info Watch History Rules
+Rules that depend on watch history, such as `Plex.lastViewedAt`, `Jellyfin.lastViewedAt`, and the equivalent Emby watch-state properties, treat watch-history lookup failures as an unknown value. Maintainerr does not interpret a failed lookup as "never watched".
+
+In practice, that means there is a difference between:
+
+- no recorded watch history for an item
+- watch history could not be loaded at all
+
+This distinction matters most for `exists` and `not exists` checks on watch-history-backed rules.
+
+Practical rule behavior:
+
+- `lastViewedAt BEFORE 90 days` means the item has a real last-viewed date, and that date is older than 90 days.
+- `lastViewedAt NOT_EXISTS` is the correct way to match items with no recorded watch history.
+- If you want both cases, express them separately, such as `lastViewedAt NOT_EXISTS OR lastViewedAt BEFORE 90 days`.
+
+This also means Maintainerr keeps these states separate on purpose:
+
+- watched before, with a real timestamp
+- never watched, so no timestamp exists
+- watch-history lookup failed, so the value is unknown
+
+The watch-history getters keep these cases separate: a confirmed empty history returns no watch date, while server or history lookup failures stay unknown instead of falling back to an empty history result. That prevents outages from being misread as "never watched" and keeps `NOT_EXISTS` from matching the wrong items.
+
+:::
+
+## Creating rules
+
+### General
+
+General info about the rule. Some of the information specified here will be shown on the generated collection. In here you also specify how to handle the collection.
+
+| Parameter                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Name                        | The Rule and Collection name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Description                 | Description of the Rule. This is also used as the Collection's description                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Library                     | Which media library to use                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Media type                  | The type of TV media the rules will apply to, either the entire show, only seasons or only episodes                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Radarr server               | The server that Radarr specific rules and actions will be applied to                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Radarr action               | Delete, unmonitor, or change the quality profile of movies in Radarr                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Sonarr server               | The server that Sonarr specific rules and actions will be applied to                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Sonarr action               | Delete, unmonitor, or change the quality profile in Sonarr. Season rules can also delete or unmonitor the parent show if it becomes empty.                                                                                                                                                                                                                                                                                                                                                                            |
+| Media server action         | Delete media from your media server directly. Only applicable when no \*arr server is selected.                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Do nothing action           | No action will be taken on the media in this collection.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Active                      | If inactive, the rule won't run                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| Show on library recommended | Show the rule's collection on the library recommended screen                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| Show on home                | Show the rule's collection on the home screen                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Add list exclusions         | Prevent \*arr import lists from re-adding media that has been removed by Maintainerr                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Media deleted after days    | Amount of days media will live in the collection before deletion                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Use rules                   | Disable the rule engine, for when you want to add media to the collection manually                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Force reset Seerr record    | Force resets the Seerr record by deleting any requests instead of relying on availability-sync. 'Enable CSRF Protection' needs to be disabled in Seerr's settings for this to work. <InlineTooltip label="+" tooltip="This is the old method of telling Overseerr that something has been removed. The default method now is to tell Overseerr to initiate an Availability Sync through its API. This happens automatically at the end of the collection handler job. This option is not available for Jellyseerr." /> |
+| Custom collection           | Use a manually created collection. Maintainerr will never automatically add or remove this collection from your media server.                                                                                                                                                                                                                                                                                                                                                                                          |
+| Custom collection name      | The name of the existing manually managed collection to use <InlineTooltip label="+" tooltip="Only shown and needed when the Custom Collection checkbox is checked." />                                                                                                                                                                                                                                                                                                                                               |
+
+When you choose `Change quality profile and search` for Radarr or Sonarr, Maintainerr shows a quality profile selector for the chosen server. This action does not use `Take action after days`; it changes the item's quality profile immediately when the collection action runs.
+
+For Sonarr season rules, additional actions are available to also clean up the parent show when it becomes empty after season processing.
+
+Never-downloaded later seasons do not block those parent-show cleanup actions. Maintainerr only treats a monitored season as still keeping the show active when Sonarr reports episode files for that season.
+
+:::warning
+Disabling an active rule group does not empty its linked collection. Existing tracked items stay there until the rule group is re-enabled or deleted.
+
+If you want to clear the collection first, update the rule so it matches nothing, run the rule once, and then disable it.
+:::
+
+#### TV media type
+
+With the _Media type_ parameter, you specify which type of media to target in a TV library. This allows you to run rules on shows, seasons, or episodes.
+
+For example, you might create a rule group that selects and deletes old or watched seasons of a TV show, while keeping newer seasons untouched. Alternatively, you could target watched episodes and set them to unmonitored in Sonarr.
+
+:::note
+
+- Plex collections cannot contain mixed media types. Therefore, Maintainerr restricts each rule group / collection to a single media type.
+
+- Running rules on episodes is slower than on shows or seasons, as Maintainerr must process a larger volume of data.
+
+:::
+
+#### Custom collections
+
+If you prefer to manage collections yourself or use a different tool, you can enable the `Custom collection` option. With this enabled, Maintainerr links the rule group to an existing collection instead of creating and deleting that collection on the media server itself.
+
+This is separate from `Use rules`, which controls whether the rule engine fills the collection automatically, and from manually added items, which are tracked per item on the collection.
+
+#### Sharing a custom collection across rule groups
+
+Several rule groups can point at the same `Custom collection name`. They all link to the same collection on the media server, but each rule group keeps its own tracking row and per-card item count. The count on a rule group's collection card is the number of rows that rule group tracks, not the size of the underlying media-server collection.
+
+After every rule run, items present in the shared media-server collection that aren't claimed by any of the linked rule groups are imported into each linked rule group as manual rows. This keeps Maintainerr from stripping those items out. The import is not filtered by media type, so an item added to the shared collection by one rule group can show up in another linked rule group's tracked count, including rule groups whose media type doesn't match.
+
+:::note
+
+The per-card count therefore mixes rule-owned items with these shared manual rows. A rule group whose criteria match nothing can still display a non-zero count when it shares its custom collection name with other rule groups.
+
+:::
+
+To drain items from a shared custom collection, re-enable the rule group that originally added them, change its criteria so it matches nothing, and run it. As noted in the warning above, disabling an active rule group by itself does not empty its linked collection.
+
+## Adding rules
+
+Adding a rule is done by using the _Add_ button next to a section title. If the button is not available, it means your current rule isn't finished yet.
+
+A rule consists of at least 4 values. If the `second value` contains a custom value, a `custom value` parameter will also pop up.
+
+Starting from the second rule or section, a `operator` parameter is also required. Here you must specify the action to take on the results of the previous rule.
+
+| Param        | Description                                    |
+| ------------ | ---------------------------------------------- |
+| Operator     | Action to take on the previous rule or section |
+| First value  | The first value to compare with                |
+| Action       | The comparable action to take                  |
+| Second value | The second value to compare with               |
+| Custom value | A custom value input                           |
+
+### Sections
+
+A section is a group of rules. What happens to the result of a section depends on the choice of _Operator_ in the section's first rule.
+
+### Adding new sections
+
+The _New section_ button, at the bottom of the form, is only available if all rules are completed.
+
+Both sections and individual rules can be reordered by dragging their handle in the rule editor. Maintainerr evaluates rules from top to bottom, so reordering can change how your sections and chained operators behave.
+
+### Operators
+
+There are 2 operator choices, both explained below.
+The choice of operator defines what happens to the result of each section or rule.
+
+#### AND
+
+Using this operator, the rule will run against the result of the previous rule (or section).
+The output of the rule will then be passed on to the next rule.
+
+#### OR
+
+Using this operator, the rule will start off with all media and add its result to the previous rule (or section) result.
+The output of the rule will then be passed on to the next rule.
+
+### Actions
+
+The action defines the way the `first value` and `second value` will be compared.
+The available actions are dependent on the type of the `first value`
+
+| Action                 | Description                                                                                                                           | Types              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| bigger                 | Is the `first value` bigger than the `second value` ?                                                                                 | number             |
+| smaller                | Is the `first value` smaller than the `second value` ?                                                                                | number             |
+| contains               | Does the `first value` contain the `second value`? Lists will confirm the existence of an exact match within the `first value` list   | number, text       |
+| contains (partial)     | Does the `first value` contain the `second value` ? Lists will confirm the existence of a partial match within the `first value` list | number, text       |
+| contains (all items)   | Does the `first value` list contain all values from the `second value` list?                                                          | text[]             |
+| not contains           | Does the `first value` lack the `second value`? Lists will indicate the absence of an exact match within the `first value` list.      | number, text       |
+| not contains (partial) | Does the `first value` lack the `second value` ? Lists will indicate the absence of a partial match within the `first value` list.    | number, text       |
+| not contains (all items) | Does the `first value` list fail to contain all values from the `second value` list?                                                | text[]             |
+| equals                 | Is the `first value` equal to the `second value` ?                                                                                    | number, text, date |
+| not equals             | Is the `first value` unequal to the `second value` ?                                                                                  | number, text, date |
+| count equals           | Does the number of entries in the `first value` list equal the `second value`?                                                        | text[]             |
+| count not equals       | Does the number of entries in the `first value` list differ from the `second value`?                                                  | text[]             |
+| count bigger           | Is the number of entries in the `first value` list bigger than the `second value`?                                                    | text[]             |
+| count smaller          | Is the number of entries in the `first value` list smaller than the `second value`?                                                   | text[]             |
+| before                 | Does the `first value` occur before the `second value` ?                                                                              | date               |
+| after                  | Does the `first value` occur after the `second value` ?                                                                               | date               |
+| in last                | Does the `first value` occur in the last x amount of days ?                                                                           | date               |
+| in next                | Does the `first value` occur in the next x amount of days ?                                                                           | date               |
+| exists                 | Does the `first value` exist at all? Useful for matching whether Maintainerr could resolve a value before comparing it.                | number, text, date, boolean, text[] |
+| not exists             | Does the `first value` not exist? Useful for missing dates, empty watch history, or values that are not available for the item.       | number, text, date, boolean, text[] |
+
+The difference between **_Contains/Contains (exact)_** and **_Contains (partial)_** is only apparent with list values. When comparing a text list, **_Contains (exact)_** will only return true if the `second value` _exactly_ matches any value in the `first value` list. **_Contains (partial)_** will return true if the `first value` list has a value that _partially_ matches any value in the `second value` list.
+
+#### List Examples
+
+<div className="content-grid">
+  <CodeBlock language="yaml" title="True `Contains (partial)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - use
+  - ser
+  - ser3
+  - user
+  - ser1
+  - er3`}</CodeBlock>
+  <CodeBlock language="yaml" title="True `Contains (partial)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - user1
+  - user2
+  - user3
+  - user5`}</CodeBlock>
+  <CodeBlock language="yaml" title="False `Contains (partial)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - friend
+  - james
+  - wilhelm
+  - frank`}</CodeBlock>
+  <CodeBlock language="yaml" title="True `Contains (exact)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - user1
+  - user2
+  - user5`}</CodeBlock>
+  <CodeBlock language="yaml" title="True `Contains (exact)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+  - user7
+secondValue:
+  - user1
+  - user2
+  - user7`}</CodeBlock>
+  <CodeBlock language="yaml" title="True `Contains (exact)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - user1
+  - user5
+  - user8`}</CodeBlock>
+  <CodeBlock language="yaml" title="False `Contains (exact)`">{`firstValue:
+  - user1
+  - user2
+  - user3
+secondValue:
+  - use
+  - friend
+  - 1
+  - 2
+  - 3`}</CodeBlock>
+</div>
+
+### Custom values
+
+The `second value` field allows some custom values. The available custom values are dependent on the type of `first value`.
+
+| Action             | Description                                                                                                                                                                                                                                                                                                                            | Types                       |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Custom days        | This behavior depends on the selected `action`. In case of `in_last` or `in_next`, this translates to 'in the last (or next) x days'. in case of `before` the value will be translated to the current date **subtracted** by the amount of `custom days`. In all other cases, the amount of days will be **added** to the current date | date                        |
+| Custom date        | Takes a specific date                                                                                                                                                                                                                                                                                                                  | date                        |
+| Custom number      | Takes a specific number                                                                                                                                                                                                                                                                                                                | number                      |
+| Custom text        | Takes a specific text                                                                                                                                                                                                                                                                                                                  | text                        |
+| Custom text (list) | Takes a list in JSON format                                                                                                                                                                                                                                                                                                            | ["Jef", "Frank", "Wilhelm"] |
+
+### ARR disk space rules
+
+When you use Radarr or Sonarr disk space properties, Maintainerr may also ask you to choose which ARR path to evaluate.
+
+- `Remaining disk space` and `Total disk space` rules can target a specific configured path instead of assuming a single global root folder.
+- The path list is populated from the selected Radarr or Sonarr server.
+- For `Total disk space`, Maintainerr only shows paths where the server can report an accurate total size.
