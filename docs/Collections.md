@@ -12,6 +12,8 @@ When the specified amount of days that media must live in the collection is pass
 :::note Collection Handling
      Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle Collections` button on the Collections page.
      This runs each collection's configured action (such as delete, unmonitor, or do nothing), but it does not remove items from collections on its own.
+
+     If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling.
 :::
 
 ## Media Server
