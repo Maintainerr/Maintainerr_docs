@@ -148,6 +148,8 @@ Both sections and individual rules can be reordered by dragging their handle in 
 There are 2 operator choices, both explained below.
 The choice of operator defines what happens to the result of each section or rule.
 
+- The `Operator` selector on a non-first rule works inside the current section. In the comparator, `OR` starts that rule from all media, while `AND` runs it only against the media that already matched earlier rules in that same section.
+- The `Section Operator` selector appears on the first rule of each later section. It does not change how rules inside that section run; it decides how the completed section result combines with the earlier sections: `OR` unions the section result into the overall result, while `AND` intersects it with the overall result.
 - `AND` combines by intersection: only media that matched the previous result and the current rule or section stays in the result.
 - `OR` combines by union: media that matched either the previous result or the current rule or section stays in the result.
 
