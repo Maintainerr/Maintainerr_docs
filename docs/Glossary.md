@@ -197,7 +197,7 @@ The total number of episodes available for the Plex item. This rule is only avai
 #### Amount of watched episodes
 
 :::info
-The number of episodes that have been watched for the Plex item. This rule is only available for shows.
+The number of episodes that have been watched for the Plex item. This rule is only available for shows and seasons.
 
 :::
 
@@ -213,7 +213,7 @@ If an episode was marked as watched manually or via a separate tool, it will not
 #### Amount of episodes marked as watched
 
 :::info
-The number of episodes Plex currently considers watched for the item. This includes episodes marked as watched manually, even when they have no Plex play history. This rule is only available for shows.
+The number of episodes Plex currently considers watched for the item. This includes episodes marked as watched manually, even when they have no Plex play history. This rule is only available for shows and seasons.
 
 :::
 
