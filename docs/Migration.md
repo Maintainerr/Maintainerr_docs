@@ -46,7 +46,7 @@ When migrating during a switch:
 <details>
 <summary><strong>Technical Details</strong></summary>
 
-Migration compatibility is data-driven from `rules.constants.ts` — no hardcoded property ID lists. Each rule's `firstVal[0]` and `lastVal[0]` fields identify its source application: `Application.PLEX` (0), `Application.JELLYFIN` (6), or `Application.EMBY` (7). Rules from Radarr, Sonarr, Tautulli, and Seerr are not modified.
+Migration compatibility is data-driven from `rules.constants.ts` — no hardcoded property ID lists. Each rule field is checked independently: `firstVal[0]` and `lastVal[0]` can come from different apps in the same rule. Maintainerr only rewrites media-server fields (`Application.PLEX` (0), `Application.JELLYFIN` (6), or `Application.EMBY` (7)) to the target server. Rules from Radarr, Sonarr, Tautulli, and Seerr are left unchanged.
 
 For each source property, the migration service checks (in order):
 
@@ -126,7 +126,9 @@ When importing YAML rules, migration is automatic and transparent.
 
 </details>
 
-Compatible rules convert automatically, incompatible ones are dropped.
+Compatible rules convert automatically. Rules whose YAML identifiers cannot be resolved, or whose media-server property has no equivalent on the configured server, are skipped instead of rejecting the whole import. The UI reports how many rules were skipped.
+
+YAML export uses the same safeguard for unresolved properties, so stale rules are skipped instead of producing invalid YAML.
 
 ## Feature schema upgrades
 
@@ -136,6 +138,7 @@ Recent Maintainerr releases also add database support for overlays.
 - new collection fields for `overlayEnabled`, `overlayTemplateId`, and `mediaServerSort`
 - new `streamystats_url` setting for the Jellyfin-only Streamystats integration
 - new `collection_media.ruleEvaluationFailed` state so upgrades can preserve which rule-managed items should be skipped by automatic handling after a rule-evaluation failure; manual collection entries are still handled normally
+- new `NormalizeRuleSectionOperators` migration that backfills legacy null operators without changing existing matches: the first rule of a group stays unset, the first rule of a later section becomes `AND`, and later rules in that section become `OR`. This migration is behavior-preserving and its `down()` is a no-op.
 
 No manual database work should be required, but you should still keep a backup of `/opt/data/maintainerr.db` before upgrading and allow startup migrations to complete before using the new overlay screens.
 
@@ -152,7 +155,7 @@ Same automatic migration as YAML imports.
 
 </details>
 
-Import any community rule regardless of origin server.
+Import any community rule regardless of origin server. Maintainerr migrates media-server properties to your configured server the same way as YAML imports: `firstVal` and `lastVal` are handled independently, non-media-server apps are left untouched, and rules with no equivalent target-server property are skipped with a user-visible skipped count.
 
 !!! note
     Community rules from much older Maintainerr versions may not work due to schema changes.

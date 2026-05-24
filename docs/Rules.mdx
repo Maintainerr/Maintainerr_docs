@@ -123,7 +123,7 @@ Adding a rule is done by using the _Add_ button next to a section title. If the 
 
 A rule consists of at least 4 values. If the `second value` contains a custom value, a `custom value` parameter will also pop up.
 
-Starting from the second rule or section, a `operator` parameter is also required. Here you must specify the action to take on the results of the previous rule.
+Every rule after the very first rule in a group requires an explicit `AND` or `OR` operator. The editor keeps that rule incomplete until you choose one, and the API rejects a save with `Operator is required for every rule after the first.` The first rule of the whole group does not have an operator.
 
 | Param        | Description                                    |
 | ------------ | ---------------------------------------------- |
@@ -135,7 +135,7 @@ Starting from the second rule or section, a `operator` parameter is also require
 
 ### Sections
 
-A section is a group of rules. What happens to the result of a section depends on the choice of _Operator_ in the section's first rule.
+A section is a group of rules. Rules inside a section combine with the previous rule in that same section by using each rule's operator. The first rule of every later section carries the section-combine operator that combines that whole section with the previous section's result. The first rule of the whole group is the only rule without an operator.
 
 ### Adding new sections
 
@@ -147,6 +147,9 @@ Both sections and individual rules can be reordered by dragging their handle in 
 
 There are 2 operator choices, both explained below.
 The choice of operator defines what happens to the result of each section or rule.
+
+- `AND` combines by intersection: only media that matched the previous result and the current rule or section stays in the result.
+- `OR` combines by union: media that matched either the previous result or the current rule or section stays in the result.
 
 #### AND
 
