@@ -283,6 +283,11 @@ List of collections that the Plex item is present in. For seasons and episodes, 
 
 :::
 
+:::note
+Returned collection titles are trimmed. Rules that combine titles from more than one source — such as the `incl. parents`, `incl. smart collections`, and `incl. parents and smart collections` variants — de-duplicate exact-case matches, but titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match only because of the collection it maintains.
+
+:::
+
 - Key: Plex.collection_names
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
@@ -747,6 +752,11 @@ The number of episodes that have been watched for the Jellyfin item.
 
 :::
 
+:::note
+On Jellyfin — and on Emby, which mirrors Jellyfin's rule-property set — this rule already uses watched state and includes manual watched marks, so there is no separate `Jellyfin.sw_markedWatchedEpisodes` rule.
+
+:::
+
 - Key: Jellyfin.sw_viewedEpisodes
 - Availability: shows, seasons
 - Type: number
@@ -810,6 +820,11 @@ List of users who have watched at least one episode of the Jellyfin item. This r
 
 :::info
 List of collections that the Jellyfin item is present in. For seasons and episodes, this will **not** include the collections of the parent season and show.
+
+:::
+
+:::note
+Returned collection titles are trimmed. Rules that combine titles from more than one source — such as the `incl. parents` variants — de-duplicate exact-case matches, but titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match only because of the collection it maintains. Emby follows the same behavior.
 
 :::
 
