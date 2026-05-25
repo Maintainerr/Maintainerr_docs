@@ -829,7 +829,7 @@ List of collections that the Jellyfin item is present in. For seasons and episod
 :::
 
 :::note
-Returned collection titles are trimmed and then de-duplicated on the trimmed title, so identical titles (including ones differing only by surrounding whitespace) collapse, while titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains. Emby follows the same behavior.
+Returned collection titles are trimmed. The `incl. parents` variant additionally de-duplicates on the trimmed title, so identical titles (including ones differing only by surrounding whitespace) collapse, while titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains. Emby follows the same behavior.
 
 :::
 
