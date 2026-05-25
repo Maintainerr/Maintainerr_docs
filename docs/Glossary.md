@@ -197,16 +197,27 @@ The total number of episodes available for the Plex item. This rule is only avai
 #### Amount of watched episodes
 
 :::info
-The number of episodes that have been watched for the Plex item. This rule is only available for shows.
+The number of episodes that have been watched for the Plex item. This rule is only available for shows and seasons.
 
 :::
 
 :::note
-If an episode was marked as watched manually or via a separate tool, it will not be counted by this rule. Maintainerr can only track watch events through Plex sessions. Use the "Is Watched" rule instead if you need to include manually set play states.
+If an episode was marked as watched manually or via a separate tool, it will not be counted by this rule. Maintainerr can only track watch events through Plex sessions. Use "Amount of episodes marked as watched" for a show/season count that includes Plex's watched state, or "Is Watched" for movie/episode watched state.
 
 :::
 
 - Key: Plex.sw_viewedEpisodes
+- Availability: shows, seasons
+- Type: number
+
+#### Amount of episodes marked as watched
+
+:::info
+The number of episodes Plex currently considers watched for the item. This includes episodes marked as watched manually, even when they have no Plex play history. This rule is only available for shows and seasons.
+
+:::
+
+- Key: Plex.sw_markedWatchedEpisodes
 - Availability: shows, seasons
 - Type: number
 
@@ -269,6 +280,16 @@ List of users who have watched at least one episode of the Plex item. This rule 
 
 :::info
 List of collections that the Plex item is present in. For seasons and episodes, this will **not** include the collections of the parent season and show.
+
+:::
+
+:::note
+Returned collection titles are trimmed. De-duplication is limited and varies by variant:
+
+- `Collections media is present in (titles)` and `Collections media is present in (titles) (incl. parents)` do **not** de-duplicate, so a collection present at more than one level is returned once per level.
+- `Collections media is present in (titles) (incl. smart collections)` and `Collections media is present in (titles) (incl. parents and smart collections)` de-duplicate titles that are identical **before** trimming, then trim. Titles that differ only by surrounding whitespace or only by capitalization remain separate entries.
+
+As a result, the same collection can appear more than once in these lists, which matters when using `COUNT_*` comparators. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains.
 
 :::
 
@@ -736,6 +757,11 @@ The number of episodes that have been watched for the Jellyfin item.
 
 :::
 
+:::note
+On Jellyfin — and on Emby, which mirrors Jellyfin's rule-property set — this rule already uses watched state and includes manual watched marks, so there is no separate `Jellyfin.sw_markedWatchedEpisodes` rule.
+
+:::
+
 - Key: Jellyfin.sw_viewedEpisodes
 - Availability: shows, seasons
 - Type: number
@@ -799,6 +825,11 @@ List of users who have watched at least one episode of the Jellyfin item. This r
 
 :::info
 List of collections that the Jellyfin item is present in. For seasons and episodes, this will **not** include the collections of the parent season and show.
+
+:::
+
+:::note
+Returned collection titles are trimmed. The `incl. parents` variant additionally de-duplicates on the trimmed title, so identical titles (including ones differing only by surrounding whitespace) collapse, while titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains. Emby follows the same behavior.
 
 :::
 
