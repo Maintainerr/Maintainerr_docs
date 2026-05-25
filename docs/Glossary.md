@@ -284,7 +284,12 @@ List of collections that the Plex item is present in. For seasons and episodes, 
 :::
 
 :::note
-Returned collection titles are trimmed. Rules that combine titles from more than one source — such as the `incl. parents`, `incl. smart collections`, and `incl. parents and smart collections` variants — de-duplicate exact-case matches, but titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match only because of the collection it maintains.
+Returned collection titles are trimmed. De-duplication is limited and varies by variant:
+
+- `Collections media is present in (titles)` and `Collections media is present in (titles) (incl. parents)` do **not** de-duplicate, so a collection present at more than one level is returned once per level.
+- `Collections media is present in (titles) (incl. smart collections)` and `Collections media is present in (titles) (incl. parents and smart collections)` de-duplicate titles that are identical **before** trimming, then trim. Titles that differ only by surrounding whitespace or only by capitalization remain separate entries.
+
+As a result, the same collection can appear more than once in these lists, which matters when using `COUNT_*` comparators. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains.
 
 :::
 
@@ -824,7 +829,7 @@ List of collections that the Jellyfin item is present in. For seasons and episod
 :::
 
 :::note
-Returned collection titles are trimmed. Rules that combine titles from more than one source — such as the `incl. parents` variants — de-duplicate exact-case matches, but titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match only because of the collection it maintains. Emby follows the same behavior.
+Returned collection titles are trimmed and then de-duplicated on the trimmed title, so identical titles (including ones differing only by surrounding whitespace) collapse, while titles that differ only by capitalization remain separate. Managed and manual collection exclusions are still matched case-insensitively, so a rule will not match an item only because of the collection it maintains. Emby follows the same behavior.
 
 :::
 
