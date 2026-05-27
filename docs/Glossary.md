@@ -544,7 +544,7 @@ The newest `lastViewedAt` value across all movies that share a Plex collection w
 ### Jellyfin
 
 :::note
-Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support native watchlists or smart collections. If Streamystats is configured, Maintainerr also exposes separate Jellyfin-only Streamystats watchlist rules.
+Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support native watchlists or smart collections. If Streamystats is configured on a Jellyfin server, Maintainerr also exposes separate Jellyfin-only Streamystats watchlist rules.
 
 :::
 
@@ -1870,7 +1870,7 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 ### Streamystats
 
 :::note
-Streamystats is only available for Jellyfin users, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules.
+Streamystats is only available when Jellyfin is the active media server, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules. Maintainerr rebuilds that public-watchlist membership snapshot for each rule-group run and reuses it across items during that run.
 
 :::
 
@@ -1878,6 +1878,8 @@ Streamystats is only available for Jellyfin users, and these rule properties onl
 
 :::info
 Indicates whether the item is present in at least one public Streamystats watchlist.
+
+If Maintainerr cannot fetch the current public-watchlist snapshot, this rule is treated as unknown for that evaluation instead of `false`.
 
 :::
 
@@ -1889,6 +1891,8 @@ Indicates whether the item is present in at least one public Streamystats watchl
 
 :::info
 List of Streamystats usernames whose public watchlists contain the item.
+
+If the item is not present in any public Streamystats watchlist, this returns an empty list. If Maintainerr cannot resolve the watchlist owners back to Jellyfin users, this rule is treated as unknown for that evaluation instead of returning an empty list.
 
 :::
 
