@@ -544,7 +544,9 @@ The newest `lastViewedAt` value across all movies that share a Plex collection w
 ### Jellyfin
 
 :::note
-Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support native watchlists or smart collections. If Streamystats is configured on a Jellyfin server, Maintainerr also exposes separate Jellyfin-only Streamystats watchlist rules.
+Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support native watchlists or smart collections.
+
+If Streamystats is configured on a Jellyfin server, Maintainerr also exposes separate Jellyfin-only Streamystats watchlist rules.
 
 :::
 

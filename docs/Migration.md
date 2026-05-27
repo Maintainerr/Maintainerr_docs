@@ -146,6 +146,8 @@ No manual database work should be required, but you should still keep a backup o
 
 Excluding an item inside one specific rule group used to hide it from every rule group. That behavior was a bug. Rule-group exclusions are now scoped to the group where you set them, so the item can still appear in and be acted on by other groups unless you exclude it globally.
 
+Example: if item `A` is excluded only in rule group `Leaving Soon`, it no longer stays hidden from another group such as `Recently Watched`. To keep it out of both, add a global exclusion instead.
+
 Adding a global exclusion removes that item's existing scoped exclusions. If you later remove the global exclusion, those scoped exclusions do not come back automatically, so re-add them if you still want the item excluded only in selected groups.
 
 ## Community Rules Migration
