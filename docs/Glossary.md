@@ -544,7 +544,7 @@ The newest `lastViewedAt` value across all movies that share a Plex collection w
 ### Jellyfin
 
 :::note
-Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support watchlists or smart collections.
+Jellyfin shares many rule properties with Plex, and Emby mirrors Jellyfin's rule-property set. When switching between Plex, Jellyfin, and Emby, compatible rules are automatically migrated. Jellyfin and Emby do not support native watchlists or smart collections. If Streamystats is configured, Maintainerr also exposes separate Jellyfin-only Streamystats watchlist rules.
 
 :::
 
@@ -1864,3 +1864,34 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 - Key: Tautulli.sw_lastWatched
 - Availability: shows, seasons
 - Type: date
+
+---
+
+### Streamystats
+
+:::note
+Streamystats is only available for Jellyfin users, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules.
+
+:::
+
+#### Is in a watchlist
+
+:::info
+Indicates whether the item is present in at least one public Streamystats watchlist.
+
+:::
+
+- Key: Streamystats.isInWatchlist
+- Availability: movies, shows, seasons, episodes
+- Type: boolean
+
+#### In watchlist of (username)
+
+:::info
+List of Streamystats usernames whose public watchlists contain the item.
+
+:::
+
+- Key: Streamystats.watchlistedByUsers
+- Availability: movies, shows, seasons, episodes
+- Type: text[]
