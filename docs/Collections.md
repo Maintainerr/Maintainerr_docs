@@ -100,6 +100,8 @@ You're able to exclude media from all, or specific, collections by using the `Ex
 
 Here you're able to remove the media's current exclusions, exclude for all collections or exclude for a specific collection.
 
+An exclusion tied to one specific collection / rule group only applies there. Other rule groups can still add or act on the same item unless you exclude it globally.
+
 When media has exclusions, an `Excl` badge will be shown on the top-right side of the card.
 
 Collections also have a dedicated `Exclusions` view. Open a collection, then switch to the `Exclusions` tab to review everything excluded from that collection, sort the list, and open the same media test flow from the collection context.
@@ -109,6 +111,8 @@ On a collection's media page, the `Remove` action also manages collection-level 
 - removing an item from a collection creates an exclusion for that collection so rules do not immediately add it back
 - if the item is already excluded for that collection, the same control removes that exclusion instead
 - removing a global exclusion shows a warning because it affects every collection, not just the one you are viewing
+
+Adding a global exclusion removes that item's existing collection-specific exclusions. If you later remove the global exclusion, those narrower exclusions are not restored automatically.
 
 If you open the media details modal, Maintainerr also shows where the item is excluded from. That modal is informational for exclusions; you still manage exclusion changes from the card actions or the collection views.
 
