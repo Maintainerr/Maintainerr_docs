@@ -144,7 +144,7 @@ No manual database work should be required, but you should still keep a backup o
 
 ## Exclusion scoping
 
-Excluding an item inside one specific rule group used to hide it from every rule group. That behavior was a bug. Rule-group exclusions are now scoped to the group where you set them, so the item can still appear in and be acted on by other groups unless you exclude it globally.
+Excluding an item inside one specific rule group used to hide it from every rule group. From version 3.13 and onwards, rule-group exclusions are scoped to the group where you set them, so the item can still appear in and be acted on by other groups unless you exclude it globally.
 
 Example: if item `A` is excluded only in rule group `Leaving Soon`, it no longer stays hidden from another group such as `Recently Watched`. To keep it out of both, add a global exclusion instead.
 
