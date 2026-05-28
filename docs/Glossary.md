@@ -1343,7 +1343,7 @@ The total disk space on the selected Radarr root folder in gigabytes. When you u
 ### Sonarr
 
 :::info
-If a show is not tracked in Sonarr, Maintainerr can still fall back to your configured metadata provider for `Sonarr.ended` and the show-level values of `Sonarr.firstAirDate` and `Sonarr.seasons`.
+If a show is not tracked in Sonarr, Maintainerr can still fall back to your configured metadata provider(s) for `Sonarr.ended` and the show-level values of `Sonarr.firstAirDate` and `Sonarr.seasons`.
 
 Source-dependent values such as `Sonarr.status`, `Sonarr.originalLanguage`, and `Sonarr.rating`, along with Sonarr-only state like monitoring, tags, paths, and disk usage, remain unavailable until the series is tracked in Sonarr.
 
