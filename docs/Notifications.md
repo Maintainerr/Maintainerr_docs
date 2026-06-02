@@ -44,7 +44,9 @@ Maintainerr supports several notification types that you can enable for each age
 | Media About to be Handled | Advance warning that media will be processed/deleted in X days |
 | Media Handled | Confirmation that media has been processed/deleted |
 | Rule Handling Failed | Alert when there's an error processing rules |
-| Collection Handling Failed | Alert when there's an error processing collections |
+| Collection Handling Failed | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
+
+Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
 
 ## Supported Notification Agents
 
