@@ -15,6 +15,7 @@ When the specified amount of days that media must live in the collection is pass
 
      If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling.
      When a delete-style action removes files, Maintainerr also prunes that media from any other Maintainerr-managed collections that still list it. This prevents already-deleted items from being re-processed while Jellyfin or Emby are still catching up on their next library scan.
+     If eligible media is actively being streamed, Maintainerr defers it to the next collection-handler run instead of acting on it mid-playback. This is a best-effort snapshot taken once per run, so playback that starts later is only protected on the following pass.
 :::
 
 ## Media Server
