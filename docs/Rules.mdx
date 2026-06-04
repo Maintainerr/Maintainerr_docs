@@ -109,6 +109,8 @@ This is separate from `Use rules`, which controls whether the rule engine fills 
 
 Several rule groups can point at the same `Custom collection name`. They all link to the same collection on the media server, but each rule group keeps its own tracking row and per-card item count. The count on a rule group's collection card is the number of rows that rule group tracks, not the size of the underlying media-server collection.
 
+On Jellyfin and Emby, that shared custom collection can also span libraries because BoxSets are server-global. A movie rule group and a show rule group can therefore link the same custom collection name there. Plex collections remain library-scoped, so cross-library custom-collection sharing is not available on Plex.
+
 After every rule run, items present in the shared media-server collection that aren't claimed by any of the linked rule groups are imported into each linked rule group as manual rows. This keeps Maintainerr from stripping those items out. The import is not filtered by media type, so an item added to the shared collection by one rule group can show up in another linked rule group's tracked count, including rule groups whose media type doesn't match.
 
 :::note
