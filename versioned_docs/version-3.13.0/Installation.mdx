@@ -22,7 +22,7 @@ You can define a user and group ID for the container runtime. Maintainerr uses t
 
 If not explicitly specified, the default `UID:GID` is `1000:1000`.
 
-See [Run](#run) and [Compose](#compose) below for examples.
+See [Docker](#docker) below for examples.
 :::
 :::tip
 
@@ -33,93 +33,12 @@ It is possible that you will need to change permissions on the host's data direc
 `chown -R 1000:1000 /opt/data` This is a "change owner" command that changes the owner of `/opt/data` to `1000:1000`.
 
 :::
-Setting the host data directory largely depends on how you are installing Maintainerr. If using Docker, these are the two places where you would set the host data directory, depending on your method.
+## Docker
+
+Compose is recommended for most installs. Choose the Docker example that matches your workflow.
 
 <Tabs>
-  <TabItem value="run-command" label="Run Command" default>
-
-```yaml
--v <your host location>:/opt/data \
-```
-
-  </TabItem>
-  <TabItem value="compose" label="Compose">
-
-```yaml
-volumes:
-  - type: bind
-    source: <your host location>
-    target: /opt/data
-```
-
-  </TabItem>
-</Tabs>
-
-## Run
-
-<AnnotatedCodeBlock
-  language="bash"
-  code={`docker run -d \\
-  --name maintainerr \\
-  -e TZ=Europe/Brussels \\
-  -v <yourhostlocation>:/opt/data \\
-  -u 1000:1000 \\
-  -p 6246:6246 \\
-  --restart unless-stopped \\
-  ghcr.io/maintainerr/maintainerr:latest`}
-  annotations={[
-    {
-      line: 4,
-      label: '+',
-      tooltip:
-        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
-    },
-    {
-      line: 6,
-      label: '+',
-      tooltip: 'Port mappings are defined as host:container.',
-    },
-    {
-      line: 8,
-      label: '+',
-      tooltip:
-        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
-    },
-  ]}
-/>
-
-<Details summary="Development Versions">
-
-While the development version contains all of the latest features and bug
-fixes, there is a chance things will break. By using a development version
-you must be willing to report any issues you come across, to the development
-team, and provide as much information as possible to help resolve the issue.
-
-Changing from a development version to a stable version is not supported.
-
-- `ghcr.io/maintainerr/maintainerr:development` for the develop branch.
-- `maintainerr/maintainerr:development` for the Docker Hub development image.
-
-</Details>
-
-### Updating
-
-Stop and remove the existing container:
-
-```bash
-docker stop maintainerr
-docker rm -f maintainerr
-```
-
-Pull the latest image:
-
-```bash
-docker pull ghcr.io/maintainerr/maintainerr
-```
-
-Finally, run the container with the same parameters you originally used to create/start the container.
-
-## Compose
+  <TabItem value="compose" label="Compose" default>
 
 Define the Maintainerr service in your docker-compose.yml as follows.
 
@@ -159,7 +78,53 @@ Define the Maintainerr service in your docker-compose.yml as follows.
   ]}
 />
 
-<Details summary="Development Versions">
+Save your docker-compose.yml file.
+Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
+
+```bash
+docker compose up -d
+```
+
+  </TabItem>
+  <TabItem value="run-command" label="Run Command">
+
+Run Maintainerr with the following command:
+
+<AnnotatedCodeBlock
+  language="bash"
+  code={`docker run -d \\
+  --name maintainerr \\
+  -e TZ=Europe/Brussels \\
+  -v <your host location>:/opt/data \\
+  -u 1000:1000 \\
+  -p 6246:6246 \\
+  --restart unless-stopped \\
+  ghcr.io/maintainerr/maintainerr:latest`}
+  annotations={[
+    {
+      line: 4,
+      label: '+',
+      tooltip:
+        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
+    },
+    {
+      line: 6,
+      label: '+',
+      tooltip: 'Port mappings are defined as host:container.',
+    },
+    {
+      line: 8,
+      label: '+',
+      tooltip:
+        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
+    },
+  ]}
+/>
+
+  </TabItem>
+</Tabs>
+
+<Details summary="Development Images">
 
 While the development version contains all of the latest features and bug
 fixes, there is a chance things will break. By using a development version
@@ -173,14 +138,10 @@ Changing from a development version to a stable version is not supported.
 
 </Details>
 
-Save your docker-compose.yml file.
-Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
+## Updating
 
-```bash
-docker compose up -d
-```
-
-### Updating
+<Tabs>
+  <TabItem value="compose-update" label="Compose" default>
 
 Pull the latest image:
 
@@ -193,6 +154,27 @@ Then, restart all services defined in the Compose file:
 ```bash
 docker compose up -d
 ```
+
+  </TabItem>
+  <TabItem value="run-command-update" label="Run Command">
+
+Stop and remove the existing container:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+Pull the latest image:
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
+Finally, run the container with the same parameters you originally used to create or start it.
+
+  </TabItem>
+</Tabs>
 
 ## Environment Variables
 

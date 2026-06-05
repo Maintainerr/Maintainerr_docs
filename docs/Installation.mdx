@@ -22,31 +22,14 @@ Maintainerr uses the configured `user:group` as its runtime user inside the cont
 
 If you do not set one explicitly, the default `UID:GID` is `1000:1000`, so make sure your host data directory is read/writeable by that UID:GID. If needed, update it with `chown -R 1000:1000 /opt/data`.
 :::
-Setting the host data directory largely depends on how you are installing Maintainerr. If using Docker, these are the two places where you would set the host data directory, depending on your method.
+## Docker
+
+Compose is recommended for most installs. Choose the Docker example that matches your workflow.
 
 <Tabs>
   <TabItem value="compose" label="Compose" default>
 
-```yaml
-volumes:
-  - type: bind
-    source: <your host location>
-    target: /opt/data
-```
-
-  </TabItem>
-  <TabItem value="run-command" label="Run Command">
-
-```yaml
--v <your host location>:/opt/data \
-```
-
-  </TabItem>
-</Tabs>
-
-## Compose
-
-Compose is recommended for most installs. Define the Maintainerr service in your docker-compose.yml as follows.
+Define the Maintainerr service in your docker-compose.yml as follows:
 
 <AnnotatedCodeBlock
   language="yaml"
@@ -84,20 +67,6 @@ Compose is recommended for most installs. Define the Maintainerr service in your
   ]}
 />
 
-<Details summary="Development Versions">
-
-While the development version contains all of the latest features and bug
-fixes, there is a chance things will break. By using a development version
-you must be willing to report any issues you come across, to the development
-team, and provide as much information as possible to help resolve the issue.
-
-Changing from a development version to a stable version is not supported.
-
-- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
-- `maintainerr/maintainerr:development` for the Docker Hub development image.
-
-</Details>
-
 Save your docker-compose.yml file.
 Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
 
@@ -105,22 +74,17 @@ Then, while in the directory where your docker-compose file exists, start all se
 docker compose up -d
 ```
 
-### Updating
+  </TabItem>
+  <TabItem value="run-command" label="Run Command">
 
-```bash
-cd /path/to/maintainerr/docker/
-docker compose pull
-docker compose up -d
-```
-
-<Details summary="Docker run (alternative)">
+Run Maintainerr with the following command:
 
 <AnnotatedCodeBlock
   language="bash"
   code={`docker run -d \\
   --name maintainerr \\
   -e TZ=Europe/Brussels \\
-  -v <yourhostlocation>:/opt/data \\
+  -v <your host location>:/opt/data \\
   -u 1000:1000 \\
   -p 6246:6246 \\
   --restart unless-stopped \\
@@ -146,7 +110,10 @@ docker compose up -d
   ]}
 />
 
-<Details summary="Development Versions">
+  </TabItem>
+</Tabs>
+
+<Details summary="Development Images">
 
 While the development version contains all of the latest features and bug
 fixes, there is a chance things will break. By using a development version
@@ -155,27 +122,8 @@ team, and provide as much information as possible to help resolve the issue.
 
 Changing from a development version to a stable version is not supported.
 
-- `ghcr.io/maintainerr/maintainerr:development` for the develop branch.
+- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
 - `maintainerr/maintainerr:development` for the Docker Hub development image.
-
-</Details>
-
-### Updating
-
-Stop and remove the existing container:
-
-```bash
-docker stop maintainerr
-docker rm -f maintainerr
-```
-
-Pull the latest image:
-
-```bash
-docker pull ghcr.io/maintainerr/maintainerr
-```
-
-Finally, run the container with the same parameters you originally used to create/start the container.
 
 </Details>
 
@@ -255,6 +203,38 @@ spec:
 ```
 
 If `BASE_PATH` is set, prefix the probe paths accordingly (for example `/maintainerr/api/health/ready`).
+
+## Updating
+
+<Tabs>
+  <TabItem value="compose-update" label="Compose" default>
+
+```bash
+cd /path/to/maintainerr/docker/
+docker compose pull
+docker compose up -d
+```
+
+  </TabItem>
+  <TabItem value="run-command-update" label="Run Command">
+
+Stop and remove the existing container:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+Pull the latest image:
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
+Finally, run the container with the same parameters you originally used to create or start it.
+
+  </TabItem>
+</Tabs>
 
 ## Health checks
 
