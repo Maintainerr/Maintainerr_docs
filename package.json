@@ -25,5 +25,8 @@
     "@docusaurus/core": "^3.9.2",
     "@docusaurus/preset-classic": "^3.9.2",
     "@easyops-cn/docusaurus-search-local": "^0.55.1"
+  },
+  "overrides": {
+    "encoding-sniffer": "1.0.2"
   }
 }
