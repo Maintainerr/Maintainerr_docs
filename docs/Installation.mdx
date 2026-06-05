@@ -127,6 +127,38 @@ Changing from a development version to a stable version is not supported.
 
 </Details>
 
+### Updating
+
+<Tabs>
+  <TabItem value="compose-update" label="Compose" default>
+
+```bash
+cd /path/to/maintainerr/docker/
+docker compose pull
+docker compose up -d
+```
+
+  </TabItem>
+  <TabItem value="run-command-update" label="Run Command">
+
+Stop and remove the existing container:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+Pull the latest image:
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
+Finally, run the container with the same parameters you originally used to create or start it.
+
+  </TabItem>
+</Tabs>
+
 ## Kubernetes
 
 Use the example below as a starting point for a single-instance Maintainerr deployment with a Service and persistent storage claim.
@@ -204,37 +236,21 @@ spec:
 
 If `BASE_PATH` is set, prefix the probe paths accordingly (for example `/maintainerr/api/health/ready`).
 
-## Updating
+### Updating
 
-<Tabs>
-  <TabItem value="compose-update" label="Compose" default>
-
-```bash
-cd /path/to/maintainerr/docker/
-docker compose pull
-docker compose up -d
-```
-
-  </TabItem>
-  <TabItem value="run-command-update" label="Run Command">
-
-Stop and remove the existing container:
+To update your Kubernetes deployment to the latest Maintainerr image, update the image tag in your manifest (or leave it as `latest`) and re-apply:
 
 ```bash
-docker stop maintainerr
-docker rm -f maintainerr
+kubectl set image deployment/maintainerr maintainerr=ghcr.io/maintainerr/maintainerr:latest
 ```
 
-Pull the latest image:
+Alternatively, if you manage your manifests declaratively:
 
 ```bash
-docker pull ghcr.io/maintainerr/maintainerr
+kubectl apply -f maintainerr-deployment.yaml
 ```
 
-Finally, run the container with the same parameters you originally used to create or start it.
-
-  </TabItem>
-</Tabs>
+Kubernetes will perform a rolling update, replacing the old pod with one running the new image.
 
 ## Health checks
 
