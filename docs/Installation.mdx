@@ -129,36 +129,33 @@ Changing from a development version to a stable version is not supported.
 
 ### Updating
 
-<Tabs>
-  <TabItem value="compose-update" label="Compose" default>
+#### Update to the latest version with Compose
 
-Navigate to the directory containing your `docker-compose.yml` and run:
+If you installed Maintainerr with Compose, navigate to the directory containing your `docker-compose.yml` and run:
 
 ```bash
 docker compose pull
 docker compose up -d
 ```
 
-  </TabItem>
-  <TabItem value="run-command-update" label="Run Command">
+This updates Maintainerr using the image tag defined in your Compose file.
 
-Stop and remove the existing container:
+#### Stop and remove an existing container
+
+Use these commands if you need to stop and remove a container that was started manually with `docker run`:
 
 ```bash
 docker stop maintainerr
 docker rm -f maintainerr
 ```
 
-Pull the latest image:
+#### Pull the latest image only
+
+Use this command if you only want to download the latest image. Pulling a new image by itself does not update an existing container.
 
 ```bash
 docker pull ghcr.io/maintainerr/maintainerr
 ```
-
-Finally, run the container with the same parameters you originally used to create or start it.
-
-  </TabItem>
-</Tabs>
 
 ## Kubernetes
 
