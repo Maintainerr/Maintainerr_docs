@@ -9,7 +9,28 @@ hide_title: true
 ---
 
 <div className="intro-landing">
-  <div className="intro-hero-panel">
+  <div
+    className="intro-hero-panel"
+    style={{
+      background: 'linear-gradient(rgba(17, 24, 39, 0.66), rgba(17, 24, 39, 0.66))',
+    }}
+  >
+    <img
+      src="/img/banner3.png"
+      alt="Maintainerr app preview"
+      width="960"
+      height="549"
+      loading="lazy"
+      decoding="async"
+      style={{
+        display: 'block',
+        width: '100%',
+        maxWidth: '44rem',
+        height: 'auto',
+        margin: '0 auto 1.5rem',
+        borderRadius: '1rem',
+      }}
+    />
     <div className="intro-tagline-block">
       <h2 className="intro-tagline">
         The Perfect Media Janitor
