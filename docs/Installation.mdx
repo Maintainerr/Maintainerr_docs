@@ -132,11 +132,13 @@ Changing from a development version to a stable version is not supported.
 <Tabs>
   <TabItem value="compose-update" label="Compose" default>
 
+Navigate to the directory containing your `docker-compose.yml` and run:
+
 ```bash
-cd /path/to/maintainerr/docker/
-docker compose pull
 docker compose up -d
 ```
+
+Compose will automatically pull the newer image and recreate the container.
 
   </TabItem>
   <TabItem value="run-command-update" label="Run Command">
