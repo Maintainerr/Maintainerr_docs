@@ -35,21 +35,8 @@
   margin: 0 auto 2rem;
   padding: 2.25rem 1.5rem;
   border-radius: 1.25rem;
-  background-color: #111827;
-  background-image: linear-gradient(
-      rgba(17, 24, 39, 0.66),
-      rgba(17, 24, 39, 0.66)
-    ),
-    url('/img/banner3.png');
-  background-position:
-    center,
-    center 25%;
-  background-size:
-    auto,
-    90% auto;
-  background-repeat:
-    repeat,
-    no-repeat;
+  background: linear-gradient(rgba(17, 24, 39, 0.66), rgba(17, 24, 39, 0.66)),
+    url('/img/banner3.png') center 35% / cover no-repeat;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
 }
 
@@ -150,9 +137,7 @@
 @media (max-width: 576px) {
   .intro-hero-panel {
     padding: 1.75rem 1rem;
-    background-size:
-      auto,
-      125% auto;
+    background-position: center;
   }
 }
 

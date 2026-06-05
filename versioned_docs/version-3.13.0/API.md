@@ -27,35 +27,6 @@ The repository also carries a bundled OpenAPI YAML at `static/openapi-spec/maint
 
 These are some of the newer user-facing API groups that are relevant to the current docs set.
 
-### Health
-
-Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed with `BASE_PATH` when set) for orchestration probes and uptime monitoring.
-
-| Endpoint | Purpose |
-| --- | --- |
-| `GET /api/health/live` | Liveness probe; returns `200` while the process is running and does not touch the database |
-| `GET /api/health/ready` | Readiness probe; runs a database `SELECT 1` check and returns `200` or `503` |
-| `GET /api/health` | Convenience alias that mirrors `/api/health/ready` |
-
-`GET /api/health/live` returns a lightweight envelope such as:
-
-```json
-{ "status": "ok", "uptimeSeconds": 1234, "timestamp": "2026-06-05T12:00:00.000Z" }
-```
-
-`GET /api/health/ready` and `GET /api/health` include database status:
-
-```json
-// 200
-{ "status": "ok", "uptimeSeconds": 1234, "database": "ok", "timestamp": "..." }
-// 503
-{ "status": "degraded", "uptimeSeconds": 1234, "database": "unreachable", "timestamp": "..." }
-```
-
-- Only the database gates readiness. External integrations such as Plex/Jellyfin, the `*arr` stack, Seerr, Tautulli, and Streamystats are intentionally excluded so transient upstream outages do not take Maintainerr out of rotation.
-- The bundled Docker image ships a `HEALTHCHECK` that calls `/api/health/ready` and honours both `BASE_PATH` and `UI_PORT`.
-- For Kubernetes, use `/api/health/live` as the `livenessProbe` and `/api/health/ready` as the `readinessProbe`. If `BASE_PATH` is set, prefix both probe paths accordingly.
-
 ### Collections
 
 | Endpoint | Purpose |

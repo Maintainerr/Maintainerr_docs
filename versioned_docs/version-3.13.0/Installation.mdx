@@ -57,10 +57,6 @@ volumes:
 
 ## Run
 
-Compose is recommended for most installs. If you prefer `docker run`, use the steps below.
-
-<Details summary="Docker run (alternative)">
-
 <AnnotatedCodeBlock
   language="bash"
   code={`docker run -d \\
@@ -122,8 +118,6 @@ docker pull ghcr.io/maintainerr/maintainerr
 ```
 
 Finally, run the container with the same parameters you originally used to create/start the container.
-
-</Details>
 
 ## Compose
 
@@ -188,62 +182,26 @@ docker compose up -d
 
 ### Updating
 
+Pull the latest image:
+
 ```bash
-cd /path/to/maintainerr/docker/
 docker compose pull
+```
+
+Then, restart all services defined in the Compose file:
+
+```bash
 docker compose up -d
 ```
-
-## Health checks
-
-Maintainerr ships lightweight health endpoints under `/api/health` for orchestration probes and uptime monitoring. They are prefixed with `BASE_PATH` when you serve Maintainerr from a subfolder.
-
-- `GET /api/health/live` is the liveness probe. It returns `200` while the process is running and does **not** touch the database.
-- `GET /api/health/ready` is the readiness probe. It runs a database `SELECT 1` check and returns `200` when the database is reachable or `503` when it is not.
-- `GET /api/health` is a convenience alias for `/api/health/ready`.
-
-The container image already includes a `HEALTHCHECK` that calls `/api/health/ready` via `/opt/app/healthcheck.sh`, honouring both `BASE_PATH` and `UI_PORT`. If you need to tune it in Compose, you can override it like this:
-
-```yaml
-services:
-  maintainerr:
-    image: ghcr.io/maintainerr/maintainerr:latest
-    healthcheck:
-      test: ['CMD', '/opt/app/healthcheck.sh']
-      interval: 30s
-      timeout: 5s
-      start_period: 40s
-      retries: 3
-```
-
-For Kubernetes, use the liveness and readiness probes below:
-
-```yaml
-livenessProbe:
-  httpGet:
-    path: /api/health/live
-    port: 6246
-  initialDelaySeconds: 30
-  periodSeconds: 30
-readinessProbe:
-  httpGet:
-    path: /api/health/ready
-    port: 6246
-  initialDelaySeconds: 10
-  periodSeconds: 10
-```
-
-If `BASE_PATH` is set, prefix the probe paths accordingly (for example `/maintainerr/api/health/ready`).
 
 ## Environment Variables
 
 A list of all available environment variables are below. No other env variables are officially supported by Maintainerr. These are added either into the compose file or your docker run command.
 
-| Variable     | Default Value   | Description                                                                                                        |
-| ------------ | --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| TZ           | _host timezone_ | Controls date formatting in logs.                                                                                  |
-| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                                      |
-| UI_PORT      | 6246            | The listen port of the web server.                                                                                 |
-| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.             |
-| LOG_LEVEL    | info            | Overrides the persisted log level for the current container process only. Accepted values are `debug`, `verbose`, `info`, `warn`, `error`, and `fatal`. |
-| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                            |
+| Variable     | Default Value   | Description                                                                                         |
+| ------------ | --------------- | --------------------------------------------------------------------------------------------------- |
+| TZ           | _host timezone_ | Controls date formatting in logs.                                                                   |
+| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                       |
+| UI_PORT      | 6246            | The listen port of the web server.                                                                  |
+| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder` |
+| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                             |
