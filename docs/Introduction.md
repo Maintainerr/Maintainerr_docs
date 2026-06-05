@@ -49,19 +49,11 @@ hide_title: true
   </div>
 
   <div className="intro-quickstart">
-    <h3>Docker Run - Quick Start</h3>
-
-```bash
-docker run -d \
-  --name maintainerr \
-  -e TZ=Europe/Brussels \
-  -v ./data:/opt/data \
-  -u 1000:1000 \
-  -p 6246:6246 \
-  --restart unless-stopped \
-  ghcr.io/maintainerr/maintainerr:latest
-```
-
+    <h3>Get Up and Running in No Time!</h3>
+    <p>
+      Maintainerr installs in seconds with Docker. Check the{' '}
+      <a href="/installation">installation guide</a> to get started.
+    </p>
   </div>
 </div>
 

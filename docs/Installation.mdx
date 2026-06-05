@@ -127,6 +127,36 @@ Changing from a development version to a stable version is not supported.
 
 </Details>
 
+### Updating
+
+#### Update to the latest version with Compose
+
+If you installed Maintainerr with Compose, navigate to the directory containing your `docker-compose.yml` and run:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+This updates Maintainerr using the image tag defined in your Compose file.
+
+#### Stop and remove an existing container
+
+Use these commands if you need to stop and remove a container that was started manually with `docker run`:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+#### Pull the latest image only
+
+Use this command if you only want to download the latest image. Pulling a new image by itself does not update an existing container.
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
 ## Kubernetes
 
 Use the example below as a starting point for a single-instance Maintainerr deployment with a Service and persistent storage claim.
@@ -202,39 +232,21 @@ spec:
       storage: 1Gi
 ```
 
-If `BASE_PATH` is set, prefix the probe paths accordingly (for example `/maintainerr/api/health/ready`).
+### Updating
 
-## Updating
-
-<Tabs>
-  <TabItem value="compose-update" label="Compose" default>
+To update your Kubernetes deployment to the latest Maintainerr image, update the image tag in your manifest (or leave it as `latest`) and re-apply:
 
 ```bash
-cd /path/to/maintainerr/docker/
-docker compose pull
-docker compose up -d
+kubectl set image deployment/maintainerr maintainerr=ghcr.io/maintainerr/maintainerr:latest
 ```
 
-  </TabItem>
-  <TabItem value="run-command-update" label="Run Command">
-
-Stop and remove the existing container:
+Alternatively, if you manage your manifests declaratively:
 
 ```bash
-docker stop maintainerr
-docker rm -f maintainerr
+kubectl apply -f maintainerr-deployment.yaml
 ```
 
-Pull the latest image:
-
-```bash
-docker pull ghcr.io/maintainerr/maintainerr
-```
-
-Finally, run the container with the same parameters you originally used to create or start it.
-
-  </TabItem>
-</Tabs>
+Kubernetes will perform a rolling update, replacing the old pod with one running the new image.
 
 ## Health checks
 
@@ -270,3 +282,7 @@ A list of all available environment variables are below. No other env variables 
 | BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.             |
 | LOG_LEVEL    | info            | Overrides the persisted log level for the current container process only. Accepted values are `debug`, `verbose`, `info`, `warn`, `error`, and `fatal`. |
 | GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                            |
+
+:::tip
+If `BASE_PATH` is set, remember to prefix health-check probe paths accordingly (for example `/maintainerr/api/health/ready`).
+:::
