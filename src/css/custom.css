@@ -145,10 +145,57 @@
   color: #fff;
 }
 
-@media (max-width: 576px) {
+/* On phones and small tablets the desktop 1600/915 panel becomes a short, wide
+   letterbox that crops the art and leaves the gold text floating over a busy
+   photo. Below 768px we drop the fixed ratio, let the content size the panel,
+   fill it with the art under a stronger scrim, and stack the CTA buttons. */
+@media (max-width: 768px) {
+  .intro-landing {
+    margin: 1.25rem auto 2rem;
+  }
+
   .intro-hero-panel {
-    padding: 1.75rem 1rem;
+    aspect-ratio: auto;
+    min-height: 13rem;
+    padding: 2.25rem 1.25rem;
+    /* Fill the panel with the art (the desktop 1600/915 ratio would otherwise
+       leave a short letterbox) under a slightly stronger scrim for legibility. */
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.66), rgba(15, 23, 42, 0.66)),
+      url("/img/banner3.webp");
+    background-size: cover, cover;
     background-position: center;
+  }
+
+  .intro-tagline-block {
+    padding: 1.1rem 1rem;
+    background: rgba(17, 24, 39, 0.45);
+  }
+
+  .intro-tagline {
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+  }
+
+  .intro-tagline svg {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+
+  .intro-tagline-subtitle {
+    font-size: 1rem;
+  }
+
+  .intro-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+
+  .intro-cta-row .button {
+    width: 100%;
   }
 }
 
