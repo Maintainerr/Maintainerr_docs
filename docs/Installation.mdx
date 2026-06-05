@@ -234,8 +234,6 @@ spec:
       storage: 1Gi
 ```
 
-If `BASE_PATH` is set, prefix the probe paths accordingly (for example `/maintainerr/api/health/ready`).
-
 ### Updating
 
 To update your Kubernetes deployment to the latest Maintainerr image, update the image tag in your manifest (or leave it as `latest`) and re-apply:
@@ -284,5 +282,9 @@ A list of all available environment variables are below. No other env variables 
 | UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                                      |
 | UI_PORT      | 6246            | The listen port of the web server.                                                                                 |
 | BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.             |
+
+:::tip
+If `BASE_PATH` is set, remember to prefix health-check probe paths accordingly (for example `/maintainerr/api/health/ready`).
+:::
 | LOG_LEVEL    | info            | Overrides the persisted log level for the current container process only. Accepted values are `debug`, `verbose`, `info`, `warn`, `error`, and `fatal`. |
 | GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                            |
