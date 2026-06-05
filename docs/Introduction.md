@@ -9,28 +9,7 @@ hide_title: true
 ---
 
 <div className="intro-landing">
-  <div
-    className="intro-hero-panel"
-    style={{
-      background: 'linear-gradient(rgba(17, 24, 39, 0.66), rgba(17, 24, 39, 0.66))',
-    }}
-  >
-    <img
-      src="/img/banner3.png"
-      alt="Maintainerr app preview"
-      width="960"
-      height="549"
-      loading="lazy"
-      decoding="async"
-      style={{
-        display: 'block',
-        width: '100%',
-        maxWidth: '44rem',
-        height: 'auto',
-        margin: '0 auto 1.5rem',
-        borderRadius: '1rem',
-      }}
-    />
+  <div className="intro-hero-panel">
     <div className="intro-tagline-block">
       <h2 className="intro-tagline">
         The Perfect Media Janitor
@@ -39,45 +18,18 @@ hide_title: true
         </svg>
       </h2>
       <p className="intro-tagline-subtitle">
-        Documentation for the wildly popular Maintainerr project.
+        Welcome to the Documentation - let's put your media server on autopilot!
       </p>
-      <div className="intro-cta-row">
-        <a className="button button--primary" href="/installation">Get Started</a>
-        <a className="button button--secondary" href="/blog">View The Walkthroughs</a>
-      </div>
     </div>
-  </div>
-
-  <div className="intro-quickstart">
-    <h3>Get Up and Running in No Time!</h3>
-    <p>
-      Maintainerr installs in seconds with Docker. Check the{' '}
-      <a href="/installation">installation guide</a> to get started.
-    </p>
+    <div className="intro-cta-row">
+      <a className="button button--primary" href="/installation">Get Started</a>
+      <a className="button button--secondary" href="/blog">View The Walkthroughs</a>
+    </div>
   </div>
 </div>
 
-## Features
+## Learn more
 
-- Make collections on your media server from a specific set of rules, defined by you.
-- Configure those rules to match your needs. (i.e. `Last viewed 30 days ago`)
-- See an overview of your media server library contents.
-- Manually add an item to one of the above mentioned collections.
-- Manually exclude an item from one of the collections, even if it meets the rule criteria.
-- Show your new collection on the _Home_ screen.
-- Set a number of days the collection will exist before it is deleted.
-- Set Radarr and Sonarr to either **remove** or **unmonitor** media in the collection.
-- Auto clear requests from Seerr
-- Remove media from disk
-- Switch between Plex, Jellyfin, and Emby with automatic rule migration
-- View Streamystats watch-history insights for Jellyfin items without leaving Maintainerr
-
-Maintainerr supports rules across these apps :
-
-- Plex, Jellyfin, or Emby (choose one)
-- Seerr
-- Radarr
-- Sonarr
-- Tautulli
-
-Optional integrations also include Streamystats for Jellyfin watch-history analytics.
+For the full feature list, screenshots, and supported integrations, see our
+[GitHub](https://github.com/Maintainerr/Maintainerr#readme) or
+[website](https://maintainerr.info).
