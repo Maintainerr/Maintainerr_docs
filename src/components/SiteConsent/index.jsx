@@ -6,6 +6,13 @@ import styles from "./styles.module.css";
 const CONSENT_KEY = "maintainerr-docs-consent";
 const MATOMO_SCRIPT_ID = "maintainerr-matomo-script";
 
+// Set by the swizzled NotFound page so the next page view is tagged as a 404.
+let pendingNotFound = false;
+
+export function flagNotFound() {
+  pendingNotFound = true;
+}
+
 function getStoredConsent() {
   if (typeof window === "undefined") {
     return null;
@@ -49,8 +56,30 @@ function trackPageView(location) {
 
   const fullPath = `${location.pathname}${location.search}${location.hash}`;
   window._paq.push(["setCustomUrl", fullPath]);
-  window._paq.push(["setDocumentTitle", document.title]);
+
+  if (pendingNotFound) {
+    pendingNotFound = false;
+    // Matomo's recommended 404 tagging: title prefixed with "404/URL = ...".
+    window._paq.push([
+      "setDocumentTitle",
+      `404/URL = ${encodeURIComponent(fullPath)}/From = ${encodeURIComponent(
+        document.referrer,
+      )}`,
+    ]);
+  } else {
+    window._paq.push(["setDocumentTitle", document.title]);
+  }
+
   window._paq.push(["trackPageView"]);
+}
+
+function trackSiteSearch(keyword) {
+  if (typeof window === "undefined" || !window._paq) {
+    return;
+  }
+
+  // category and result count are left unset (false) — cookieless, aggregate.
+  window._paq.push(["trackSiteSearch", keyword, false, false]);
 }
 
 export function trackMatomoEvent(category, action, name) {
@@ -94,6 +123,58 @@ export default function SiteConsent() {
 
     trackPageView(location);
   }, [consent, location, matomoConfig.enabled]);
+
+  // Track docs-search queries (cookieless). The local search updates results
+  // as you type, so debounce and also fire on Enter; min length avoids noise.
+  useEffect(() => {
+    if (consent !== "accepted" || !matomoConfig.enabled) {
+      return;
+    }
+
+    const SELECTOR = ".navbar__search-input";
+    let timer;
+    let lastTracked = "";
+
+    function record(value) {
+      const keyword = value.trim();
+      if (keyword.length < 3 || keyword === lastTracked) {
+        return;
+      }
+      lastTracked = keyword;
+      trackSiteSearch(keyword);
+    }
+
+    function onInput(event) {
+      const target = event.target;
+      if (!target.matches || !target.matches(SELECTOR)) {
+        return;
+      }
+      clearTimeout(timer);
+      const { value } = target;
+      timer = setTimeout(() => record(value), 1500);
+    }
+
+    function onKeydown(event) {
+      if (event.key !== "Enter") {
+        return;
+      }
+      const target = event.target;
+      if (!target.matches || !target.matches(SELECTOR)) {
+        return;
+      }
+      clearTimeout(timer);
+      record(target.value);
+    }
+
+    document.addEventListener("input", onInput, true);
+    document.addEventListener("keydown", onKeydown, true);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("input", onInput, true);
+      document.removeEventListener("keydown", onKeydown, true);
+    };
+  }, [consent, matomoConfig.enabled]);
 
   function updateConsent(nextConsent) {
     window.localStorage.setItem(CONSENT_KEY, nextConsent);

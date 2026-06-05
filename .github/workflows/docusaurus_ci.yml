@@ -45,7 +45,10 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          ref: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.ref || github.ref }}
+          # A release dispatch always builds the trusted default branch. We do not
+          # honor an externally supplied client_payload.ref, which could otherwise
+          # point the privileged build (App token + npm ci) at arbitrary code.
+          ref: ${{ github.event_name == 'repository_dispatch' && github.event.repository.default_branch || github.ref }}
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Resolve source branch
@@ -101,15 +104,22 @@ jobs:
 
       - name: Commit docs version snapshot
         if: env.RELEASE_VERSION != ''
+        env:
+          SOURCE_BRANCH: ${{ steps.branch.outputs.source_branch }}
         run: |
           if git diff --quiet -- versions.json versioned_docs versioned_sidebars; then
             echo "No versioned docs changes to commit"
             exit 0
           fi
 
+          if [[ ! "${SOURCE_BRANCH}" =~ ^[A-Za-z0-9._/-]+$ ]]; then
+            echo "Refusing to push to unexpected branch name: '${SOURCE_BRANCH}'"
+            exit 1
+          fi
+
           git add versions.json versioned_docs versioned_sidebars
           git commit -m "docs: snapshot ${RELEASE_VERSION}"
-          git push origin HEAD:${{ steps.branch.outputs.source_branch }}
+          git push origin "HEAD:refs/heads/${SOURCE_BRANCH}"
 
       - name: Build Docusaurus site
         run: npm run build
