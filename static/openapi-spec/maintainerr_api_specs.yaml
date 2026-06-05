@@ -1,5 +1,56 @@
 openapi: 3.0.0
 paths:
+  /api/health:
+    get:
+      operationId: HealthController_health
+      parameters: []
+      responses:
+        '200':
+          description: Combined readiness check. Returns database status when reachable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Combined readiness check. Returned when the database is unreachable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+      tags:
+        - /health
+  /api/health/live:
+    get:
+      operationId: HealthController_live
+      parameters: []
+      responses:
+        '200':
+          description: Liveness probe. Returns process uptime without touching the database.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LivenessResponse'
+      tags:
+        - /health
+  /api/health/ready:
+    get:
+      operationId: HealthController_ready
+      parameters: []
+      responses:
+        '200':
+          description: Readiness probe. Returns database status when reachable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Readiness probe. Returned when the database is unreachable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+      tags:
+        - /health
   /api/app/status:
     get:
       operationId: AppController_getAppStatus
@@ -1748,6 +1799,45 @@ servers:
   - url: <maintainerr_url>:<port>/api
 components:
   schemas:
+    LivenessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+        uptimeSeconds:
+          type: number
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - uptimeSeconds
+        - timestamp
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - degraded
+        uptimeSeconds:
+          type: number
+        database:
+          type: string
+          enum:
+            - ok
+            - unreachable
+        timestamp:
+          type: string
+          format: date-time
+      required:
+        - status
+        - uptimeSeconds
+        - database
+        - timestamp
     SettingDto:
       type: object
       properties: {}
