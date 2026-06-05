@@ -1064,7 +1064,7 @@ List of Jellyfin usernames who have marked the current item or its parent items 
 
 **Useful Rule - Movies started but never finished:**
 
-``` text
+```text
 playCount >= 1 AND viewCount = 0
 ```
 

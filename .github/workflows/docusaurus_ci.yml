@@ -1,12 +1,15 @@
 name: Docusaurus Deploy
 
 on:
+  push:
+    branches:
+      - main
   repository_dispatch:
     types: [maintainerr-release]
   workflow_dispatch:
     inputs:
       versionInput:
-        description: 'Input version from Maintainerr release'
+        description: "Input version from Maintainerr release"
         required: false
 
 permissions:
@@ -39,7 +42,7 @@ jobs:
           echo "email=${user_id}+${APP_SLUG}[bot]@users.noreply.github.com" >> "$GITHUB_OUTPUT"
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'repository_dispatch' && github.event.client_payload.ref || github.ref }}
@@ -70,9 +73,9 @@ jobs:
           fi
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies

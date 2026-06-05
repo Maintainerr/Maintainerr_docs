@@ -5,7 +5,6 @@ description: Working configurations that should get you started.
 title: Reverse Proxy
 ---
 
-
 We have tried to outline some working configurations. At the very least, these should get you started in the right direction.
 
 ## NGINX

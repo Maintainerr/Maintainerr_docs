@@ -19,21 +19,21 @@ Let's take the above movie as an example. This isn't a real movie, but for the p
 
 **Plex**
 
-| Added | Last Viewed | Times Viewed | Audience Rating |
-| -------|-------------|--------------|---------------- |
-| 3Nov2023 | 10Jan2024 | 4 | 7.3 |
+| Added    | Last Viewed | Times Viewed | Audience Rating |
+| -------- | ----------- | ------------ | --------------- |
+| 3Nov2023 | 10Jan2024   | 4            | 7.3             |
 
 **Overseerr**
 
 | Requested by | Requested Date | Times Requested by Anyone |
 | ------------ | -------------- | ------------------------- |
-| user_girl123 | 2Nov2023 | 4 |
+| user_girl123 | 2Nov2023       | 4                         |
 
 **Radarr**
 
-| Release Date | Is Monitored | Runtime |
-| ------------ | ------------ | ------- |
-| 31Oct2023 | True | 114 minutes |
+| Release Date | Is Monitored | Runtime     |
+| ------------ | ------------ | ----------- |
+| 31Oct2023    | True         | 114 minutes |
 
 :::tip
 This information can be looked at for an actual item in your Plex library. You can do it through the Plex UI or you can parse through the XML of an item.
@@ -90,7 +90,7 @@ Now we are getting into the details. After the settings above have been configur
 Community rules are just that, from the community. They may not work like they say they do. They may not be formatted properly. It can be a nice place to start, but I personally wouldn't rely on them as everyone's situation is different.
 :::
 
-Below the *Community* button there are two other buttons: Import and Export. You can import a rule from a txt file in YAML format. This is an advanced method, but it is an option.
+Below the _Community_ button there are two other buttons: Import and Export. You can import a rule from a txt file in YAML format. This is an advanced method, but it is an option.
 
 :::tip
 If you want to go down this path, I would choose one of the Community rules, it doesn't really matter which one, and then use the export button. You will get a generated YAML format of the rule. If you are familiar with YAML this will be a good place to start.
@@ -106,7 +106,7 @@ If you are looking at a rule that you have already created, you can export the r
 
 Understanding rules and sections can be crucial to getting your rule setup properly and achieving your desired outcome.
 
-When you first start, you will be in the first *section*: Section 1, Rule 1. A section is a grouped set of rules with one output over the whole section, depending on what was matched in the rules within that section.
+When you first start, you will be in the first _section_: Section 1, Rule 1. A section is a grouped set of rules with one output over the whole section, depending on what was matched in the rules within that section.
 
 ### AND
 
@@ -116,7 +116,7 @@ So let's try an **AND** example.
 - Our rule 2 setup gains us output X.
 - Our rule 2 is set up with an AND operator to rule 1.
 - The output of this section would be X only.
-  Since X was matched by rule 1 AND rule 2 but Y was only matched by rule 1, it will not be included in the section output because we said we want the output of the *section* to be everything that matched **(rule 1 AND rule 2)**.
+  Since X was matched by rule 1 AND rule 2 but Y was only matched by rule 1, it will not be included in the section output because we said we want the output of the _section_ to be everything that matched **(rule 1 AND rule 2)**.
 
 ### OR
 
@@ -126,7 +126,7 @@ Now an **OR** example.
 - Our rule 2 setup gains us output X and output Z.
 - Our rule 2 is set up with an OR operator to rule 1.
 - The output of this section would be X, Y, and Z.
-  Since X and Y were matched by rule 1, and X and Z were matched by rule 2, they are all included because we said we want the output of the *section* to be everything that matched **(rule 1 OR rule 2)**.
+  Since X and Y were matched by rule 1, and X and Z were matched by rule 2, they are all included because we said we want the output of the _section_ to be everything that matched **(rule 1 OR rule 2)**.
 
 This is probably the simplest form of a rule setup that you can get, unless of course you are only using one rule because anything matched by that one rule becomes the output.
 
@@ -140,8 +140,8 @@ Now let's try a mixed **AND** / **OR** example.
 - The output is X, as before.
 - Rule 3 setup gains us output G and output M.
 - Rule 3 is set up with an OR operator to rule 2.
-- The output of the whole *section* would be X, G, and M.
-  Since X was matched by rule 1 AND rule 2 but Y was only matched by rule 1, the output of rule 2 will be only X. Since G and M were matched by rule 3, and we said we want the output of the *section* to be anything that matches **((rule 1 AND 2) OR rule 3)**, we get X, G, and M.
+- The output of the whole _section_ would be X, G, and M.
+  Since X was matched by rule 1 AND rule 2 but Y was only matched by rule 1, the output of rule 2 will be only X. Since G and M were matched by rule 3, and we said we want the output of the _section_ to be anything that matches **((rule 1 AND 2) OR rule 3)**, we get X, G, and M.
 
 ---
 

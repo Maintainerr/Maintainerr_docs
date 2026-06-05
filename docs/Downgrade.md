@@ -5,7 +5,6 @@ title: Downgrade
 description: How to install an older Maintainerr version using a database backup.
 ---
 
-
 If you need to run an older Maintainerr version, you must use a database backup from before you upgraded.
 
 :::note Notice

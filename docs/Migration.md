@@ -4,7 +4,7 @@ title: Migration
 ---
 
 !!! tip
-    Backup `/opt/data/maintainerr.db` before major changes.
+Backup `/opt/data/maintainerr.db` before major changes.
 
 ## Media Server Switching
 
@@ -64,7 +64,7 @@ After migration:
 </details>
 
 !!! warning
-    Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
+Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
 
 ### Incompatible Properties
 
@@ -166,4 +166,4 @@ Same automatic migration as YAML imports.
 Import any community rule regardless of origin server. Maintainerr migrates media-server properties to your configured server the same way as YAML imports: `firstVal` and `lastVal` are handled independently, non-media-server apps are left untouched, and rules with no equivalent target-server property are skipped with a user-visible skipped count.
 
 !!! note
-    Community rules from much older Maintainerr versions may not work due to schema changes.
+Community rules from much older Maintainerr versions may not work due to schema changes.

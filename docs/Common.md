@@ -5,7 +5,6 @@ description: Common problems, and their solutions.
 title: Common Problems
 ---
 
-
 :::note
 These suggestions will not solve every issue, but they cover the most common problems people run into. If you try the steps below and still cannot get Maintainerr working as expected, reach out on [Discord](https://discord.maintainerr.info).
 :::

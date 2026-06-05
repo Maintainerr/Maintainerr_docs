@@ -6,13 +6,13 @@ description: Configure and manage notification agents for automated alerts and u
 title: Notifications
 ---
 
-
 Notifications allow Maintainerr to send automated alerts and updates about your media collections through various messaging platforms and services. You can configure multiple notification agents and specify which types of events should trigger notifications.
 
 :::note Beta Feature
 The notification system is currently in beta. Some agents have not been tested extensively.
 
 :::
+
 ## Overview
 
 The notification system works by connecting configured notification agents to your rules. When specific events occur (such as media being added to or removed from collections), Maintainerr will send notifications to the configured agents that are subscribed to those event types.
@@ -25,26 +25,26 @@ Navigate to **Settings → Notifications** to manage your notification agents. H
 
 Each notification agent requires the following common settings:
 
-| Parameter | Description |
-| --------- | ----------- |
-| Name | A descriptive name for this notification configuration |
-| Enabled | Whether this agent is active and will send notifications |
-| Agent | The notification service to use (Discord, Email, etc.) |
-| Types | Which notification types this agent should receive |
+| Parameter                    | Description                                                                                                |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Name                         | A descriptive name for this notification configuration                                                     |
+| Enabled                      | Whether this agent is active and will send notifications                                                   |
+| Agent                        | The notification service to use (Discord, Email, etc.)                                                     |
+| Types                        | Which notification types this agent should receive                                                         |
 | Notify x days before removal | For "Media About to be Handled" notifications, how many days before removal to send the alert (default: 3) |
 
 ### Notification Types
 
 Maintainerr supports several notification types that you can enable for each agent:
 
-| Type | Description |
-| ---- | ----------- |
-| Media Added to Collection | Sent when media items are added to a collection |
-| Media Removed from Collection | Sent when media items are removed from a collection |
-| Media About to be Handled | Advance warning that media will be processed/deleted in X days |
-| Media Handled | Confirmation that media has been processed/deleted |
-| Rule Handling Failed | Alert when there's an error processing rules |
-| Collection Handling Failed | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
+| Type                          | Description                                                                                                                                    |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Media Added to Collection     | Sent when media items are added to a collection                                                                                                |
+| Media Removed from Collection | Sent when media items are removed from a collection                                                                                            |
+| Media About to be Handled     | Advance warning that media will be processed/deleted in X days                                                                                 |
+| Media Handled                 | Confirmation that media has been processed/deleted                                                                                             |
+| Rule Handling Failed          | Alert when there's an error processing rules                                                                                                   |
+| Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
 
 Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
 
@@ -68,21 +68,21 @@ You'll need to create a Discord webhook for your channel. Follow Discord's guide
 
 Send notifications via SMTP email.
 
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Email From | Yes | Sender email address |
-| Sender Name | Yes | Display name for the sender |
-| Email To | Yes | Recipient email address |
-| SMTP Host | Yes | SMTP server hostname |
-| SMTP Port | Yes | SMTP server port (usually 587 or 465) |
-| Secure | No | Use implicit TLS |
-| Ignore TLS | No | Disable TLS entirely |
-| Require TLS | No | Always use STARTTLS |
-| Auth User | No | SMTP authentication username |
-| Auth Pass | No | SMTP authentication password |
-| Allow Self Signed | No | Accept self-signed certificates |
-| PGP Key | No | PGP public key for encryption |
-| PGP Password | No | Password for PGP key |
+| Parameter         | Required | Description                           |
+| ----------------- | -------- | ------------------------------------- |
+| Email From        | Yes      | Sender email address                  |
+| Sender Name       | Yes      | Display name for the sender           |
+| Email To          | Yes      | Recipient email address               |
+| SMTP Host         | Yes      | SMTP server hostname                  |
+| SMTP Port         | Yes      | SMTP server port (usually 587 or 465) |
+| Secure            | No       | Use implicit TLS                      |
+| Ignore TLS        | No       | Disable TLS entirely                  |
+| Require TLS       | No       | Always use STARTTLS                   |
+| Auth User         | No       | SMTP authentication username          |
+| Auth Pass         | No       | SMTP authentication password          |
+| Allow Self Signed | No       | Accept self-signed certificates       |
+| PGP Key           | No       | PGP public key for encryption         |
+| PGP Password      | No       | Password for PGP key                  |
 
 ### Gotify
 
@@ -189,25 +189,26 @@ You'll need to create a Telegram bot and get your chat ID. Follow these steps:
 
 Send notifications to custom webhook endpoints. Requests are sent using the POST request method.
 
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Webhook URL | Yes | Target webhook endpoint URL |
-| JSON Payload | Yes | Custom JSON payload template |
-| Auth Header | No | [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization) header value |
+| Parameter    | Required | Description                                                                                                     |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------- |
+| Webhook URL  | Yes      | Target webhook endpoint URL                                                                                     |
+| JSON Payload | Yes      | Custom JSON payload template                                                                                    |
+| Auth Header  | No       | [Authorization](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Authorization) header value |
 
 #### Webhook Variables
 
 The webhook agent supports variable replacement in the JSON payload. You can use the following variables:
 
-| Variable | Description |
-| -------- | ----------- |
+| Variable                | Description                         |
+| ----------------------- | ----------------------------------- |
 | `{{notification_type}}` | The type of notification being sent |
-| `{{subject}}` | The notification subject/title |
-| `{{message}}` | The notification message content |
-| `{{image}}` | Associated image URL (if available) |
-| `{{extra}}` | Additional data fields |
+| `{{subject}}`           | The notification subject/title      |
+| `{{message}}`           | The notification message content    |
+| `{{image}}`             | Associated image URL (if available) |
+| `{{extra}}`             | Additional data fields              |
 
 Example JSON payload:
+
 ```json
 {
   "content": "{{subject}}",

@@ -5,7 +5,6 @@ description: Information on how to get Maintainerr up and running.
 title: Configuration
 ---
 
-
 All configuration is done inside the application. No extra config files are required.
 
 When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
@@ -22,10 +21,10 @@ All Base URL settings are to be entered without the leading slash.
 
 These settings are OK for most installations.
 
-| Setting | Description |
-| --- | --- |
-| Hostname | The hostname or IP address of the host running Maintainerr |
-| API key | Maintainerr's API key. It is currently reserved for future use. |
+| Setting  | Description                                                     |
+| -------- | --------------------------------------------------------------- |
+| Hostname | The hostname or IP address of the host running Maintainerr      |
+| API key  | Maintainerr's API key. It is currently reserved for future use. |
 
 ## Media Server
 
@@ -45,11 +44,11 @@ After you authenticate with a Plex **admin** account, Maintainerr validates the 
 Proper DNS is preferred. Plex discovery and failover can depend on resolvable Plex endpoints, and Docker users in particular may run into intermittent connection or discovery problems when container DNS is unstable. If possible, make sure your environment has working DNS resolution for Plex-related hostnames and service names.
 :::
 
-| Setting / Control | Description |
-| --- | --- |
-| Authentication | Authenticate with Plex using an **admin** account. Until this succeeds, the Plex server controls stay disabled. |
-| Server | Shows the currently selected discovered server, or lets you choose one from the discovered server list. |
-| Refresh icon | Re-runs Plex server discovery for the authenticated account. Use this if the server list is stale or discovery failed the first time. |
+| Setting / Control | Description                                                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| Authentication    | Authenticate with Plex using an **admin** account. Until this succeeds, the Plex server controls stay disabled.                       |
+| Server            | Shows the currently selected discovered server, or lets you choose one from the discovered server list.                               |
+| Refresh icon      | Re-runs Plex server discovery for the authenticated account. Use this if the server list is stale or discovery failed the first time. |
 
 :::tip
 `Test Connection` is disabled until you are authenticated and have either selected a discovered server or enabled manual override with saved settings.
@@ -76,11 +75,11 @@ If you want Maintainerr to connect securely in manual mode, use your `*.plex.dir
 
 Jellyfin can also be used as your media server connection.
 
-| Setting | Description |
-| --- | --- |
+| Setting      | Description                                                      |
+| ------------ | ---------------------------------------------------------------- |
 | Jellyfin URL | The domain name or local IP address of the host running Jellyfin |
-| API key | A Jellyfin API key generated from your Jellyfin server |
-| Admin User | Test Connection to load the available admin users |
+| API key      | A Jellyfin API key generated from your Jellyfin server           |
+| Admin User   | Test Connection to load the available admin users                |
 
 ## Streamystats
 
@@ -90,52 +89,52 @@ Streamystats is only available for Jellyfin users
 
 The separate `Settings -> Streamystats` page only appears when Jellyfin is the active media server. Maintainerr reuses your saved Jellyfin API key for authentication, so you only need to provide the Streamystats base URL.
 
-| Setting | Description |
-| --- | --- |
-| URL | The base URL of your Streamystats instance, such as `http://localhost:3000` or `https://streamystats.example.com` |
+| Setting | Description                                                                                                       |
+| ------- | ----------------------------------------------------------------------------------------------------------------- |
+| URL     | The base URL of your Streamystats instance, such as `http://localhost:3000` or `https://streamystats.example.com` |
 
 ## Emby
 
 Use your Emby server URL directly. Maintainerr supports either entering an API key manually or using `Sign in with Emby` to authenticate with an admin username and password and let Maintainerr populate the API key for you. Emby Connect is not supported because Maintainerr uses direct server authentication and does not implement Emby's cloud-based Connect flow.
 
-| Setting | Description |
-| --- | --- |
-| Emby URL | The domain name or local IP address of the host running Emby |
-| API key | An Emby API key generated from `Dashboard -> Advanced -> API Keys`, or the token returned by `Sign in with Emby` |
+| Setting    | Description                                                                                                                            |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Emby URL   | The domain name or local IP address of the host running Emby                                                                           |
+| API key    | An Emby API key generated from `Dashboard -> Advanced -> API Keys`, or the token returned by `Sign in with Emby`                       |
 | Admin User | Test Connection to load the available admin users, or use `Sign in with Emby` to populate the saved admin-user selection automatically |
 
 ## Seerr
 
 Seerr configuration is required if you want to use Seerr-related rule parameters or remove Seerr requests.
 
-| Setting | Description |
-| --- | --- |
-| URL | The domain name or local IP address of the host running Seerr |
-| API key | The API key from Seerr settings |
+| Setting | Description                                                   |
+| ------- | ------------------------------------------------------------- |
+| URL     | The domain name or local IP address of the host running Seerr |
+| API key | The API key from Seerr settings                               |
 
 ## Radarr
 
 Radarr's configuration is required to use its parameters in rules and to remove or unmonitor movies.
 
-| Setting | Description |
-| --- | --- |
-| Server Name | A friendly name to help identify the server |
+| Setting        | Description                                                    |
+| -------------- | -------------------------------------------------------------- |
+| Server Name    | A friendly name to help identify the server                    |
 | Hostname or IP | The domain name or local IP address of the host running Radarr |
-| Port | The port Radarr runs on |
-| Base URL | The URL base configured in Radarr, if one is set |
-| API key | The API key from Radarr settings |
+| Port           | The port Radarr runs on                                        |
+| Base URL       | The URL base configured in Radarr, if one is set               |
+| API key        | The API key from Radarr settings                               |
 
 ## Sonarr
 
 Sonarr's configuration is required to use its parameters in rules and to remove or unmonitor shows.
 
-| Setting | Description |
-| --- | --- |
-| Server Name | A friendly name to help identify the server |
+| Setting        | Description                                                    |
+| -------------- | -------------------------------------------------------------- |
+| Server Name    | A friendly name to help identify the server                    |
 | Hostname or IP | The domain name or local IP address of the host running Sonarr |
-| Port | The port Sonarr runs on |
-| Base URL | The URL base configured in Sonarr, if one is set |
-| API key | The API key from Sonarr settings |
+| Port           | The port Sonarr runs on                                        |
+| Base URL       | The URL base configured in Sonarr, if one is set               |
+| API key        | The API key from Sonarr settings                               |
 
 ## Metadata
 
@@ -143,12 +142,12 @@ Maintainerr has a separate `Settings -> Metadata` page for poster, backdrop, and
 
 This page is mainly useful when you want better artwork fallback, more reliable cross-provider ID resolution, or more control over which metadata source Maintainerr prefers.
 
-| Setting | Description |
-| --- | --- |
-| TMDB API key | Optional. If you leave this empty, Maintainerr uses its built-in shared TMDB key. Add your own key if you want an isolated quota or your own TMDB account access. |
-| TVDB API key | Optional. Enables TVDB as an additional metadata source and fallback for ID cross-references. TVDB cannot be selected as primary until it is configured. |
-| Primary | Chooses whether Maintainerr prefers TMDB or TVDB first when resolving posters, backdrops, and related metadata lookups. |
-| Refresh metadata | Clears cached metadata for that provider and asks your media server to refresh matching items that already have provider IDs stored. |
+| Setting          | Description                                                                                                                                                       |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TMDB API key     | Optional. If you leave this empty, Maintainerr uses its built-in shared TMDB key. Add your own key if you want an isolated quota or your own TMDB account access. |
+| TVDB API key     | Optional. Enables TVDB as an additional metadata source and fallback for ID cross-references. TVDB cannot be selected as primary until it is configured.          |
+| Primary          | Chooses whether Maintainerr prefers TMDB or TVDB first when resolving posters, backdrops, and related metadata lookups.                                           |
+| Refresh metadata | Clears cached metadata for that provider and asks your media server to refresh matching items that already have provider IDs stored.                              |
 
 Typical usage:
 
@@ -173,7 +172,7 @@ Tautulli is only available for Plex users
 
 Tautulli's configuration is required to use its parameters in rules.
 
-| Setting | Description |
-| --- | --- |
-| URL| The domain name or local IP address of the host running Tautulli |
-| API key | The API key from Tautulli settings |
+| Setting | Description                                                      |
+| ------- | ---------------------------------------------------------------- |
+| URL     | The domain name or local IP address of the host running Tautulli |
+| API key | The API key from Tautulli settings                               |

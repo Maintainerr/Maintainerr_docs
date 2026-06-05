@@ -5,23 +5,24 @@ description: Install methods and information.
 title: Installation
 ---
 
-import Tabs from '@theme/Tabs'
-import TabItem from '@theme/TabItem'
-import Details from '@theme/Details'
-import AnnotatedCodeBlock from '@site/src/components/AnnotatedCodeBlock'
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Details from "@theme/Details";
+import AnnotatedCodeBlock from "@site/src/components/AnnotatedCodeBlock";
 
 Docker is Maintainerr's supported method of installation.
 
 Images for amd64 & arm64 are available under `maintainerr/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
 The container's data location is `/opt/data`. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
 
-[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume 'Click here to be taken to the Docker documentation page on volumes.'
+[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
 
 :::note
 Maintainerr uses the configured `user:group` as its runtime user inside the container, and any files it creates in your host data directory will be owned by that user and group.
 
 If you do not set one explicitly, the default `UID:GID` is `1000:1000`, so make sure your host data directory is read/writeable by that UID:GID. If needed, update it with `chown -R 1000:1000 /opt/data`.
 :::
+
 ## Docker
 
 Compose is recommended for most installs. Choose the Docker example that matches your workflow.
@@ -49,20 +50,20 @@ Define the Maintainerr service in your docker-compose.yml as follows:
   annotations={[
     {
       line: 3,
-      label: '+',
+      label: "+",
       tooltip:
-        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
+        "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
     },
     {
       line: 7,
-      label: '+',
+      label: "+",
       tooltip:
-        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
+        "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
     },
     {
       line: 11,
-      label: '+',
-      tooltip: 'Port mappings are defined as host:container.',
+      label: "+",
+      tooltip: "Port mappings are defined as host:container.",
     },
   ]}
 />
@@ -92,20 +93,20 @@ Run Maintainerr with the following command:
   annotations={[
     {
       line: 4,
-      label: '+',
+      label: "+",
       tooltip:
-        'Bind a host directory to /opt/data so configuration and database files persist outside the container.',
+        "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
     },
     {
       line: 6,
-      label: '+',
-      tooltip: 'Port mappings are defined as host:container.',
+      label: "+",
+      tooltip: "Port mappings are defined as host:container.",
     },
     {
       line: 8,
-      label: '+',
+      label: "+",
       tooltip:
-        'You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.',
+        "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
     },
   ]}
 />
@@ -263,7 +264,7 @@ services:
   maintainerr:
     image: ghcr.io/maintainerr/maintainerr:latest
     healthcheck:
-      test: ['CMD', '/opt/app/healthcheck.sh']
+      test: ["CMD", "/opt/app/healthcheck.sh"]
       interval: 30s
       timeout: 5s
       start_period: 40s
@@ -274,14 +275,14 @@ services:
 
 A list of all available environment variables are below. No other env variables are officially supported by Maintainerr. These are added either into the compose file or your docker run command.
 
-| Variable     | Default Value   | Description                                                                                                        |
-| ------------ | --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| TZ           | _host timezone_ | Controls date formatting in logs.                                                                                  |
-| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                                      |
-| UI_PORT      | 6246            | The listen port of the web server.                                                                                 |
-| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.             |
+| Variable     | Default Value   | Description                                                                                                                                             |
+| ------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TZ           | _host timezone_ | Controls date formatting in logs.                                                                                                                       |
+| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                                                                           |
+| UI_PORT      | 6246            | The listen port of the web server.                                                                                                                      |
+| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.                                                    |
 | LOG_LEVEL    | info            | Overrides the persisted log level for the current container process only. Accepted values are `debug`, `verbose`, `info`, `warn`, `error`, and `fatal`. |
-| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                            |
+| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                                                                 |
 
 :::tip
 If `BASE_PATH` is set, remember to prefix health-check probe paths accordingly (for example `/maintainerr/api/health/ready`).

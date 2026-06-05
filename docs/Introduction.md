@@ -64,7 +64,7 @@ hide_title: true
 - See an overview of your media server library contents.
 - Manually add an item to one of the above mentioned collections.
 - Manually exclude an item from one of the collections, even if it meets the rule criteria.
-- Show your new collection on the *Home* screen.
+- Show your new collection on the _Home_ screen.
 - Set a number of days the collection will exist before it is deleted.
 - Set Radarr and Sonarr to either **remove** or **unmonitor** media in the collection.
 - Auto clear requests from Seerr
