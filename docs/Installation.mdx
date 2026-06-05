@@ -57,6 +57,10 @@ volumes:
 
 ## Run
 
+Compose is recommended for most installs. If you prefer `docker run`, use the steps below.
+
+<Details summary="Docker run (alternative)">
+
 <AnnotatedCodeBlock
   language="bash"
   code={`docker run -d \\
@@ -118,6 +122,8 @@ docker pull ghcr.io/maintainerr/maintainerr
 ```
 
 Finally, run the container with the same parameters you originally used to create/start the container.
+
+</Details>
 
 ## Compose
 
@@ -182,15 +188,9 @@ docker compose up -d
 
 ### Updating
 
-Pull the latest image:
-
 ```bash
+cd /path/to/maintainerr/docker/
 docker compose pull
-```
-
-Then, restart all services defined in the Compose file:
-
-```bash
 docker compose up -d
 ```
 
