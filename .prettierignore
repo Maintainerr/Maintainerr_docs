@@ -1,0 +1,16 @@
+# Build output & generated artifacts
+build/
+.docusaurus/
+node_modules/
+
+# Lockfile (managed by npm)
+package-lock.json
+
+# Frozen documentation snapshots — created by `docusaurus docs:version`.
+# These mirror past releases and should stay byte-stable, so we don't reformat them.
+versioned_docs/
+versioned_sidebars/
+
+# Vendored / generated assets we don't own
+static/assets/
+static/openapi-spec/

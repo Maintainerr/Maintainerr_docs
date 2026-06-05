@@ -14,14 +14,14 @@
   --ifm-footer-link-color: var(--ifm-navbar-link-color);
   --ifm-footer-title-color: var(--ifm-navbar-link-color);
   --ifm-heading-color: #111827;
-  --ifm-font-family-base: 'Segoe UI', sans-serif;
+  --ifm-font-family-base: "Segoe UI", sans-serif;
   --ifm-heading-font-family: var(--ifm-font-family-base);
-  --ifm-font-family-monospace: 'Cascadia Code', 'Consolas', 'SFMono-Regular',
-    Menlo, Monaco, monospace;
+  --ifm-font-family-monospace:
+    "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, Monaco, monospace;
   --ifm-code-font-size: 95%;
 }
 
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-background-color: #111827;
   --ifm-heading-color: #f8fafc;
 }
@@ -35,8 +35,9 @@
   margin: 0 auto 2rem;
   padding: 2.25rem 1.5rem;
   border-radius: 1.25rem;
-  background: linear-gradient(rgba(17, 24, 39, 0.66), rgba(17, 24, 39, 0.66)),
-    url('/img/banner3.png') center 35% / cover no-repeat;
+  background:
+    linear-gradient(rgba(17, 24, 39, 0.66), rgba(17, 24, 39, 0.66)),
+    url("/img/banner3.png") center 35% / cover no-repeat;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
 }
 
@@ -143,7 +144,8 @@
 
 .hero-shell {
   min-height: calc(100vh - var(--ifm-navbar-height));
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top left,
       rgba(217, 119, 6, 0.28),
       transparent 35%

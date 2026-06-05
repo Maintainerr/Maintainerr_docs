@@ -8,7 +8,9 @@
     "build": "docusaurus build",
     "serve": "docusaurus serve --dir build",
     "clear": "docusaurus clear",
-    "docs:version": "docusaurus docs:version"
+    "docs:version": "docusaurus docs:version",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -22,11 +24,14 @@
   },
   "homepage": "https://github.com/Maintainerr/Maintainerr_docs#readme",
   "dependencies": {
-    "@docusaurus/core": "^3.9.2",
-    "@docusaurus/preset-classic": "^3.9.2",
-    "@easyops-cn/docusaurus-search-local": "^0.55.1"
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
+    "@easyops-cn/docusaurus-search-local": "^0.55.2"
   },
   "overrides": {
     "encoding-sniffer": "1.0.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.3"
   }
 }

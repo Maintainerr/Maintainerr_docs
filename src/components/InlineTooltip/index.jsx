@@ -1,40 +1,40 @@
-import React, { useEffect, useId, useState } from 'react'
-import { createPortal } from 'react-dom'
-import styles from './styles.module.css'
+import React, { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
+import styles from "./styles.module.css";
 
 export default function InlineTooltip({ label, tooltip }) {
-  const tooltipId = useId()
-  const [position, setPosition] = useState(null)
+  const tooltipId = useId();
+  const [position, setPosition] = useState(null);
 
   function updatePosition(event) {
-    const rect = event.currentTarget.getBoundingClientRect()
+    const rect = event.currentTarget.getBoundingClientRect();
     setPosition({
       left: rect.left + rect.width / 2,
       top: rect.top - 10,
-    })
+    });
   }
 
   function hideTooltip() {
-    setPosition(null)
+    setPosition(null);
   }
 
   useEffect(() => {
     if (!position) {
-      return undefined
+      return undefined;
     }
 
     function dismissTooltip() {
-      setPosition(null)
+      setPosition(null);
     }
 
-    window.addEventListener('scroll', dismissTooltip, true)
-    window.addEventListener('resize', dismissTooltip)
+    window.addEventListener("scroll", dismissTooltip, true);
+    window.addEventListener("resize", dismissTooltip);
 
     return () => {
-      window.removeEventListener('scroll', dismissTooltip, true)
-      window.removeEventListener('resize', dismissTooltip)
-    }
-  }, [position])
+      window.removeEventListener("scroll", dismissTooltip, true);
+      window.removeEventListener("resize", dismissTooltip);
+    };
+  }, [position]);
 
   return (
     <>
@@ -49,7 +49,7 @@ export default function InlineTooltip({ label, tooltip }) {
       >
         <span className={styles.badge}>{label}</span>
       </span>
-      {position && typeof document !== 'undefined'
+      {position && typeof document !== "undefined"
         ? createPortal(
             <span
               className={styles.portalTooltip}
@@ -62,9 +62,9 @@ export default function InlineTooltip({ label, tooltip }) {
             >
               {tooltip}
             </span>,
-            document.body
+            document.body,
           )
         : null}
     </>
-  )
+  );
 }

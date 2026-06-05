@@ -10,12 +10,13 @@ A collection is auto generated when defining a rule. A collection holds all medi
 When the specified amount of days that media must live in the collection is passed, the collection handler job will perform the necessary cleanup actions.
 
 :::note Collection Handling
-     Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle Collections` button on the Collections page.
-     This runs each collection's configured action (such as delete, unmonitor, or do nothing), but it does not remove items from collections on its own.
+Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle Collections` button on the Collections page.
+This runs each collection's configured action (such as delete, unmonitor, or do nothing), but it does not remove items from collections on its own.
 
      If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling.
      When a delete-style action removes files, Maintainerr also prunes that media from any other Maintainerr-managed collections that still list it. This prevents already-deleted items from being re-processed while Jellyfin or Emby are still catching up on their next library scan.
      If eligible media is actively being streamed, Maintainerr defers it to the next collection-handler run instead of acting on it mid-playback. This is a best-effort snapshot taken once per run, so playback that starts later is only protected on the following pass.
+
 :::
 
 ## Media Server
@@ -83,7 +84,7 @@ The collection-poster endpoints live under `/api/collections/:id`.
 You can manually add media to a collection on the `Overview` page, by using the `Add` button on the media. Using the button will open a popup where you are able to pick the collection you wish to add the media to.
 
 :::warning
-    Please note that the first option selected is to **remove** media from all collections. However, if the media was added by the rule handler, it will be added again. If you wish to counter this behaviour, you must also exclude it from all collections.
+Please note that the first option selected is to **remove** media from all collections. However, if the media was added by the rule handler, it will be added again. If you wish to counter this behaviour, you must also exclude it from all collections.
 :::
 
 ### Removing
@@ -93,7 +94,7 @@ As mentioned in the section above, you are able to remove media from all collect
 However, if you wish to just remove media from 1 collection it's easier to click on the collection's name on the `collections` page. This will show all media currently added to the collection. There you're able to remove specific media from the collection by using the `Remove` button.
 
 :::note
-    This will also exclude media from rule handling for this collection, so it won't be added again.
+This will also exclude media from rule handling for this collection, so it won't be added again.
 :::
 
 ### Excluding

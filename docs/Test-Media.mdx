@@ -5,8 +5,8 @@ description: Use Test Media to see whether a specific item matches a rule and wh
 title: Test Media
 ---
 
-import Link from '@docusaurus/Link'
-import CodeBlock from '@theme/CodeBlock'
+import Link from "@docusaurus/Link";
+import CodeBlock from "@theme/CodeBlock";
 
 Maintainerr comes with a built-in feature to test your ruleset against your media, and display the results to you. This can be done without ever running a rule or creating collections. Sometimes, it is hard for you to determine why something was or wasn't added to a collection. Using the Test Media feature can be an extremely useful tool in helping you figure out what is going on.
 
@@ -33,12 +33,12 @@ Click on the name of the collection that you want to test rules for. You will be
 
 Depending on what type of library/media this collection is for, you will have different options at the top of this popup.
 
-| Item  | Value   |
-| ----- | ------- |
-| Media | Name of a Movie or TVShow that you want to test |
-| Season | Select which season you want to test (if TV) |
-| Episode | Select the episode you want to test (if TV) |
-| Output | The test results in YAML format |
+| Item    | Value                                           |
+| ------- | ----------------------------------------------- |
+| Media   | Name of a Movie or TVShow that you want to test |
+| Season  | Select which season you want to test (if TV)    |
+| Episode | Select the episode you want to test (if TV)     |
+| Output  | The test results in YAML format                 |
 
 ### Test your media
 
@@ -114,7 +114,7 @@ This is helpful when you are trying to test a specific rule, usually one that is
 
 Test Media results do not always include the result of every rule in your ruleset. As mentioned elsewhere, the rules run in order.
 
-For example:  If Rule 2 is an AND to Rule 1, and Rule 1 is determined to be `FALSE`, then only the output of Rule 1 will be shown. This is because Maintainerr didn't even test Rule 2.
+For example: If Rule 2 is an AND to Rule 1, and Rule 1 is determined to be `FALSE`, then only the output of Rule 1 will be shown. This is because Maintainerr didn't even test Rule 2.
 
 It is logically impossible for something to be `1 AND 2`, if it is not `1` to begin with. There is no point in testing Rule 2, because it will not have an impact on the results.
 

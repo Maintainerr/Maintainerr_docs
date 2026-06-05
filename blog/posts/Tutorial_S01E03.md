@@ -93,7 +93,7 @@ B-.AND.->C
 C ==> D(Results)
 ```
 
-This is the same thing as putting all of those rules in one section: `Section 1 results` AND `Section 2 results` AND `Section 3 results`. There is no need to do this and you should keep them all in one section: *(Section 1: Rule 1 AND Rule 2 AND Rule 3)*.
+This is the same thing as putting all of those rules in one section: `Section 1 results` AND `Section 2 results` AND `Section 3 results`. There is no need to do this and you should keep them all in one section: _(Section 1: Rule 1 AND Rule 2 AND Rule 3)_.
 
 ## Closing
 

@@ -1,50 +1,54 @@
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
   docsSidebar: [
-    'introduction',
+    "introduction",
     {
-      type: 'category',
-      label: 'Getting Started',
+      type: "category",
+      label: "Getting Started",
       items: [
-        'installation',
-        'configuration',
-        'works',
-        'common',
-        'reverseproxy',
-        'downgrade',
+        "installation",
+        "configuration",
+        "works",
+        "common",
+        "reverseproxy",
+        "downgrade",
       ],
     },
     {
-      type: 'category',
-      label: 'Rules',
-      items: ['rules', 'glossary'],
+      type: "category",
+      label: "Rules",
+      items: ["rules", "glossary"],
     },
     {
-      type: 'category',
-      label: 'Collections',
-      items: ['collections', 'test-media'],
+      type: "category",
+      label: "Collections",
+      items: ["collections", "test-media"],
     },
     {
-      type: 'category',
-      label: 'Features',
-      items: ['calendar-feature', 'overlays-feature', 'storage-metrics-feature'],
+      type: "category",
+      label: "Features",
+      items: [
+        "calendar-feature",
+        "overlays-feature",
+        "storage-metrics-feature",
+      ],
     },
     {
-      type: 'category',
-      label: 'Notifications',
-      items: ['notifications'],
+      type: "category",
+      label: "Notifications",
+      items: ["notifications"],
     },
     {
-      type: 'category',
-      label: 'Community',
-      items: ['contributing', 'changelog'],
+      type: "category",
+      label: "Community",
+      items: ["contributing", "changelog"],
     },
     {
-      type: 'category',
-      label: 'API',
-      items: ['api'],
+      type: "category",
+      label: "API",
+      items: ["api"],
     },
   ],
-}
+};
 
-module.exports = sidebars
+module.exports = sidebars;
