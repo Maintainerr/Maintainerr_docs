@@ -142,7 +142,11 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 The separate `Settings -> Download Client` page only appears once Radarr or Sonarr is configured.
 :::
 
-When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. The download is matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched. qBittorrent is currently the only supported client.
+When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. Downloads are matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched.
+
+qBittorrent is currently the only supported client.
+
+### qBittorrent
 
 :::note
 Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.1 or newer). Media grabbed through a different qBittorrent — or through a Usenet/other download client — won't be found and is left untouched.
@@ -163,8 +167,8 @@ How it works:
 - **Seeding is decided by qBittorrent.** A download is only removed once it has met qBittorrent's own ratio or seed-time limit; one still below its limit keeps seeding. The **Fallback seeding ratio** applies only to downloads qBittorrent enforces no limit on.
 - **Separate download and library folders are handled automatically.** qBittorrent deletes its own downloaded files (in its download directory) while Radarr/Sonarr delete the imported library copy, so the common "downloads separate from the library" (hardlink/copy) setup is fully cleaned without Maintainerr needing to know any paths.
 - For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
-- If a download is cross-seeded (another torrent shares the same files), Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working.
-- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself.
+- If a download is cross-seeded (another torrent shares the same files), Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working. This follows the same general approach as [qbit_manage](https://github.com/StuffAnThings/qbit_manage), rather than trying to replace a dedicated torrent-management workflow.
+- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation.
 - `Test Connection` verifies the URL and credentials against the qBittorrent Web UI before saving.
 
 :::tip Troubleshooting: "403 Forbidden" after a successful login
