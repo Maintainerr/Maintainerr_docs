@@ -168,7 +168,7 @@ How it works:
 - **Separate download and library folders are handled automatically.** qBittorrent deletes its own downloaded files (in its download directory) while Radarr/Sonarr delete the imported library copy, so the common "downloads separate from the library" (hardlink/copy) setup is fully cleaned without Maintainerr needing to know any paths.
 - For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
 - If a download is cross-seeded (another torrent shares the same files), Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working. This follows the same general approach as [qbit_manage](https://github.com/StuffAnThings/qbit_manage), rather than trying to replace a dedicated torrent-management workflow.
-- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation.
+- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation. For more advanced usage; look elsewhere.
 - `Test Connection` verifies the URL and credentials against the qBittorrent Web UI before saving.
 
 :::tip Troubleshooting: "403 Forbidden" after a successful login
