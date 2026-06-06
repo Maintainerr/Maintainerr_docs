@@ -157,8 +157,13 @@ How it works:
 
 - Cleanup runs only for media that Radarr or Sonarr deletes. Maintainerr looks up the download that produced the files in the Radarr/Sonarr download history and removes that download from qBittorrent. Media removed directly from the media server (without Radarr/Sonarr), manually imported items, or items whose download history has been cleared are left untouched.
 - For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
+- If a download is cross-seeded (another torrent shares the same files), Maintainerr removes only the torrent entry and keeps the data, so the other torrent keeps working.
 - Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself.
 - `Test Connection` verifies the URL and credentials against the qBittorrent WebUI.
+
+:::tip Troubleshooting: "403 Forbidden" after a successful login
+A `403 Forbidden` on the connection test (or in the logs) means qBittorrent authenticated Maintainerr but its Web UI security then rejected the request — it is **not** a wrong username/password. In qBittorrent go to **Options → Web UI → Security** and either add Maintainerr's IP/subnet to **"Bypass authentication for clients in whitelisted IP subnets"**, or review **"Enable Host header validation"** and CSRF protection (commonly triggered when qBittorrent is behind a reverse proxy). This is the most common setup issue.
+:::
 
 ## Metadata
 
