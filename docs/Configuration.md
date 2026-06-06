@@ -136,6 +136,45 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 | Base URL       | The URL base configured in Sonarr, if one is set               |
 | API key        | The API key from Sonarr settings                               |
 
+## Download Client
+
+:::note
+The separate `Settings -> Download Client` page only appears once Radarr or Sonarr is configured.
+:::
+
+When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. Downloads are matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched.
+
+qBittorrent is currently the only supported client.
+
+### qBittorrent
+
+:::note
+Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.1 or newer). Media grabbed through a different qBittorrent — or through a Usenet/other download client — won't be found and is left untouched.
+:::
+
+| Setting                | Description                                                                                                                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| URL                    | The base URL of your qBittorrent WebUI, such as `http://localhost:8080` or `https://qbittorrent.example.com`                                                                                                      |
+| Username               | The qBittorrent WebUI username. Leave blank if the WebUI bypasses authentication (e.g. _Bypass authentication for clients on localhost_).                                                                         |
+| Password               | The qBittorrent WebUI password. Leave blank if authentication is bypassed.                                                                                                                                        |
+| Delete downloaded data | When enabled, removing a download also deletes its files from disk. Turn this off if you cross-seed, so other torrents that share the data keep working.                                                          |
+| Fallback seeding ratio | Whether a download has finished seeding is decided by qBittorrent's own ratio / seed-time limits. This fallback ratio only applies to downloads qBittorrent isn't limiting, and can't be below 0.5 (default 0.5). |
+
+How it works:
+
+- Cleanup runs only for media that Radarr or Sonarr deletes. Maintainerr looks up the download that produced the files in the Radarr/Sonarr download history and removes that download from qBittorrent. Media removed directly from the media server (without Radarr/Sonarr), manually imported items, or items whose download history has been cleared are left untouched.
+- Only collection actions that delete files trigger cleanup (**Delete**, **Unmonitor and delete files**). **Unmonitor and keep files** and **Change quality profile** never remove a download.
+- **Seeding is decided by qBittorrent.** A download is only removed once it has met qBittorrent's own ratio or seed-time limit; one still below its limit keeps seeding. The **Fallback seeding ratio** applies only to downloads qBittorrent enforces no limit on.
+- **Separate download and library folders are handled automatically.** qBittorrent deletes its own downloaded files (in its download directory) while Radarr/Sonarr delete the imported library copy, so the common "downloads separate from the library" (hardlink/copy) setup is fully cleaned without Maintainerr needing to know any paths.
+- For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
+- If a download is cross-seeded (another torrent shares the same files), Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working. This follows the same general approach as [qbit_manage](https://github.com/StuffAnThings/qbit_manage), rather than trying to replace a dedicated torrent-management workflow.
+- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation. For more advanced usage; look elsewhere.
+- `Test Connection` verifies the URL and credentials against the qBittorrent Web UI before saving.
+
+:::tip Troubleshooting: "403 Forbidden" after a successful login
+A `403 Forbidden` on the connection test (or in the logs) means qBittorrent accepted the credentials but its Web UI security then blocked the request — it is **not** a wrong username/password. The usual cause is that Maintainerr and qBittorrent run on different IPs (e.g. separate Docker containers). In qBittorrent go to **Options → Web UI → Security** and add Maintainerr's IP or subnet to **"Bypass authentication for clients in whitelisted IP subnets"**. A reverse proxy or host-header validation can also cause it.
+:::
+
 ## Metadata
 
 Maintainerr has a separate `Settings -> Metadata` page for poster, backdrop, and metadata-provider settings used across the UI.
