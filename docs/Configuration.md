@@ -136,6 +136,30 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 | Base URL       | The URL base configured in Sonarr, if one is set               |
 | API key        | The API key from Sonarr settings                               |
 
+## Download Client
+
+:::note
+The separate `Settings -> Download Client` page only appears once Radarr or Sonarr is configured.
+:::
+
+When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. The download is matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched. qBittorrent is currently the only supported client.
+
+| Setting                           | Description                                                                                                                                              |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| URL                               | The base URL of your qBittorrent WebUI, such as `http://localhost:8080` or `https://qbittorrent.example.com`                                             |
+| Username                          | The qBittorrent WebUI username. Leave blank if the WebUI bypasses authentication (e.g. _Bypass authentication for clients on localhost_).                |
+| Password                          | The qBittorrent WebUI password. Leave blank if authentication is bypassed.                                                                               |
+| Delete downloaded data            | When enabled, removing a download also deletes its files from disk. Turn this off if you cross-seed, so other torrents that share the data keep working. |
+| Only delete after a seeding ratio | When enabled, a download is only removed once it reaches the configured ratio; otherwise it keeps seeding. Leave disabled to remove regardless of ratio. |
+| Minimum ratio                     | The share ratio a download must reach before Maintainerr removes it. Only shown when _Only delete after a seeding ratio_ is enabled.                     |
+
+How it works:
+
+- Cleanup runs only for media that Radarr or Sonarr deletes. Maintainerr looks up the download that produced the files in the Radarr/Sonarr download history and removes that download from qBittorrent. Media removed directly from the media server (without Radarr/Sonarr), manually imported items, or items whose download history has been cleared are left untouched.
+- For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
+- Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself.
+- `Test Connection` verifies the URL and credentials against the qBittorrent WebUI.
+
 ## Metadata
 
 Maintainerr has a separate `Settings -> Metadata` page for poster, backdrop, and metadata-provider settings used across the UI.
