@@ -355,7 +355,7 @@ List of labels associated with the Plex item.
 #### Watchlisted by (username)
 
 :::info
-List of users that have the Plex item in their watchlist. This does not work with private watchlists. This rule is experimental and might not work for all use cases. Plex only.
+List of Plex users that have the item in their watchlist. Maintainerr scans all users returned by the Plex server account list for this lookup, not only the current user, and there is currently no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, is experimental, and might be more fragile than purely local metadata rules. Plex only.
 
 :::
 
@@ -366,7 +366,7 @@ List of users that have the Plex item in their watchlist. This does not work wit
 #### Is Watchlisted
 
 :::info
-Indicates whether the item is on any user's Plex watchlist. Plex only.
+Indicates whether the item is on any Plex user's watchlist. Maintainerr checks all users returned by the Plex server account list for this lookup, not only the current user, and there is currently no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, not only the local Plex server. Plex only.
 
 :::
 
