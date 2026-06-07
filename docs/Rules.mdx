@@ -43,6 +43,26 @@ The watch-history getters keep these cases separate: a confirmed empty history r
 
 :::
 
+:::warning Plex Watchlist Rules
+`Watchlisted by` (`Plex.watchlist_isListedByUsers`) and `Is Watchlisted` (`Plex.watchlist_isWatchlisted`) do not only check the current Plex user. Maintainerr scans every user still returned by the Plex server account list and then tries to resolve the related Plex.tv / community usernames and UUIDs needed for watchlist lookups.
+
+Current limitations and behavior to expect:
+
+- There is currently no per-user exclude option for Plex watchlist scanning.
+- If a removed Plex friend is still returned by the Plex server account list, Maintainerr can still try to scan that user.
+- Private watchlists can produce expected warnings because those watchlists are not visible to Maintainerr.
+- These rules depend on Plex cloud services such as `plex.tv` and `community.plex.tv`, not only your local Plex server.
+- `Watchlisted by` remains experimental and is generally more fragile than purely local metadata rules.
+
+Troubleshooting tips:
+
+- Verify the affected user is still returned by the Plex server account list.
+- Verify the watchlist is public if you expect Maintainerr to see it.
+- Do not expect reauthing Plex or changing the local Plex IP to fix this specific lookup path by itself.
+- `Test Media` can still work while a full rule run fails with repeated Plex cloud timeouts such as `ECONNABORTED`. That usually points to repeated cloud lookups during the full run, not necessarily a local Plex configuration problem.
+
+:::
+
 ## Creating rules
 
 ### General
