@@ -137,6 +137,7 @@ Recent Maintainerr releases also add database support for overlays.
 - new overlay template, overlay settings, and overlay item state tables
 - new collection fields for `overlayEnabled`, `overlayTemplateId`, and `mediaServerSort`
 - new `streamystats_url` setting for the Jellyfin-only Streamystats integration
+- new download-client settings for the qBittorrent cleanup integration: URL, optional username/password, whether download data should be deleted, and the fallback seeding ratio
 - new `collection_media.ruleEvaluationFailed` state so upgrades can preserve which rule-managed items should be skipped by automatic handling after a rule-evaluation failure; manual collection entries are still handled normally
 - new `NormalizeRuleSectionOperators` migration that backfills legacy null operators without changing existing matches: the first rule of a group stays unset, the first rule of a later section becomes `AND`, and later rules in that section become `OR`. This migration is behavior-preserving and its `down()` is a no-op.
 

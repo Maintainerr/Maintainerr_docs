@@ -95,6 +95,15 @@ Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed w
 | `DELETE /api/settings/emby`     | Remove the saved Emby connection settings                                                       |
 | `POST /api/settings/emby/login` | Authenticate with an Emby admin username/password and return an API key plus admin-user choices |
 
+### Download Client
+
+| Endpoint                                  | Purpose                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------- |
+| `GET /api/settings/download-client`       | Read the saved qBittorrent connection and cleanup options                       |
+| `POST /api/settings/download-client`      | Save qBittorrent connection and cleanup options                                 |
+| `DELETE /api/settings/download-client`    | Remove the saved download-client connection settings                            |
+| `POST /api/settings/test/download-client` | Test the qBittorrent Web UI URL, credentials, and cleanup options before saving |
+
 ### Streamystats (Jellyfin only)
 
 | Endpoint                               | Purpose                                                                                              |

@@ -315,6 +315,56 @@ paths:
           description: ''
       tags:
         - /settings
+  /api/settings/download-client:
+    get:
+      operationId: SettingsController_getDownloadClientSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved qBittorrent connection and cleanup options.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadClientSetting'
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateDownloadClientSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadClientSetting'
+      responses:
+        '201':
+          description: Saves qBittorrent connection and cleanup options.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeDownloadClientSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved download-client connection settings.
+      tags:
+        - /settings
+  /api/settings/test/download-client:
+    post:
+      operationId: SettingsController_testDownloadClient
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadClientSetting'
+      responses:
+        '201':
+          description: Tests the qBittorrent Web UI URL, credentials, and cleanup options.
+      tags:
+        - /settings
   /api/settings/emby:
     get:
       operationId: SettingsController_getEmbySetting
@@ -1841,6 +1891,26 @@ components:
     SettingDto:
       type: object
       properties: {}
+    DownloadClientSetting:
+      type: object
+      properties:
+        download_client_url:
+          type: string
+        download_client_username:
+          type: string
+          default: ''
+        download_client_password:
+          type: string
+          default: ''
+        download_client_delete_data:
+          type: boolean
+        download_client_fallback_ratio:
+          type: number
+          minimum: 0.5
+      required:
+        - download_client_url
+        - download_client_delete_data
+        - download_client_fallback_ratio
     EmbySetting:
       type: object
       properties:
