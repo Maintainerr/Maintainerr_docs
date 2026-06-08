@@ -61,9 +61,9 @@ Maintainerr only lists Plex servers that publish a **reachable** connection to p
 
 Fix it on the Plex side by publishing a reachable address:
 
-1. In Plex, open `Settings -> Network -> Custom server access URLs`.
-2. Add a reachable **HTTPS** URL **including the port** — for example your server's `*.plex.direct` address: `https://<dashed-public-ip>.<hash>.plex.direct:32400`. Using the `.plex.direct` host keeps a valid certificate; a reverse-proxied domain with its own valid certificate works too. You can usually copy the correct address from Seerr if that service is already connected to the same Plex server.
-3. Save and restart Plex. (On some Docker images this setting is an environment variable instead — for example `PLEX_ADVERTISE_URL` on the hotio image.)
+1. In Plex Web, open `Settings → (your server) → Network` and click **Show Advanced** (top-right) to reveal `Custom server access URLs`.
+2. Into that comma-separated field, add a reachable **HTTPS** URL — e.g. your server's `*.plex.direct` address: `https://<dashed-public-ip>.<hash>.plex.direct:32400`. The `.plex.direct` host keeps a valid certificate (a reverse-proxied domain with its own cert works too). Including the port is recommended; otherwise Plex falls back to your Remote Access port. You can usually copy the correct address from Seerr if it's connected to the same Plex server.
+3. Save and restart Plex. On some Docker images this setting is an environment variable instead — e.g. `PLEX_ADVERTISE_URL` on the hotio image — in which case set it there (the in-app field is managed by that variable).
 
 Back in Maintainerr, press the **Refresh icon** next to the server selector — the server now appears in the list.
 
