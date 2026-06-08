@@ -55,6 +55,25 @@ Proper DNS is preferred. Plex discovery and failover can depend on resolvable Pl
 :::
 
 <details>
+<summary>Server list is empty (VPS, cloud host, or custom networking)</summary>
+
+Maintainerr only lists Plex servers that publish a **reachable** connection to plex.tv. If authentication succeeds but the server dropdown stays empty, Plex is most likely publishing only a `local` connection that Maintainerr (running elsewhere) cannot use. This is common when Plex runs on a **VPS / cloud host** or behind unusual networking, where Plex's automatic Remote Access cannot detect a public connection.
+
+Fix it on the Plex side by publishing a reachable address:
+
+1. In Plex, open `Settings -> Network -> Custom server access URLs`.
+2. Add a reachable **HTTPS** URL **including the port** — for example your server's `*.plex.direct` address: `https://<dashed-public-ip>.<hash>.plex.direct:32400`. Using the `.plex.direct` host keeps a valid certificate; a reverse-proxied domain with its own valid certificate works too. You can usually copy the correct address from Seerr if that service is already connected to the same Plex server.
+3. Save and restart Plex. (On some Docker images this setting is an environment variable instead — for example `PLEX_ADVERTISE_URL` on the hotio image.)
+
+Back in Maintainerr, press the **Refresh icon** next to the server selector — the server now appears in the list.
+
+:::tip
+If Maintainerr and Plex share a Docker network, you can instead skip discovery and point Maintainerr at Plex's **internal** address (e.g. `http://plex:32400`) with manual connection override below.
+:::
+
+</details>
+
+<details>
 <summary>Advanced: manual connection override</summary>
 
 Most users should leave this closed and use the normal Plex authentication and discovery flow.
