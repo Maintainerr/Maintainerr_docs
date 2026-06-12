@@ -32,6 +32,6 @@
     "encoding-sniffer": "1.0.2"
   },
   "devDependencies": {
-    "prettier": "^3.8.3"
+    "prettier": "^3.8.4"
   }
 }
