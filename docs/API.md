@@ -69,6 +69,8 @@ Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed w
 | `POST /api/collections/:id/poster`   | Upload a custom collection poster with multipart field `poster`; returns `{ pushed, attempted }`  |
 | `DELETE /api/collections/:id/poster` | Clear the stored poster and return `{ cleared, refreshRequested }`                                |
 
+The lower-level `POST /api/media-server/collection` request body matches `CreateCollectionParams`: `libraryId`, `title`, and `type` are required, with optional `summary`, `sortTitle`, and `initialItemId`. `initialItemId` is a single media-server item id used when a collection must be created with one initial member; remaining items are still added afterwards through the normal collection-sync path.
+
 ### Metadata
 
 | Endpoint                                        | Purpose                                                                             |

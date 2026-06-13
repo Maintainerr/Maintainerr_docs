@@ -743,6 +743,12 @@ paths:
     post:
       operationId: MediaServerController_createCollection
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionParams'
       responses:
         '201':
           description: ''
@@ -2122,6 +2128,31 @@ components:
           type: boolean
         recommended:
           type: boolean
+    CreateCollectionParams:
+      type: object
+      properties:
+        libraryId:
+          type: string
+        title:
+          type: string
+        summary:
+          type: string
+        type:
+          type: string
+          enum:
+            - movie
+            - show
+            - season
+            - episode
+        sortTitle:
+          type: string
+        initialItemId:
+          type: string
+          description: Optional id of a single media-server item to include when the collection is created.
+      required:
+        - libraryId
+        - title
+        - type
     RulesDto:
       type: object
       properties: {}
