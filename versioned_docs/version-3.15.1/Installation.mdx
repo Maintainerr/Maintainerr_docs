@@ -1,0 +1,289 @@
+---
+id: installation
+slug: /installation
+description: Install methods and information.
+title: Installation
+---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import Details from "@theme/Details";
+import AnnotatedCodeBlock from "@site/src/components/AnnotatedCodeBlock";
+
+Docker is Maintainerr's supported method of installation.
+
+Images for amd64 & arm64 are available under `maintainerr/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
+The container's data location is `/opt/data`. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
+
+[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
+
+:::note
+Maintainerr uses the configured `user:group` as its runtime user inside the container, and any files it creates in your host data directory will be owned by that user and group.
+
+If you do not set one explicitly, the default `UID:GID` is `1000:1000`, so make sure your host data directory is read/writeable by that UID:GID. If needed, update it with `chown -R 1000:1000 /opt/data`.
+:::
+
+## Docker
+
+Compose is recommended for most installs. Choose the Docker example that matches your workflow.
+
+<Tabs>
+  <TabItem value="compose" label="Compose" default>
+
+Define the Maintainerr service in your docker-compose.yml as follows:
+
+<AnnotatedCodeBlock
+  language="yaml"
+  code={`services:
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    user: 1000:1000
+    volumes:
+      - type: bind
+        source: <your host location>
+        target: /opt/data
+    environment:
+      - TZ=Europe/Brussels
+    ports:
+      - 6246:6246
+    restart: unless-stopped`}
+  annotations={[
+    {
+      line: 3,
+      label: "+",
+      tooltip:
+        "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
+    },
+    {
+      line: 7,
+      label: "+",
+      tooltip:
+        "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
+    },
+    {
+      line: 11,
+      label: "+",
+      tooltip: "Port mappings are defined as host:container.",
+    },
+  ]}
+/>
+
+Save your docker-compose.yml file.
+Then, while in the directory where your docker-compose file exists, start all services defined in your Compose file:
+
+```bash
+docker compose up -d
+```
+
+  </TabItem>
+  <TabItem value="run-command" label="Run Command">
+
+Run Maintainerr with the following command:
+
+<AnnotatedCodeBlock
+  language="bash"
+  code={`docker run -d \\
+  --name maintainerr \\
+  -e TZ=Europe/Brussels \\
+  -v <your host location>:/opt/data \\
+  -u 1000:1000 \\
+  -p 6246:6246 \\
+  --restart unless-stopped \\
+  ghcr.io/maintainerr/maintainerr:latest`}
+  annotations={[
+    {
+      line: 4,
+      label: "+",
+      tooltip:
+        "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
+    },
+    {
+      line: 6,
+      label: "+",
+      tooltip: "Port mappings are defined as host:container.",
+    },
+    {
+      line: 8,
+      label: "+",
+      tooltip:
+        "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
+    },
+  ]}
+/>
+
+  </TabItem>
+</Tabs>
+
+<Details summary="Development Images">
+
+While the development version contains all of the latest features and bug
+fixes, there is a chance things will break. By using a development version
+you must be willing to report any issues you come across, to the development
+team, and provide as much information as possible to help resolve the issue.
+
+Changing from a development version to a stable version is not supported.
+
+- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
+- `maintainerr/maintainerr:development` for the Docker Hub development image.
+
+</Details>
+
+### Updating
+
+#### Update to the latest version with Compose
+
+If you installed Maintainerr with Compose, navigate to the directory containing your `docker-compose.yml` and run:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+This updates Maintainerr using the image tag defined in your Compose file.
+
+#### Stop and remove an existing container
+
+Use these commands if you need to stop and remove a container that was started manually with `docker run`:
+
+```bash
+docker stop maintainerr
+docker rm -f maintainerr
+```
+
+#### Pull the latest image only
+
+Use this command if you only want to download the latest image. Pulling a new image by itself does not update an existing container.
+
+```bash
+docker pull ghcr.io/maintainerr/maintainerr
+```
+
+## Kubernetes
+
+Use the example below as a starting point for a single-instance Maintainerr deployment with a Service and persistent storage claim.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintainerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maintainerr
+  template:
+    metadata:
+      labels:
+        app: maintainerr
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: maintainerr
+          image: ghcr.io/maintainerr/maintainerr:latest
+          ports:
+            - containerPort: 6246
+          env:
+            - name: TZ
+              value: Europe/Brussels
+            # - name: BASE_PATH      # uncomment if serving from a subfolder
+            #   value: /maintainerr
+          volumeMounts:
+            - name: data
+              mountPath: /opt/data
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 6246
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 6246
+            initialDelaySeconds: 10
+            periodSeconds: 10
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: maintainerr-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: maintainerr
+spec:
+  selector:
+    app: maintainerr
+  ports:
+    - port: 6246
+      targetPort: 6246
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: maintainerr-data
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+### Updating
+
+To update your Kubernetes deployment to the latest Maintainerr image, update the image tag in your manifest (or leave it as `latest`) and re-apply:
+
+```bash
+kubectl set image deployment/maintainerr maintainerr=ghcr.io/maintainerr/maintainerr:latest
+```
+
+Alternatively, if you manage your manifests declaratively:
+
+```bash
+kubectl apply -f maintainerr-deployment.yaml
+```
+
+Kubernetes will perform a rolling update, replacing the old pod with one running the new image.
+
+## Health checks
+
+Maintainerr ships lightweight health endpoints under `/api/health` for orchestration probes and uptime monitoring. They are prefixed with `BASE_PATH` when you serve Maintainerr from a subfolder.
+
+- `GET /api/health/live` is the liveness probe. It returns `200` while the process is running and does **not** touch the database.
+- `GET /api/health/ready` is the readiness probe. It runs a database `SELECT 1` check and returns `200` when the database is reachable or `503` when it is not.
+- `GET /api/health` is a convenience alias for `/api/health/ready`.
+
+The container image already includes a `HEALTHCHECK` that calls `/api/health/ready` via `/opt/app/healthcheck.sh`, honouring both `BASE_PATH` and `UI_PORT`. If you need to tune it in Compose, you can override it like this:
+
+```yaml
+services:
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    healthcheck:
+      test: ["CMD", "/opt/app/healthcheck.sh"]
+      interval: 30s
+      timeout: 5s
+      start_period: 40s
+      retries: 3
+```
+
+## Environment Variables
+
+A list of all available environment variables are below. No other env variables are officially supported by Maintainerr. These are added either into the compose file or your docker run command.
+
+| Variable     | Default Value   | Description                                                                                                                                             |
+| ------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TZ           | _host timezone_ | Controls date formatting in logs.                                                                                                                       |
+| UI_HOSTNAME  | 0.0.0.0         | The listen host of the web server. Can be set to :: for IPv6.                                                                                           |
+| UI_PORT      | 6246            | The listen port of the web server.                                                                                                                      |
+| BASE_PATH    |                 | If reverse proxying with a subfolder you'll want to set this. Must be in the format of `/subfolder`.                                                    |
+| LOG_LEVEL    | info            | Overrides the persisted log level for the current container process only. Accepted values are `debug`, `verbose`, `info`, `warn`, `error`, and `fatal`. |
+| GITHUB_TOKEN |                 | GitHub Personal Access Token for higher API rate limits                                                                                                 |
+
+:::tip
+If `BASE_PATH` is set, remember to prefix health-check probe paths accordingly (for example `/maintainerr/api/health/ready`).
+:::
