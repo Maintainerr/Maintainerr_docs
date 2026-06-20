@@ -1896,6 +1896,19 @@ If Maintainerr cannot fetch the current public-watchlist snapshot, this rule is 
 - Availability: movies, shows, seasons, episodes
 - Type: boolean
 
+#### Is in a watchlist (incl. parents)
+
+:::info
+Indicates whether the season or episode, or its parent season/show, is present in at least one public Streamystats watchlist.
+
+Use this parent-inclusive rule for season or episode rules when a Streamystats watchlist contains the parent show item ID. If Maintainerr cannot fetch the item's metadata or the current public-watchlist snapshot, this rule is treated as unknown for that evaluation instead of `false`.
+
+:::
+
+- Key: Streamystats.isInWatchlist_including_parent
+- Availability: seasons, episodes
+- Type: boolean
+
 #### In watchlist of (username)
 
 :::info
@@ -1907,4 +1920,17 @@ If the item is not present in any public Streamystats watchlist, this returns an
 
 - Key: Streamystats.watchlistedByUsers
 - Availability: movies, shows, seasons, episodes
+- Type: text[]
+
+#### In watchlist of (username) (incl. parents)
+
+:::info
+List of Streamystats usernames whose public watchlists contain the season or episode, or its parent season/show.
+
+Use this parent-inclusive rule for season or episode rules when a Streamystats watchlist contains the parent show item ID. If the item and its parents are not present in any public Streamystats watchlist, this returns an empty list. If Maintainerr cannot fetch the item's metadata, the public-watchlist snapshot, or resolve the watchlist owners back to Jellyfin users, this rule is treated as unknown for that evaluation instead of returning an empty list.
+
+:::
+
+- Key: Streamystats.watchlistedByUsers_including_parent
+- Availability: seasons, episodes
 - Type: text[]
