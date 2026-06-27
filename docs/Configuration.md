@@ -155,6 +155,22 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 | Base URL       | The URL base configured in Sonarr, if one is set               |
 | API key        | The API key from Sonarr settings                               |
 
+## Exclusion tag
+
+When Maintainerr excludes an item, it can apply a protective tag to the matching Radarr movie or Sonarr series, so the \*arr instance carries a single source of truth for "do not touch". This covers both global and collection-scoped exclusions.
+
+:::note
+The `Exclusion tag` section appears on the `Settings -> Radarr` and `Settings -> Sonarr` pages once that service is configured. Radarr and Sonarr are configured independently — each has its own enable toggle, label, and removal policy.
+:::
+
+| Setting                  | Description                                                                                                                                                                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tag excluded content     | Apply the tag below to the matching movie/series whenever an item is excluded. Off by default.                                                                                                                                           |
+| Tag label                | The tag to apply, created on the \*arr instance if missing (default `dnd`). Lowercase letters, numbers, and hyphens only (`a-z`, `0-9`, `-`), with no leading, trailing, or repeated hyphens — the only characters Radarr/Sonarr accept. |
+| Remove tag on un-exclude | Off by default, so a manually-set tag is never stripped. When on, Maintainerr removes only this label on un-exclude, and never while another exclusion still protects the item.                                                          |
+
+Tagging is best-effort: the tag is added or removed through the Radarr/Sonarr editor without replacing any other tags on the item, and a failure to reach the \*arr instance is logged without blocking the exclusion itself.
+
 ## Download Client
 
 :::note

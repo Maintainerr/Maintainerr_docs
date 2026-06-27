@@ -117,6 +117,8 @@ On a collection's media page, the `Remove` action also manages collection-level 
 
 Adding a global exclusion removes that item's existing collection-specific exclusions. If you later remove the global exclusion, those narrower exclusions are not restored automatically.
 
+If you enable [exclusion tagging](./Configuration.md#exclusion-tag) for Radarr or Sonarr, excluding an item also applies a protective tag to the matching movie or series so your \*arr instance knows not to touch it. This covers both global and collection-scoped exclusions.
+
 If you open the media details modal, Maintainerr also shows where the item is excluded from. That modal is informational for exclusions; you still manage exclusion changes from the card actions or the collection views.
 
 For collection items that are still eligible for action, the media details modal also shows a `Trigger Rule Action` button.
