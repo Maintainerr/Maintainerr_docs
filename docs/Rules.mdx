@@ -322,6 +322,11 @@ newest downloaded episodes of a show and cleans up the rest.
   match them.
 - `Series title` (text) is the show's title as Sonarr knows it. Matching is
   case-insensitive.
+- `Season file rank by air date (newest = 1)` (number, season rules only)
+  is the same idea one level up: it ranks every season within its show by the
+  air date of its newest downloaded episode. Seasons without any downloaded
+  episode take no rank slot, and specials (season 0) are excluded. Use it for
+  "keep the newest N seasons" rule groups.
 - `Series ID` (number) is the show's id in Sonarr. Prefer this over the title
   for rules that delete: the id keeps working after a rename or when titles
   carry a year or region suffix. The easiest way to find it is the
