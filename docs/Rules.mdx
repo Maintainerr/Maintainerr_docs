@@ -310,8 +310,8 @@ When you use Radarr or Sonarr disk space properties, Maintainerr may also ask yo
 ### Episode retention rules (Sonarr)
 
 Long-running shows, daily series especially, can grow to thousands of episodes.
-Three Sonarr properties let you build a rolling window that keeps only the
-newest downloaded episodes of a show and cleans up the rest.
+Four Sonarr properties let you build a rolling window that keeps only the
+newest downloaded episodes or seasons of a show and cleans up the rest.
 
 - `Episode file rank by air date (newest = 1)` (number, episode rules only)
   ranks every episode within its own show by air date, counting **only episodes
@@ -320,13 +320,13 @@ newest downloaded episodes of a show and cleans up the rest.
   no file for do not take up a rank. Specials (season 0), unaired episodes,
   and episodes without a valid air date never receive a rank, so rules never
   match them.
-- `Series title` (text) is the show's title as Sonarr knows it. Matching is
-  case-insensitive.
 - `Season file rank by air date (newest = 1)` (number, season rules only)
   is the same idea one level up: it ranks every season within its show by the
   air date of its newest downloaded episode. Seasons without any downloaded
   episode take no rank slot, and specials (season 0) are excluded. Use it for
   "keep the newest N seasons" rule groups.
+- `Series title` (text) is the show's title as Sonarr knows it. Matching is
+  case-insensitive.
 - `Series ID` (number) is the show's id in Sonarr. Prefer this over the title
   for rules that delete: the id keeps working after a rename or when titles
   carry a year or region suffix. The easiest way to find it is the
@@ -349,10 +349,14 @@ them the `Series ID` rule doesn't match, and without a scoping rule the rank
 rule would apply the same window to every show in the library, which is
 usually not what you want.
 
+The season variant works the same way one level up: media type `Seasons`,
+`Season file rank by air date (newest = 1)` `bigger` than `2`, and the same
+`Series ID` scope rule keep the newest two seasons and select the older ones.
+
 The rank is computed fresh on every rule run from what is on disk at that
 moment, and this also works for daily series whose Plex episodes only carry an
 air date instead of a season and episode number. If Sonarr is unreachable
-during a run, affected episodes are skipped rather than treated as matches, so
+during a run, affected items are skipped rather than treated as matches, so
 a temporary outage never causes unexpected deletions.
 
 #### Movie scoping (Radarr)
