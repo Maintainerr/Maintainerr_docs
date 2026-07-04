@@ -96,7 +96,7 @@ Maintainerr only shows `Force reset Seerr record` for movie, show, and season ru
 
 When you choose `Change quality profile and search` for Radarr or Sonarr, Maintainerr shows a quality profile selector for the chosen server. This action does not use `Take action after days`; it changes the item's quality profile immediately when the collection action runs.
 
-The `Tag this content` option keeps a Radarr/Sonarr tag named after the rule group on each matching item for as long as it stays in the collection, and removes it when the item leaves. Because Sonarr tags apply to the whole series, the option is offered for movie collections (Radarr) and whole-show collections (Sonarr) only — not season or episode collections. The tag is created on the \*arr instance if missing, the rule group's name is normalized to the tag character set Radarr/Sonarr accept (lowercase letters, numbers, and hyphens), and tagging is best-effort, so it never blocks a rule run. Renaming a rule group applies the new tag on the next membership change but leaves the previous tag in place until you remove it.
+The `Tag this content` option keeps a Radarr/Sonarr tag named after the rule group on each matching item for as long as it stays in the collection, and removes it when the item leaves. Because Sonarr tags apply to the whole series, the option is offered for movie collections (Radarr) and whole-show collections (Sonarr) only - not season or episode collections. The tag is created on the \*arr instance if missing, the rule group's name is normalized to the tag character set Radarr/Sonarr accept (lowercase letters, numbers, and hyphens), and tagging is best-effort, so it never blocks a rule run. Renaming a rule group applies the new tag on the next membership change but leaves the previous tag in place until you remove it.
 
 For Sonarr season rules, additional actions are available to also clean up the parent show when it becomes empty after season processing.
 
@@ -306,3 +306,88 @@ When you use Radarr or Sonarr disk space properties, Maintainerr may also ask yo
 - `Remaining disk space` and `Total disk space` rules can target a specific configured path instead of assuming a single global root folder.
 - The path list is populated from the selected Radarr or Sonarr server.
 - For `Total disk space`, Maintainerr only shows paths where the server can report an accurate total size.
+
+### Episode and season retention rules (Sonarr)
+
+Long-running shows, daily series especially, can grow to thousands of episodes.
+Four Sonarr properties let you build a rolling window that keeps only the
+newest downloaded episodes or seasons of a show and cleans up the rest.
+
+- `Episode position by air date (1 = latest)` (number, episode rules only)
+  ranks every episode within its own show by air date, counting **only episodes
+  that are currently downloaded** in Sonarr. The newest downloaded episode is
+  rank 1, the next one rank 2, and so on. Episodes Sonarr knows about but has
+  no file for do not take up a rank, and an episode airing without being
+  downloaded never shifts the window. Specials (season 0), unaired episodes,
+  and episodes without a valid air date never receive a rank, so rules never
+  match them.
+- `Season position by air date (1 = latest)` (number, season rules only) is
+  the same idea one level up: it ranks every season within its show by the air
+  date of its newest downloaded episode. Seasons without any downloaded
+  episode take no rank slot, and specials (season 0) are excluded.
+- `Series title` (text) is the show's title as Sonarr knows it. Matching is
+  case-insensitive.
+- `Series ID` (number) is the show's id in Sonarr. Prefer this over the title
+  for rules that delete: the id keeps working after a rename or when titles
+  carry a year or region suffix. The easiest way to find it is the
+  [Test media](/test-media) feature: add a `Series ID` rule, test any episode
+  of the show, and read the value from the result.
+
+In every case the rank is computed fresh on each rule run from what is on disk
+at that moment. If Sonarr is unreachable during a run, affected items are
+skipped rather than treated as matches, so a temporary outage never causes
+unexpected deletions.
+
+Both rank properties apply their window per show. Always pair them with a
+`Series ID` (or `Series title`) rule as shown below - without one, the same
+window applies to every show in the library, which is usually not what you
+want.
+
+#### Keep the newest N episodes of a show
+
+A "keep the newest 5 episodes" rule group looks like this:
+
+- Media type `Episodes`, with a Sonarr action such as `Unmonitor and delete episode`.
+- Rule 1: `Episode position by air date (1 = latest)` `bigger` than `5`
+- Rule 2 (AND): `Series ID` `equals` the show's id
+
+Every run, all downloaded episodes of that show except the 5 newest by air
+date enter the collection and are handled after `Take action after days`.
+When a new episode downloads, it takes rank 1 and the oldest episode of the
+kept window rotates out on the next run.
+
+#### Keep the newest N seasons of a show
+
+A "keep the newest 2 seasons" rule group looks like this:
+
+- Media type `Seasons`, with a Sonarr action such as `Unmonitor and delete season`.
+- Rule 1: `Season position by air date (1 = latest)` `bigger` than `2`
+- Rule 2 (AND): `Series ID` `equals` the show's id
+
+Every run, all seasons that have downloaded episodes, except the 2 with the
+newest downloaded episodes, enter the collection and are handled after
+`Take action after days`. When a new season starts downloading it becomes
+rank 1, and the oldest kept season rotates out on the next run. A season
+whose files have all been removed drops out of the ranking entirely; it does
+not linger in the collection.
+
+#### Daily series
+
+Both walkthroughs work unchanged for daily series:
+
+- Daily shows that use one season per year rank those year-seasons like any
+  other season.
+- Some servers store daily episodes with only an air date and no episode
+  number. Those episodes are matched to Sonarr by broadcast date, so
+  `Episode position by air date (1 = latest)` still resolves. When two
+  episodes of a date-only show share the same broadcast day, the newer one's
+  rank is used, which errs on the side of keeping media.
+- Airing alone never changes anything: only a new download moves the window.
+
+#### Movie scoping (Radarr)
+
+`Movie title` (text, case-insensitive) and `Movie ID` (number) are the movie
+equivalents of `Series title` and `Series ID`: they pin a movie rule to
+specific movies without going through tags or collections. The same advice
+applies - prefer `Movie ID` for destructive rules, and use
+[Test media](/test-media) to read a movie's id.
