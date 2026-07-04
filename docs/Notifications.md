@@ -58,11 +58,12 @@ Send notifications to Discord channels via webhooks.
 You'll need to create a Discord webhook for your channel. Follow Discord's guide: [Intro to Webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Webhook URL | Yes | Discord webhook URL for the target channel |
-| Bot Username | No | Custom username for the bot (defaults to "Maintainerr") |
-| Bot Avatar URL | No | Custom avatar image URL for the bot |
+
+| Parameter      | Required | Description                                             |
+| -------------- | -------- | ------------------------------------------------------- |
+| Webhook URL    | Yes      | Discord webhook URL for the target channel              |
+| Bot Username   | No       | Custom username for the bot (defaults to "Maintainerr") |
+| Bot Avatar URL | No       | Custom avatar image URL for the bot                     |
 
 ### Email
 
@@ -92,10 +93,11 @@ Send notifications to a Gotify server.
 You'll need a running Gotify server instance. See the [Gotify documentation](https://gotify.net/docs/install) for installation instructions.
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| URL | Yes | Gotify server URL |
-| Token | Yes | Application token from Gotify |
+
+| Parameter | Required | Description                   |
+| --------- | -------- | ----------------------------- |
+| URL       | Yes      | Gotify server URL             |
+| Token     | Yes      | Application token from Gotify |
 
 ### LunaSea
 
@@ -109,10 +111,11 @@ LunaSea has shut down development as of 2024. While the binaries are still avail
 You'll need the LunaSea mobile app installed and configured. The webhook setup documentation may still be accessible through archived versions.
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Webhook URL | Yes | LunaSea webhook URL |
-| Profile Name | No | Specific profile name (if not using default) |
+
+| Parameter    | Required | Description                                  |
+| ------------ | -------- | -------------------------------------------- |
+| Webhook URL  | Yes      | LunaSea webhook URL                          |
+| Profile Name | No       | Specific profile name (if not using default) |
 
 ### ntfy
 
@@ -122,11 +125,12 @@ Send notifications to an [ntfy](https://ntfy.sh) server.
 You can use the public [ntfy.sh](https://ntfy.sh) server or a self-hosted instance. Pick a topic name (any string) and, if your server requires authentication, generate an access token. See the [ntfy docs](https://docs.ntfy.sh/) for setup details.
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| URL | Yes | Base URL of the ntfy server (e.g. `https://ntfy.sh`) |
-| Topic | Yes | Topic name to publish notifications to |
-| Token | No | Bearer access token for protected topics |
+
+| Parameter | Required | Description                                          |
+| --------- | -------- | ---------------------------------------------------- |
+| URL       | Yes      | Base URL of the ntfy server (e.g. `https://ntfy.sh`) |
+| Topic     | Yes      | Topic name to publish notifications to               |
+| Token     | No       | Bearer access token for protected topics             |
 
 ### Pushbullet
 
@@ -136,10 +140,11 @@ Send notifications via Pushbullet.
 You'll need a Pushbullet account and API token. Visit [Pushbullet Settings](https://www.pushbullet.com/#settings) to create an access token.
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Access Token | Yes | Pushbullet API access token |
-| Channel Tag | No | Specific channel to send to |
+
+| Parameter    | Required | Description                 |
+| ------------ | -------- | --------------------------- |
+| Access Token | Yes      | Pushbullet API access token |
+| Channel Tag  | No       | Specific channel to send to |
 
 ### Pushover
 
@@ -149,11 +154,12 @@ Send notifications via Pushover.
 You'll need a Pushover account and to register an application. Visit [Pushover.net](https://pushover.net/apps/build) to sign up and create an application for your API token.
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Access Token | Yes | Pushover application token |
-| User Token | Yes | Your 30-character user or group identifier |
-| Sound | No | Notification sound name |
+
+| Parameter    | Required | Description                                |
+| ------------ | -------- | ------------------------------------------ |
+| Access Token | Yes      | Pushover application token                 |
+| User Token   | Yes      | Your 30-character user or group identifier |
+| Sound        | No       | Notification sound name                    |
 
 ### Slack
 
@@ -163,9 +169,10 @@ Send notifications to Slack channels.
 You'll need to create a Slack webhook for your workspace. Follow Slack's guide: [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Webhook URL | Yes | Slack webhook URL for the target channel |
+
+| Parameter   | Required | Description                              |
+| ----------- | -------- | ---------------------------------------- |
+| Webhook URL | Yes      | Slack webhook URL for the target channel |
 
 ### Telegram
 
@@ -178,12 +185,13 @@ You'll need to create a Telegram bot and get your chat ID. Follow these steps:
 2. Get your Chat ID by messaging [@get_id_bot](https://t.me/get_id_bot) and using the `/my_id` command
 
 :::
-| Parameter | Required | Description |
-| --------- | -------- | ----------- |
-| Bot Auth Token | Yes | Telegram bot authentication token |
-| Chat ID | Yes | Target chat ID (use @get_id_bot to find your chat ID) |
-| Bot Username | No | Bot username for user interaction |
-| Send Silently | No | Send notifications without sound |
+
+| Parameter      | Required | Description                                           |
+| -------------- | -------- | ----------------------------------------------------- |
+| Bot Auth Token | Yes      | Telegram bot authentication token                     |
+| Chat ID        | Yes      | Target chat ID (use @get_id_bot to find your chat ID) |
+| Bot Username   | No       | Bot username for user interaction                     |
+| Send Silently  | No       | Send notifications without sound                      |
 
 ### Webhook
 
