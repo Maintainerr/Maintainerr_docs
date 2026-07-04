@@ -307,7 +307,7 @@ When you use Radarr or Sonarr disk space properties, Maintainerr may also ask yo
 - The path list is populated from the selected Radarr or Sonarr server.
 - For `Total disk space`, Maintainerr only shows paths where the server can report an accurate total size.
 
-### Episode retention rules (Sonarr)
+### Episode and season retention rules (Sonarr)
 
 Long-running shows, daily series especially, can grow to thousands of episodes.
 Four Sonarr properties let you build a rolling window that keeps only the
@@ -317,14 +317,14 @@ newest downloaded episodes or seasons of a show and cleans up the rest.
   ranks every episode within its own show by air date, counting **only episodes
   that are currently downloaded** in Sonarr. The newest downloaded episode is
   rank 1, the next one rank 2, and so on. Episodes Sonarr knows about but has
-  no file for do not take up a rank. Specials (season 0), unaired episodes,
+  no file for do not take up a rank, and an episode airing without being
+  downloaded never shifts the window. Specials (season 0), unaired episodes,
   and episodes without a valid air date never receive a rank, so rules never
   match them.
-- `Season file rank by air date (newest = 1)` (number, season rules only)
-  is the same idea one level up: it ranks every season within its show by the
-  air date of its newest downloaded episode. Seasons without any downloaded
-  episode take no rank slot, and specials (season 0) are excluded. Use it for
-  "keep the newest N seasons" rule groups.
+- `Season file rank by air date (newest = 1)` (number, season rules only) is
+  the same idea one level up: it ranks every season within its show by the air
+  date of its newest downloaded episode. Seasons without any downloaded
+  episode take no rank slot, and specials (season 0) are excluded.
 - `Series title` (text) is the show's title as Sonarr knows it. Matching is
   case-insensitive.
 - `Series ID` (number) is the show's id in Sonarr. Prefer this over the title
@@ -333,31 +333,56 @@ newest downloaded episodes or seasons of a show and cleans up the rest.
   [Test media](/test-media) feature: add a `Series ID` rule, test any episode
   of the show, and read the value from the result.
 
-#### Keeping the newest episodes of a show
+In every case the rank is computed fresh on each rule run from what is on disk
+at that moment. If Sonarr is unreachable during a run, affected items are
+skipped rather than treated as matches, so a temporary outage never causes
+unexpected deletions.
 
-A typical "keep the newest 5" rule group looks like this:
+Both rank properties apply their window per show. Always pair them with a
+`Series ID` (or `Series title`) rule as shown below - without one, the same
+window applies to every show in the library, which is usually not what you
+want.
+
+#### Keep the newest N episodes of a show
+
+A "keep the newest 5 episodes" rule group looks like this:
 
 - Media type `Episodes`, with a Sonarr action such as `Unmonitor and delete episode`.
 - Rule 1: `Episode file rank by air date (newest = 1)` `bigger` than `5`
 - Rule 2 (AND): `Series ID` `equals` the show's id
 
 Every run, all downloaded episodes of that show except the 5 newest by air
-date enter the collection and are handled after `Take action after days`. As
-new episodes download, they take rank 1 and the oldest of the kept window
-rotates out on the next run. Episodes of every other show stay untouched: for
-them the `Series ID` rule doesn't match, and without a scoping rule the rank
-rule would apply the same window to every show in the library, which is
-usually not what you want.
+date enter the collection and are handled after `Take action after days`.
+When a new episode downloads, it takes rank 1 and the oldest episode of the
+kept window rotates out on the next run.
 
-The season variant works the same way one level up: media type `Seasons`,
-`Season file rank by air date (newest = 1)` `bigger` than `2`, and the same
-`Series ID` scope rule keep the newest two seasons and select the older ones.
+#### Keep the newest N seasons of a show
 
-The rank is computed fresh on every rule run from what is on disk at that
-moment, and this also works for daily series whose Plex episodes only carry an
-air date instead of a season and episode number. If Sonarr is unreachable
-during a run, affected items are skipped rather than treated as matches, so
-a temporary outage never causes unexpected deletions.
+A "keep the newest 2 seasons" rule group looks like this:
+
+- Media type `Seasons`, with a Sonarr action such as `Unmonitor and delete season`.
+- Rule 1: `Season file rank by air date (newest = 1)` `bigger` than `2`
+- Rule 2 (AND): `Series ID` `equals` the show's id
+
+Every run, all seasons that have downloaded episodes, except the 2 with the
+newest downloaded episodes, enter the collection and are handled after
+`Take action after days`. When a new season starts downloading it becomes
+rank 1, and the oldest kept season rotates out on the next run. A season
+whose files have all been removed drops out of the ranking entirely; it does
+not linger in the collection.
+
+#### Daily series
+
+Both walkthroughs work unchanged for daily series:
+
+- Daily shows that use one season per year rank those year-seasons like any
+  other season.
+- Some servers store daily episodes with only an air date and no episode
+  number. Those episodes are matched to Sonarr by broadcast date, so
+  `Episode file rank by air date (newest = 1)` still resolves. When two
+  episodes of a date-only show share the same broadcast day, the newer one's
+  rank is used, which errs on the side of keeping media.
+- Airing alone never changes anything: only a new download moves the window.
 
 #### Movie scoping (Radarr)
 
