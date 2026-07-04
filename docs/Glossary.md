@@ -1129,6 +1129,28 @@ Indicates whether the Radarr item is monitored.
 - Availability: movies
 - Type: boolean
 
+#### Movie title
+
+:::info
+The title of the Radarr movie. Matching is case-insensitive.
+
+:::
+
+- Key: Radarr.movieTitle
+- Availability: movies
+- Type: text
+
+#### Movie ID
+
+:::info
+The unique Radarr ID of the movie. This is a rename-proof handle for scoping.
+
+:::
+
+- Key: Radarr.movieId
+- Availability: movies
+- Type: number
+
 #### In cinemas date
 
 :::info
@@ -1645,6 +1667,52 @@ The series type as configured in Sonarr (e.g. "standard", "anime", "daily").
 - Key: Sonarr.seriesType
 - Availability: shows, seasons, episodes
 - Type: text
+
+#### Episode position by air date (1 = latest)
+
+:::info
+Rank of an episode within its show by air date, newest = 1. Only episodes currently on disk in Sonarr (`hasFile === true`) are
+ranked.
+
+:::
+
+- Key: Sonarr.episodeFileRank
+- Availability: episodes
+- Type: number
+
+#### Series title
+
+:::info
+The Sonarr series title. Matching is case-insensitive.
+
+:::
+
+- Key: Sonarr.seriesTitle
+- Availability: shows, seasons, episodes
+- Type: text
+
+#### Series ID
+
+:::info
+The Sonarr series ID, a stable scope handle for destructive rules.
+
+:::
+
+- Key: Sonarr.seriesId
+- Availability: shows, seasons, episodes
+- Type: number
+
+#### Season position by air date (1 = latest)
+
+:::info
+Rank of a season within its show by the air date of its newest downloaded episode, newest = 1. Seasons without downloaded episodes
+and specials do not receive a rank.
+
+:::
+
+- Key: Sonarr.seasonFileRank
+- Availability: seasons
+- Type: number
 
 #### Remaining disk space (GB)
 
