@@ -41,7 +41,7 @@ Maintainerr supports several notification types that you can enable for each age
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | Media Added to Collection     | Sent when media items are added to a collection                                                                                                |
 | Media Removed from Collection | Sent when media items are removed from a collection                                                                                            |
-| Media About to be Handled     | Advance warning that media will be processed/deleted in X days                                                                                 |
+| Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message names who requested the item: *'Title' (requested by alice) will be handled in 3 days*. The lookup is best-effort — if Seerr is unreachable or the item was not requested there, the requester line is silently omitted. |
 | Media Handled                 | Confirmation that media has been processed/deleted                                                                                             |
 | Rule Handling Failed          | Alert when there's an error processing rules                                                                                                   |
 | Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
@@ -207,13 +207,32 @@ Send notifications to custom webhook endpoints. Requests are sent using the POST
 
 The webhook agent supports variable replacement in the JSON payload. You can use the following variables:
 
-| Variable                | Description                         |
-| ----------------------- | ----------------------------------- |
-| `{{notification_type}}` | The type of notification being sent |
-| `{{subject}}`           | The notification subject/title      |
-| `{{message}}`           | The notification message content    |
-| `{{image}}`             | Associated image URL (if available) |
-| `{{extra}}`             | Additional data fields              |
+| Variable                | Description                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `{{notification_type}}` | The type of notification being sent                                                                                 |
+| `{{subject}}`           | The notification subject/title                                                                                      |
+| `{{message}}`           | The notification message content                                                                                    |
+| `{{image}}`             | Associated image URL (if available)                                                                                 |
+| `{{extra}}`             | Additional data fields (see below)                                                                                  |
+
+The `{{extra}}` block is also flattened into the top-level webhook payload as individual keys. The fields present depend on the notification type:
+
+| Extra key        | Type   | Description                                                                                         |
+| ---------------- | ------ | --------------------------------------------------------------------------------------------------- |
+| `collectionName` | string | Name of the collection that triggered the notification                                              |
+| `dayAmount`      | number | Days until the item is handled (`null` when not applicable)                                         |
+| `mediaItems`     | string | JSON-encoded array of media items. Each entry contains `mediaServerId` and, for **Media About to be Handled** notifications when Seerr is configured, a `requestedBy` array of usernames. |
+
+Example `mediaItems` value for a pre-deletion warning:
+
+```json
+[
+  { "mediaServerId": "abc123", "requestedBy": ["alice"] },
+  { "mediaServerId": "def456" }
+]
+```
+
+Items without a Seerr request omit the `requestedBy` key entirely.
 
 Example JSON payload:
 

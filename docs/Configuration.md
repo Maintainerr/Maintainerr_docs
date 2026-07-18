@@ -124,7 +124,7 @@ Use your Emby server URL directly. Maintainerr supports either entering an API k
 
 ## Seerr
 
-Seerr configuration is required if you want to use Seerr-related rule parameters or remove Seerr requests.
+Seerr configuration is required if you want to use Seerr-related rule parameters, remove Seerr requests, or see who requested media in pre-deletion notifications.
 
 | Setting | Description                                                   |
 | ------- | ------------------------------------------------------------- |
