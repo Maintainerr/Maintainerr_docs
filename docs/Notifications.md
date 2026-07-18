@@ -41,7 +41,7 @@ Maintainerr supports several notification types that you can enable for each age
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | Media Added to Collection     | Sent when media items are added to a collection                                                                                                |
 | Media Removed from Collection | Sent when media items are removed from a collection                                                                                            |
-| Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message also names the requester (see note below).  |
+| Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message also names the requester (see note below). |
 | Media Handled                 | Confirmation that media has been processed/deleted                                                                                             |
 | Rule Handling Failed          | Alert when there's an error processing rules                                                                                                   |
 | Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
@@ -225,7 +225,7 @@ The `{{extra}}` block is also flattened into the top-level webhook payload as in
 | ---------------- | ------ | --------------------------------------------------------------------------------------------------- |
 | `collectionName` | string | Name of the collection that triggered the notification                                              |
 | `dayAmount`      | number | Days until the item is handled (`null` when not applicable)                                         |
-| `mediaItems`     | string | JSON-encoded array of media items (see example below)                                                                                       |
+| `mediaItems`     | string | Stringified JSON array of media items (see example below)                                                                                   |
 
 Example `mediaItems` value for a **Media About to be Handled** notification when Seerr is configured:
 
