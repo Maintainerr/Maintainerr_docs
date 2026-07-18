@@ -41,12 +41,16 @@ Maintainerr supports several notification types that you can enable for each age
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | Media Added to Collection     | Sent when media items are added to a collection                                                                                                |
 | Media Removed from Collection | Sent when media items are removed from a collection                                                                                            |
-| Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message names who requested the item: *'Title' (requested by alice) will be handled in 3 days*. The lookup is best-effort — if Seerr is unreachable or the item was not requested there, the requester line is silently omitted. |
+| Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message also names the requester (see note below).  |
 | Media Handled                 | Confirmation that media has been processed/deleted                                                                                             |
 | Rule Handling Failed          | Alert when there's an error processing rules                                                                                                   |
 | Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
 
 Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
+
+:::note Seerr requester in pre-deletion warnings
+When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item — for example: *'Some Title' (requested by alice) will be handled in 3 days*. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
+:::
 
 ## Supported Notification Agents
 
@@ -221,9 +225,9 @@ The `{{extra}}` block is also flattened into the top-level webhook payload as in
 | ---------------- | ------ | --------------------------------------------------------------------------------------------------- |
 | `collectionName` | string | Name of the collection that triggered the notification                                              |
 | `dayAmount`      | number | Days until the item is handled (`null` when not applicable)                                         |
-| `mediaItems`     | string | JSON-encoded array of media items. Each entry contains `mediaServerId` and, for **Media About to be Handled** notifications when Seerr is configured, a `requestedBy` array of usernames. |
+| `mediaItems`     | string | JSON-encoded array of media items (see example below)                                                                                       |
 
-Example `mediaItems` value for a pre-deletion warning:
+Example `mediaItems` value for a **Media About to be Handled** notification when Seerr is configured:
 
 ```json
 [
@@ -232,7 +236,7 @@ Example `mediaItems` value for a pre-deletion warning:
 ]
 ```
 
-Items without a Seerr request omit the `requestedBy` key entirely.
+Each entry contains `mediaServerId`. The optional `requestedBy` array lists the Seerr usernames who requested the item; it is omitted when Seerr is not configured or the item was not requested there.
 
 Example JSON payload:
 
