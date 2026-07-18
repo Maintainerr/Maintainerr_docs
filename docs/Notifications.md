@@ -37,19 +37,19 @@ Each notification agent requires the following common settings:
 
 Maintainerr supports several notification types that you can enable for each agent:
 
-| Type                          | Description                                                                                                                                    |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Media Added to Collection     | Sent when media items are added to a collection                                                                                                |
-| Media Removed from Collection | Sent when media items are removed from a collection                                                                                            |
+| Type                          | Description                                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Media Added to Collection     | Sent when media items are added to a collection                                                                                                  |
+| Media Removed from Collection | Sent when media items are removed from a collection                                                                                              |
 | Media About to be Handled     | Advance warning that media will be processed/deleted in X days. When Seerr is configured, the message also names the requester (see note below). |
-| Media Handled                 | Confirmation that media has been processed/deleted                                                                                             |
-| Rule Handling Failed          | Alert when there's an error processing rules                                                                                                   |
-| Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection. |
+| Media Handled                 | Confirmation that media has been processed/deleted                                                                                               |
+| Rule Handling Failed          | Alert when there's an error processing rules                                                                                                     |
+| Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection.   |
 
 Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
 
 :::note Seerr requester in pre-deletion warnings
-When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item — for example: *'Some Title' (requested by alice) will be handled in 3 days*. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
+When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item — for example: _'Some Title' (requested by alice) will be handled in 3 days_. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
 :::
 
 ## Supported Notification Agents
@@ -211,21 +211,21 @@ Send notifications to custom webhook endpoints. Requests are sent using the POST
 
 The webhook agent supports variable replacement in the JSON payload. You can use the following variables:
 
-| Variable                | Description                                                                                                         |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `{{notification_type}}` | The type of notification being sent                                                                                 |
-| `{{subject}}`           | The notification subject/title                                                                                      |
-| `{{message}}`           | The notification message content                                                                                    |
-| `{{image}}`             | Associated image URL (if available)                                                                                 |
-| `{{extra}}`             | Additional data fields (see below)                                                                                  |
+| Variable                | Description                         |
+| ----------------------- | ----------------------------------- |
+| `{{notification_type}}` | The type of notification being sent |
+| `{{subject}}`           | The notification subject/title      |
+| `{{message}}`           | The notification message content    |
+| `{{image}}`             | Associated image URL (if available) |
+| `{{extra}}`             | Additional data fields (see below)  |
 
 The `{{extra}}` block is also flattened into the top-level webhook payload as individual keys. The fields present depend on the notification type:
 
-| Extra key        | Type   | Description                                                                                         |
-| ---------------- | ------ | --------------------------------------------------------------------------------------------------- |
-| `collectionName` | string | Name of the collection that triggered the notification                                              |
-| `dayAmount`      | number | Days until the item is handled (`null` when not applicable)                                         |
-| `mediaItems`     | string | Stringified JSON array of media items (see example below)                                                                                   |
+| Extra key        | Type   | Description                                                 |
+| ---------------- | ------ | ----------------------------------------------------------- |
+| `collectionName` | string | Name of the collection that triggered the notification      |
+| `dayAmount`      | number | Days until the item is handled (`null` when not applicable) |
+| `mediaItems`     | string | Stringified JSON array of media items (see example below)   |
 
 Example `mediaItems` value for a **Media About to be Handled** notification when Seerr is configured:
 
