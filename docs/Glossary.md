@@ -1762,7 +1762,7 @@ The total number of missing episodes across the current show.
 
 ### Sportarr
 
-Sportarr properties are available when a Sportarr server is configured for the rule group. Sportarr treats leagues as shows, years as seasons, and events as episodes.
+Sportarr properties are available when a Sportarr server is configured for the rule group. Sportarr runs alongside Sonarr and Radarr, and all three can be configured at once. Sportarr treats leagues as shows, years as seasons, and events as episodes.
 
 #### Date added
 

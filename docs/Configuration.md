@@ -157,7 +157,7 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 
 ## Sportarr
 
-Sportarr's configuration is required to use its parameters in rules and manage sports leagues, seasons, and events. Maintainerr requires Sportarr 4.0.1022 or later.
+Sportarr runs alongside Sonarr and Radarr, and all three can be configured at once. Sportarr's configuration is required to use its parameters in rules and manage sports leagues, seasons, and events. Maintainerr requires Sportarr 4.0.1022 or later.
 
 | Setting     | Description                                 |
 | ----------- | ------------------------------------------- |
