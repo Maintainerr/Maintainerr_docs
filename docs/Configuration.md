@@ -155,6 +155,16 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 | Base URL       | The URL base configured in Sonarr, if one is set               |
 | API key        | The API key from Sonarr settings                               |
 
+## Sportarr
+
+Sportarr runs alongside Sonarr and Radarr, and all three can be configured at once. Sportarr's configuration is required to use its parameters in rules and manage sports leagues, seasons, and events. Maintainerr requires Sportarr 4.0.1022 or later.
+
+| Setting     | Description                                 |
+| ----------- | ------------------------------------------- |
+| Server Name | A friendly name to help identify the server |
+| URL         | The base URL of the Sportarr instance       |
+| API key     | The API key from Sportarr settings          |
+
 ## Exclusion tag
 
 When Maintainerr excludes an item, it can apply a protective tag to the matching Radarr movie or Sonarr series, so the \*arr instance carries a single source of truth for "do not touch". This covers both global and collection-scoped exclusions.

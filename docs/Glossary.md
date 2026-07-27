@@ -1760,6 +1760,162 @@ The total number of missing episodes across the current show.
 
 ---
 
+### Sportarr
+
+Sportarr properties are available when a Sportarr server is configured for the rule group. Sportarr runs alongside Sonarr and Radarr, and all three can be configured at once. Sportarr treats leagues as shows, years as seasons, and events as episodes.
+
+#### Date added
+
+:::info
+The date when the league was added to Sportarr.
+:::
+
+- Key: Sportarr.addDate
+- Availability: shows
+- Type: date
+
+#### Is monitored
+
+:::info
+Indicates whether the league, season, or event is monitored. A season is monitored when at least one of its events is monitored.
+:::
+
+- Key: Sportarr.monitored
+- Availability: shows, seasons, episodes
+- Type: boolean
+
+#### Sport
+
+:::info
+The sport assigned to the league.
+:::
+
+- Key: Sportarr.sport
+- Availability: shows, seasons, episodes
+- Type: text
+
+#### League title
+
+:::info
+The Sportarr league title.
+:::
+
+- Key: Sportarr.leagueTitle
+- Availability: shows, seasons, episodes
+- Type: text
+
+#### League ID
+
+:::info
+The Sportarr league ID.
+:::
+
+- Key: Sportarr.leagueId
+- Availability: shows, seasons, episodes
+- Type: number
+
+#### Quality profile ID
+
+:::info
+The quality profile ID assigned to the league.
+:::
+
+- Key: Sportarr.qualityProfileId
+- Availability: shows, seasons, episodes
+- Type: number
+
+#### Quality profile name
+
+:::info
+The quality profile name assigned to the league.
+:::
+
+- Key: Sportarr.qualityProfileName
+- Availability: shows, seasons, episodes
+- Type: text
+
+#### Number of events
+
+:::info
+The number of events in the league or selected season.
+:::
+
+- Key: Sportarr.events
+- Availability: shows, seasons
+- Type: number
+
+#### Number of downloaded events
+
+:::info
+The number of events with files in the league or selected season.
+:::
+
+- Key: Sportarr.downloadedEvents
+- Availability: shows, seasons
+- Type: number
+
+#### Has upcoming events
+
+:::info
+Indicates whether the league or selected season has an event scheduled in the future. Sportarr uses an event's broadcast date (its scheduled air time) when available, otherwise its listed event date. Any scheduled event counts, whether monitored or not.
+:::
+
+- Key: Sportarr.hasFutureEvents
+- Availability: shows, seasons
+- Type: boolean
+
+#### Season number (year)
+
+:::info
+The numeric year used as the Sportarr season number.
+:::
+
+- Key: Sportarr.seasonNumber
+- Availability: seasons, episodes
+- Type: number
+
+#### Event number in season
+
+:::info
+The event's number within its Sportarr season.
+:::
+
+- Key: Sportarr.episodeNumber
+- Availability: episodes
+- Type: number
+
+#### Event date
+
+:::info
+The event date, using the broadcast date when one is available.
+:::
+
+- Key: Sportarr.eventDate
+- Availability: episodes
+- Type: date
+
+#### Event has a file
+
+:::info
+Indicates whether the event has a downloaded file.
+:::
+
+- Key: Sportarr.hasFile
+- Availability: episodes
+- Type: boolean
+
+#### Event file path
+
+:::info
+The path of the event file. When using Docker, this is the path inside the container.
+:::
+
+- Key: Sportarr.filePath
+- Availability: episodes
+- Type: text
+
+---
+
 ### Seerr
 
 #### Requested by user
