@@ -1857,7 +1857,7 @@ The number of events with files in the league or selected season.
 #### Has upcoming events
 
 :::info
-Indicates whether the league or selected season has an event scheduled in the future. Sportarr uses an event's broadcast date (when it airs) when available, otherwise its event date. Any scheduled event counts, whether monitored or not.
+Indicates whether the league or selected season has an event scheduled in the future. Sportarr uses an event's broadcast date (its scheduled air time) when available, otherwise its listed event date. Any scheduled event counts, whether monitored or not.
 :::
 
 - Key: Sportarr.hasFutureEvents
