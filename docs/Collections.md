@@ -97,6 +97,10 @@ However, if you wish to just remove media from 1 collection it's easier to click
 This will also exclude media from rule handling for this collection, so it won't be added again.
 :::
 
+### Postponing deletion
+
+Use `Postpone` from an item's collection details to delay its scheduled action by a whole number of days. If the item is already overdue, the delay is counted from today, so the next collection-handler run will not act on it immediately.
+
 ### Excluding
 
 You're able to exclude media from all, or specific, collections by using the `Excl` button on the media's card from the `Overview` page. This will open a similar popup as adding media.
