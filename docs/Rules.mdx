@@ -89,6 +89,7 @@ General info about the rule. Some of the information specified here will be show
 | Add list exclusions         | Prevent \*arr import lists from re-adding media that has been removed by Maintainerr                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | Tag this content            | Tag matching movies (Radarr) or shows (Sonarr) with a tag named after this rule group while they are in the collection, removed when they leave. Only shown for movie collections with a Radarr server selected, or whole-show collections with a Sonarr server selected.                                                                                                                                                                                                                                              |
 | Media deleted after days    | Amount of days media will live in the collection before deletion                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Clean up leftover folders   | (BETA) When enabled, Maintainerr removes the folder the \*arr leaves behind after deleting files one at a time, along with its sidecars (subtitles, .nfo, artwork). Off by default. Only shown when the selected action strands a folder. Requires the media library mounted into Maintainerr at the same path as the \*arr. See [Leftover folder cleanup](./Collections.md#leftover-folder-cleanup).                                                                                                                  |
 | Use rules                   | Disable the rule engine, for when you want to add media to the collection manually                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | Force reset Seerr record    | Force resets the Seerr record by deleting any requests instead of relying on availability-sync. 'Enable CSRF Protection' needs to be disabled in Seerr's settings for this to work. <InlineTooltip label="+" tooltip="This is the old method of telling Overseerr that something has been removed. The default method now is to tell Overseerr to initiate an Availability Sync through its API. This happens automatically at the end of the collection handler job. This option is not available for Jellyseerr." /> |
 | Custom collection           | Use a manually created collection. Maintainerr will never automatically add or remove this collection from your media server.                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -103,6 +104,60 @@ The `Tag this content` option keeps a Radarr/Sonarr tag named after the rule gro
 For Sonarr season rules, additional actions are available to also clean up the parent show when it becomes empty after season processing.
 
 Never-downloaded later seasons do not block those parent-show cleanup actions. Maintainerr only treats a monitored season as still keeping the show active when Sonarr reports episode files for that season.
+
+### Radarr and Sonarr actions
+
+Each \*arr action affects three independent things: whether the movie or series record stays in Radarr or Sonarr, whether the media files are deleted from disk, and whether the containing folder is removed. The tables below make all three axes explicit.
+
+#### Radarr movie actions
+
+| Action                            | Radarr record            | Files                            | Containing folder                                                               |
+| --------------------------------- | ------------------------ | -------------------------------- | ------------------------------------------------------------------------------- |
+| Delete                            | removed                  | deleted                          | deleted (Radarr removes it)                                                     |
+| Unmonitor and delete files        | kept, set to unmonitored | deleted (each file individually) | stranded - opt-in [cleanup](./Collections.md#leftover-folder-cleanup) available |
+| Unmonitor and keep files          | kept, set to unmonitored | kept                             | kept                                                                            |
+| Change quality profile and search | kept, profile changed    | kept                             | kept                                                                            |
+
+**Delete** calls Radarr's `DELETE /movie/{id}` with `deleteFiles=true`. Radarr removes its own record and the movie folder in one operation, so no folder is left behind.
+
+**Unmonitor and delete files** calls Radarr's `PUT /movie/{id}` with `monitored=false`, then issues a separate `DELETE /moviefile/{id}` for each file. The Radarr record stays in the library as an unmonitored entry with no file. Because Radarr removes only the individual files and not the folder, the folder and any sidecars (subtitles, .nfo, artwork) remain on disk - that is what the optional [leftover folder cleanup](./Collections.md#leftover-folder-cleanup) removes. The unmonitored record acts as a tombstone: it prevents an import-list or collection sync from re-adding the movie automatically. If `Add list exclusions` is enabled, an import exclusion is also added.
+
+**Unmonitor and keep files** only changes the `monitored` flag. No files or folders are touched.
+
+#### Sonarr show actions
+
+| Action                                        | Sonarr record            | Files                                                        | Containing folder                                                                             |
+| --------------------------------------------- | ------------------------ | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Delete entire show                            | removed                  | deleted                                                      | deleted (Sonarr removes it)                                                                   |
+| Unmonitor show + seasons, delete all episodes | kept, set to unmonitored | all episode files deleted (each individually)                | series folder stranded - opt-in [cleanup](./Collections.md#leftover-folder-cleanup) available |
+| Unmonitor show, delete existing episodes      | kept, set to unmonitored | already-downloaded episode files deleted (each individually) | series folder stranded - opt-in [cleanup](./Collections.md#leftover-folder-cleanup) available |
+| Unmonitor show + seasons, keep files          | kept, set to unmonitored | kept                                                         | kept                                                                                          |
+| Change quality profile and search             | kept, profile changed    | kept                                                         | kept                                                                                          |
+
+**Delete entire show** calls Sonarr's `DELETE /series/{id}` with `deleteFiles=true`. Sonarr removes its own record and the series folder in one operation.
+
+**Unmonitor show + seasons, delete all episodes** and **Unmonitor show, delete existing episodes** both keep the Sonarr record but delete episode files one at a time via `DELETE /episodefile/{id}`. The difference is scope: the first deletes every episode file Sonarr knows about; the second deletes only the files that are currently on disk. Both strand the series folder and its sidecars - the optional [leftover folder cleanup](./Collections.md#leftover-folder-cleanup) removes it.
+
+#### Sonarr season actions
+
+| Action                                             | Season/show record                                    | Files                                                        | Containing folder                                                                             |
+| -------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
+| Unmonitor and delete season                        | season unmonitored, show kept                         | episode files deleted (each individually)                    | season folder stranded - opt-in [cleanup](./Collections.md#leftover-folder-cleanup) available |
+| Unmonitor and delete season + delete show if empty | season unmonitored, show removed when no files remain | episode files deleted (each individually)                    | season folder stranded, series folder removed if show deleted                                 |
+| Unmonitor and delete existing episodes             | season unmonitored, show kept                         | already-downloaded episode files deleted (each individually) | season folder stranded - opt-in [cleanup](./Collections.md#leftover-folder-cleanup) available |
+| Unmonitor season and keep files                    | season unmonitored, show kept                         | kept                                                         | kept                                                                                          |
+| Unmonitor season + unmonitor show if empty         | season and show unmonitored, both kept                | kept                                                         | kept                                                                                          |
+
+Season delete actions unmonitor the season in Sonarr and delete its episode files one at a time via `DELETE /episodefile/{id}`. The season folder and its sidecars are stranded because only the files are removed. The series folder is untouched unless the show itself is also deleted.
+
+#### Sonarr episode actions
+
+| Action                       | Episode/season/show record                | File    | Folder                                               |
+| ---------------------------- | ----------------------------------------- | ------- | ---------------------------------------------------- |
+| Unmonitor and delete episode | episode unmonitored, season and show kept | deleted | season folder unchanged (shared with other episodes) |
+| Unmonitor and keep file      | episode unmonitored, season and show kept | kept    | kept                                                 |
+
+Episode delete actions share the season folder with other episodes, so the folder is never removed by this action. No leftover folder cleanup is offered for episode rules.
 
 ### Sportarr actions
 
