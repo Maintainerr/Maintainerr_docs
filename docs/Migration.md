@@ -142,6 +142,7 @@ Recent Maintainerr releases also add database support for overlays.
 - new `NormalizeRuleSectionOperators` migration that backfills legacy null operators without changing existing matches: the first rule of a group stays unset, the first rule of a later section becomes `AND`, and later rules in that section become `OR`. This migration is behavior-preserving and its `down()` is a no-op.
 - new `tagInArr` collection field plus six Radarr/Sonarr exclusion-tag settings (`radarr_tag_exclusions`, `radarr_exclusion_tag`, `radarr_untag_on_unexclude`, and the Sonarr equivalents) for the \*arr tagging integration. Existing collections default to untagged and exclusion tagging defaults to off, so the upgrade is behavior-preserving.
 - a `sportarr_settings` table plus optional Sportarr server and quality-profile fields on collections. Existing collections remain unchanged until you configure Sportarr.
+- a `cleanupLeftoverFolders` collection field for the opt-in leftover-folder cleanup. Existing collections default to disabled.
 
 No manual database work should be required, but you should still keep a backup of `/opt/data/maintainerr.db` before upgrading and allow startup migrations to complete before using the new overlay screens.
 
