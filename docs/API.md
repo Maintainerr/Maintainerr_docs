@@ -73,20 +73,20 @@ The lower-level `POST /api/media-server/collection` request body matches `Create
 
 ### Metadata
 
-| Endpoint                                        | Purpose                                                                                   |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `GET /api/metadata/backdrop/:type`              | Resolve a backdrop image for a movie or show from the configured metadata providers       |
-| `GET /api/metadata/overview/:type`              | Resolve a movie, show, season, or episode overview from the configured metadata providers |
-| `GET /api/metadata/image/:type`                 | Resolve a poster image for a movie or show from the configured metadata providers         |
-| `GET /api/settings/tmdb`                        | Read the saved TMDB API key state                                                         |
-| `POST /api/settings/tmdb`                       | Save a TMDB API key                                                                       |
-| `DELETE /api/settings/tmdb`                     | Remove the saved TMDB API key                                                             |
-| `GET /api/settings/tvdb`                        | Read the saved TVDB API key state                                                         |
-| `POST /api/settings/tvdb`                       | Save a TVDB API key                                                                       |
-| `DELETE /api/settings/tvdb`                     | Remove the saved TVDB API key                                                             |
-| `GET /api/settings/metadata-provider`           | Read which metadata provider is currently primary                                         |
-| `POST /api/settings/metadata-provider`          | Change the primary metadata provider                                                      |
-| `POST /api/settings/metadata/refresh/:provider` | Clear cached metadata for TMDB or TVDB and queue a media-server refresh pass              |
+| Endpoint                                        | Purpose                                                                                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `GET /api/metadata/backdrop/:type`              | Resolve a backdrop image from the configured metadata providers. `:type` is `movie` or `show`                                                               |
+| `GET /api/metadata/overview/:type`              | Resolve an overview from the configured metadata providers. `:type` is `movie` or `show`; pass a season's or episode's `itemId` to get that item's overview |
+| `GET /api/metadata/image/:type`                 | Resolve a poster image from the configured metadata providers. `:type` is `movie` or `show`                                                                 |
+| `GET /api/settings/tmdb`                        | Read the saved TMDB API key state                                                                                                                           |
+| `POST /api/settings/tmdb`                       | Save a TMDB API key                                                                                                                                         |
+| `DELETE /api/settings/tmdb`                     | Remove the saved TMDB API key                                                                                                                               |
+| `GET /api/settings/tvdb`                        | Read the saved TVDB API key state                                                                                                                           |
+| `POST /api/settings/tvdb`                       | Save a TVDB API key                                                                                                                                         |
+| `DELETE /api/settings/tvdb`                     | Remove the saved TVDB API key                                                                                                                               |
+| `GET /api/settings/metadata-provider`           | Read which metadata provider is currently primary                                                                                                           |
+| `POST /api/settings/metadata-provider`          | Change the primary metadata provider                                                                                                                        |
+| `POST /api/settings/metadata/refresh/:provider` | Clear cached metadata for TMDB or TVDB and queue a media-server refresh pass                                                                                |
 
 ### Media server settings
 
