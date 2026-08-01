@@ -139,6 +139,96 @@ If media is added to the collection outside of Maintainerr, it will be added to 
 
 If you delete media from the collection outside of Maintainerr, it will be removed from the corresponding Maintainerr collection. However, if the media still matches your rules, it will be re-added to the collection in subsequent rule processing cycles.
 
+### MANUAL membership badge
+
+An item shows a **MANUAL** badge when its membership source is manual: it was added by hand in the UI, or it was adopted from a media-server collection whose contents the rule does not own.
+
+A few things to know about MANUAL items:
+
+- Rules never evict a manual member. A manual item stays in the collection even when it stops matching the rule criteria.
+- **MANUAL does not mean protected.** When the `Media deleted after days` timer expires, the collection handler acts on the item exactly as it would for a rule-owned item. Manual membership only describes how the item entered the collection, not whether it is exempt from the configured action.
+- To make an item rule-owned again, remove it from the collection and re-run the rule. If the item still matches, the next rule run re-adds it as a rule-owned member. Adding the item by hand keeps it MANUAL.
+
+## Leftover folder cleanup
+
+When Radarr or Sonarr deletes an item's files one at a time (rather than deleting the whole entity), the parent folder and its sidecars (subtitles, .nfo, artwork) are left on disk. The **Clean up leftover folders** option (BETA) makes Maintainerr remove that stranded folder after the \*arr action completes.
+
+This is off by default and opt-in per collection. It only appears in the collection form when the selected action actually strands a folder.
+
+### Which actions offer the cleanup
+
+The rule comes from `leftoverCleanupScope` in `packages/contracts/src/collections/leftover-cleanup.ts`, which is the single definition shared between the UI and the server. Only per-file deletes strand a folder; whole-entity deletes (`DELETE /movie/{id}`, `DELETE /series/{id}`) remove the folder in the \*arr itself, so no cleanup is needed or offered for those.
+
+| Rule type | Action                                                     | Cleanup offered?                                 |
+| --------- | ---------------------------------------------------------- | ------------------------------------------------ |
+| Movie     | Unmonitor and delete files                                 | yes - removes the movie folder                   |
+| Show      | Unmonitor show + seasons, delete all episodes              | yes - removes the series folder                  |
+| Show      | Unmonitor show, delete existing episodes                   | yes - removes the series folder                  |
+| Season    | Unmonitor and delete season                                | yes - removes the season folder                  |
+| Season    | Unmonitor and delete season + delete show if empty         | yes - removes the season folder                  |
+| Season    | Unmonitor and delete existing episodes                     | yes - removes the season folder                  |
+| Movie     | Delete                                                     | no - Radarr removes the folder itself            |
+| Show      | Delete entire show                                         | no - Sonarr removes the folder itself            |
+| Episode   | Unmonitor and delete episode                               | no - season folder is shared with other episodes |
+| Any       | Unmonitor and keep files / Unmonitor season and keep files | no - no files are deleted                        |
+
+### Mount requirement
+
+:::warning
+The cleanup **requires** the media library to be bind-mounted into the Maintainerr container at the **identical path** that the \*arr reports in its `/api/v3/rootfolder` response.
+
+- The mount must be read-write.
+- The container user (UID 1000, `node` by default) must be able to write to the mount.
+- Mounting the same data at a different container path does not work: Maintainerr checks the paths the \*arr reports, and a different container path will not match.
+
+When the paths do not match, Maintainerr logs:
+
+```
+None of the *arr root folders are visible to Maintainerr; mount the library at the same path the *arr uses. Skipping.
+```
+
+If you see this message, check that the host path and the container path are both identical across your Radarr/Sonarr and Maintainerr service definitions.
+:::
+
+#### Docker Compose example
+
+The key is that the `source` and `target` are both the same across the \*arr service and the Maintainerr service:
+
+```yaml
+services:
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    volumes:
+      - /data/media:/data/media # host path : container path
+
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    user: 1000:1000
+    volumes:
+      - /opt/maintainerr:/opt/data
+      - /data/media:/data/media # must match Radarr exactly
+    ports:
+      - 6246:6246
+    restart: unless-stopped
+```
+
+If Radarr's root folder is `/data/media/movies`, Maintainerr must be able to reach that path at `/data/media/movies` too.
+
+### Cleanup safety gates
+
+Maintainerr applies several checks before removing a folder:
+
+- The folder must be inside one of the \*arr's configured root folders.
+- At least one of the files the \*arr just deleted must have lived inside the folder (prevents removing an unrelated same-named directory).
+- The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS\_Store, Thumbs.db) may remain. Anything else keeps the folder.
+- The folder must not be at or above another tracked item's folder.
+
+These checks are fail-closed: when in doubt, Maintainerr leaves the folder in place.
+
+### Limitation: item not tracked in the \*arr
+
+When an item is not found in Radarr or Sonarr, Maintainerr falls back to deleting it directly via the media server. In that path the leftover-folder cleanup cannot run because it relies on the \*arr's root-folder list and file paths as safety fences. The media file is removed, but the parent folder may remain. Maintainerr logs a warning when this happens. If you notice persistent leftover folders, check whether the affected items are tracked in your \*arr instance.
+
 ## Misc
 
 - By clicking on the collection's name you can see all media currently added to the collection. On the top-right side there'll be a number indicating the number of days before removal.
