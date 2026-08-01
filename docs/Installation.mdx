@@ -43,7 +43,7 @@ Define the Maintainerr service in your docker-compose.yml as follows:
         source: <your host location>
         target: /opt/data
       - type: bind
-        source: /data/media
+        source: /data/media # optional: only for leftover-folder cleanup
         target: /data/media
     environment:
       - TZ=Europe/Brussels
@@ -64,13 +64,13 @@ Define the Maintainerr service in your docker-compose.yml as follows:
         "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
     },
     {
-      line: 11,
+      line: 10,
       label: "+",
       tooltip:
         "Optional: bind the media library at the same container path used by Radarr or Sonarr for leftover-folder cleanup.",
     },
     {
-      line: 15,
+      line: 14,
       label: "+",
       tooltip: "Port mappings are defined as host:container.",
     },
