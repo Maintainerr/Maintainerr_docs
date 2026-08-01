@@ -1,4 +1,5 @@
 ---
+id: migration
 description: Switching between Plex and Jellyfin, rule migration for YAML and Community imports
 title: Migration
 ---

@@ -1,7 +1,6 @@
 ---
 id: notifications
 slug: /notifications
-status: new
 description: Configure and manage notification agents for automated alerts and updates.
 title: Notifications
 ---
@@ -9,7 +8,7 @@ title: Notifications
 Notifications allow Maintainerr to send automated alerts and updates about your media collections through various messaging platforms and services. You can configure multiple notification agents and specify which types of events should trigger notifications.
 
 :::note Beta Feature
-The notification system is currently in beta. Some agents have not been tested extensively.
+The notification system is in beta. Some agents have not been tested extensively.
 
 :::
 
@@ -108,7 +107,7 @@ You'll need a running Gotify server instance. See the [Gotify documentation](htt
 Send notifications to LunaSea mobile app.
 
 :::warning Project Status
-LunaSea has shut down development as of 2024. While the binaries are still available for download, no further updates will be provided. See [lunasea.app](https://www.lunasea.app/) for more information.
+LunaSea ended development in 2024. While the binaries are still available for download, no further updates will be provided. See [lunasea.app](https://www.lunasea.app/) for more information.
 
 :::
 :::note Setup Required

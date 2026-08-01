@@ -21,10 +21,10 @@ All Base URL settings are to be entered without the leading slash.
 
 These settings are OK for most installations.
 
-| Setting  | Description                                                     |
-| -------- | --------------------------------------------------------------- |
-| Hostname | The hostname or IP address of the host running Maintainerr      |
-| API key  | Maintainerr's API key. It is currently reserved for future use. |
+| Setting  | Description                                                |
+| -------- | ---------------------------------------------------------- |
+| Hostname | The hostname or IP address of the host running Maintainerr |
+| API key  | Maintainerr's API key. It is reserved for future use.      |
 
 ## Media Server
 
@@ -189,7 +189,7 @@ The separate `Settings -> Download Client` page only appears once Radarr or Sona
 
 When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. Downloads are matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched.
 
-qBittorrent is currently the only supported client.
+qBittorrent is the only supported client.
 
 ### qBittorrent
 

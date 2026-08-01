@@ -1,4 +1,5 @@
 ---
+id: migration
 description: Switching between Plex, Jellyfin, and Emby, plus rule migration for YAML and Community imports
 title: Migration
 ---

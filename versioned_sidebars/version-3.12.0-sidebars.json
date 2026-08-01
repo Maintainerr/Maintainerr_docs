@@ -10,7 +10,8 @@
         "works",
         "common",
         "reverseproxy",
-        "downgrade"
+        "downgrade",
+        "migration"
       ]
     },
     {
