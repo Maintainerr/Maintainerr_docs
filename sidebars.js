@@ -41,7 +41,7 @@ const sidebars = {
     {
       type: "category",
       label: "Community",
-      items: ["contributing", "overlays-internals", "changelog"],
+      items: ["contributing", "changelog"],
     },
     {
       type: "category",

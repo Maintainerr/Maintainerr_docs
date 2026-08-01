@@ -98,7 +98,15 @@ Maintainerr re-renders overlays when the visible days-left value changes, and it
 
 Normal scheduled runs skip items whose saved overlay state already matches the current visible day count. `Run Now` uses the forced path instead, so you can reapply overlays after another artwork tool or a manual media-server edit replaced them without waiting for the countdown to change first.
 
-Maintainerr saves the original artwork the first time it applies an overlay, then reuses that saved original for later updates so overlays do not stack on top of previous overlays. Revert actions and `Reset All Overlays` restore those saved originals.
+## Stored files and reverting
+
+Maintainerr keeps no on-disk copy of a rendered overlay. It renders the image in memory and uploads it to the media server as the item's artwork.
+
+Before it first applies an overlay to an item, Maintainerr saves the item's original artwork in its data directory under `overlays/originals/`, named for the media-server item ID. Every later render starts from that saved original instead of already-overlaid artwork, so overlays do not stack.
+
+Uploaded fonts and images are stored in the same data directory under `overlays/fonts/` and `overlays/images/`. These originals, fonts, and images are included when you back up the data directory.
+
+When an overlay is reverted, Maintainerr uploads the saved original to the media server, then removes the backup file and its state record. If the upload fails, it keeps both so a later run can retry instead of discarding the only original during a temporary media-server outage.
 
 ## Coexisting with other artwork tools
 

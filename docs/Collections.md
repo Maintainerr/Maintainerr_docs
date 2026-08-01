@@ -45,9 +45,8 @@ Turning the custom sort back off does not restore Plex's previous order automati
 Collections now power additional Maintainerr views beyond cleanup.
 
 - The [Calendar](./Calendar.md) page shows when collection media is scheduled to reach its configured action date.
-- Overlay-enabled collections can apply poster or title card artwork to help identify queued media in your media server.
 
-In the rule or collection form, you can enable overlays per collection and optionally choose a specific overlay template. Movies, shows, and seasons use poster templates. Episode collections use title card templates.
+For overlay setup and behavior, see [Overlays](./Overlays.md).
 
 ## Custom Poster
 
