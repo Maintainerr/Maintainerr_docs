@@ -12,6 +12,7 @@ const sidebars = {
         "common",
         "reverseproxy",
         "downgrade",
+        "migration",
       ],
     },
     {
@@ -29,6 +30,7 @@ const sidebars = {
       label: "Features",
       items: [
         "calendar-feature",
+        "media-server-switching-feature",
         "overlays-feature",
         "storage-metrics-feature",
       ],
