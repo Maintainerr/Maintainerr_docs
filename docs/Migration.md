@@ -4,8 +4,9 @@ description: Rule migration for imports, schema upgrades, and exclusion scoping
 title: Migration
 ---
 
-!!! tip
+:::tip
 Backup `/opt/data/maintainerr.db` before major changes.
+:::
 
 ## YAML Import Migration
 
@@ -60,5 +61,6 @@ Same automatic migration as YAML imports.
 
 Import any community rule regardless of origin server. Maintainerr migrates media-server properties to your configured server the same way as YAML imports: `firstVal` and `lastVal` are handled independently, non-media-server apps are left untouched, and rules with no equivalent target-server property are skipped with a user-visible skipped count.
 
-!!! note
+:::note
 Community rules from much older Maintainerr versions may not work due to schema changes.
+:::

@@ -60,8 +60,9 @@ After migration:
 
 </details>
 
-!!! warning
+:::warning
 Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
+:::
 
 ## Incompatible Properties
 
