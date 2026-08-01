@@ -42,6 +42,9 @@ Define the Maintainerr service in your docker-compose.yml as follows:
       - type: bind
         source: <your host location>
         target: /opt/data
+      - type: bind
+        source: /data/media
+        target: /data/media
     environment:
       - TZ=Europe/Brussels
     ports:
@@ -62,6 +65,12 @@ Define the Maintainerr service in your docker-compose.yml as follows:
     },
     {
       line: 11,
+      label: "+",
+      tooltip:
+        "Optional: bind the media library at the same container path used by Radarr or Sonarr for leftover-folder cleanup.",
+    },
+    {
+      line: 15,
       label: "+",
       tooltip: "Port mappings are defined as host:container.",
     },
@@ -86,6 +95,7 @@ Run Maintainerr with the following command:
   --name maintainerr \\
   -e TZ=Europe/Brussels \\
   -v <your host location>:/opt/data \\
+  -v /data/media:/data/media \\
   -u 1000:1000 \\
   -p 6246:6246 \\
   --restart unless-stopped \\
@@ -98,12 +108,18 @@ Run Maintainerr with the following command:
         "Bind a host directory to /opt/data so configuration and database files persist outside the container.",
     },
     {
-      line: 6,
+      line: 5,
+      label: "+",
+      tooltip:
+        "Optional: bind the media library at the same container path used by Radarr or Sonarr for leftover-folder cleanup.",
+    },
+    {
+      line: 7,
       label: "+",
       tooltip: "Port mappings are defined as host:container.",
     },
     {
-      line: 8,
+      line: 9,
       label: "+",
       tooltip:
         "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
@@ -113,6 +129,8 @@ Run Maintainerr with the following command:
 
   </TabItem>
 </Tabs>
+
+The optional media-library bind mount is required for [leftover-folder cleanup](./Collections.md#leftover-folder-cleanup). Use the same container path that Radarr or Sonarr reports for its root folder, and make sure the configured `user:group` can write to it.
 
 <Details summary="Development Images">
 
