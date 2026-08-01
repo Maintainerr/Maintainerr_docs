@@ -199,9 +199,9 @@ Maintainerr applies several checks before removing a folder:
 
 - The folder must be inside one of the \*arr's configured root folders.
 - At least one of the files the \*arr just deleted must have lived inside the folder (prevents removing an unrelated same-named directory).
-- The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS\_Store, Thumbs.db) may remain. Anything else keeps the folder.
+- The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS\_Store, Thumbs.db) may remain. A dangling symlink is also treated as a leftover and removed; a live symlink or one whose status cannot be confirmed keeps the folder.
 - The folder must not be at or above another tracked item's folder.
-- The folder must not be a symlink.
+- The folder itself must not be a symlink.
 - For a season, the folder must be strictly under the series folder; seasonFolder=off layouts are skipped.
 - Cleanup bypasses the \*arr's Recycle Bin: sidecars it removes are deleted outright, not recycled.
 
