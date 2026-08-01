@@ -5,11 +5,9 @@ description: Switch between Plex, Jellyfin, and Emby, with optional rule migrati
 title: Media Server Switching
 ---
 
-## Media Server Switching
-
 Switch between Plex, Jellyfin, and Emby at any time with automatic rule migration.
 
-### Process
+## Process
 
 1. **Preview** - See what will be cleared, kept, and migrated
 2. **Confirm** - Choose whether to migrate rules or start fresh
@@ -32,7 +30,7 @@ Switch between Plex, Jellyfin, and Emby at any time with automatic rule migratio
 - Tautulli configuration (unless you are switching away from Plex)
 - Notification settings
 
-### Rule Migration
+## Rule Migration
 
 When migrating during a switch:
 
@@ -65,7 +63,9 @@ After migration:
 !!! warning
 Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
 
-### Incompatible Properties
+## Incompatible Properties
+
+Property remapping is derived at runtime by matching each property's name between the source and target application definitions, with an explicit mapping used only when no name matches. The ID pairs below illustrate the mappings currently resolved by that behavior and are not a stable contract.
 
 **Plex → Jellyfin / Emby incompatible (deleted):**
 
