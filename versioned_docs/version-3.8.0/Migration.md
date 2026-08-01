@@ -1,10 +1,12 @@
 ---
+id: migration
 description: Switching between Plex and Jellyfin, rule migration for YAML and Community imports
 title: Migration
 ---
 
-!!! tip
-    Backup `/opt/data/maintainerr.db` before major changes.
+:::tip
+Backup `/opt/data/maintainerr.db` before major changes.
+:::
 
 ## Media Server Switching
 
@@ -62,8 +64,9 @@ After migration:
 
 </details>
 
-!!! warning
-    Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
+:::warning
+Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
+:::
 
 ### Incompatible Properties
 
@@ -147,5 +150,6 @@ Same automatic migration as YAML imports.
 
 Import any community rule regardless of origin server.
 
-!!! note
-    Community rules from much older Maintainerr versions may not work due to schema changes.
+:::note
+Community rules from much older Maintainerr versions may not work due to schema changes.
+:::

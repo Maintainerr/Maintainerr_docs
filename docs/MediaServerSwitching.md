@@ -60,37 +60,46 @@ After migration:
 
 </details>
 
-!!! warning
+:::warning
 Rule groups are **deactivated** after switching and libraries must be re-assigned before they will run. Collections won't function until libraries are set.
+:::
 
 ## Incompatible Properties
 
-Property remapping is derived at runtime by matching each property's name between the source and target application definitions, with an explicit mapping used only when no name matches. The ID pairs below illustrate the mappings currently resolved by that behavior and are not a stable contract.
+Property remapping is derived at runtime by matching each property's name between the source and target application definitions, with an explicit mapping used only when no name matches. The ID pairs below illustrate the mappings resolved by that behavior and are not a stable contract. The switch preview reports exactly which of your rules will be migrated or deleted and is authoritative where this illustrative list is not.
 
-**Plex → Jellyfin / Emby incompatible (deleted):**
+**Plex -> Jellyfin / Emby incompatible (rule deleted):**
 
-- Watchlisted by users (ID 28)
+- Watchlisted by (username) (ID 28)
 - Is Watchlisted (ID 30)
+- Amount of episodes marked as watched (ID 45)
 
-**Plex → Jellyfin / Emby remapped (converted automatically):**
+**Plex -> Jellyfin / Emby remapped:**
 
 - IMDb rating (31 to 44)
-- Smart collections → regular collections (39 → 6)
-- Smart collections incl. parents → collections incl. parents (40 → 25)
-- Smart collection names incl. parents → collection names incl. parents (41 → 26)
-- Smart collection names → collection names (42 → 19)
+- Is Watched (43 to 42)
+- Newest view date across collection (44 to 45)
+- Smart collections -> regular collections (39 to 6)
+- Smart collections incl. parents -> collections incl. parents (40 to 25)
+- Smart collection names incl. parents -> collection names incl. parents (41 to 26)
+- Smart collection names -> collection names (42 to 19)
 
-**Plex → Jellyfin / Emby compatible:**
+**Plex -> Jellyfin / Emby compatible:**
 
 - External ratings (IDs 32-38) - Rotten Tomatoes, TMDb, and IMDb show-level ratings migrate directly
 
-**Jellyfin / Emby → Plex incompatible (deleted):**
+**Jellyfin / Emby -> Plex incompatible (rule deleted):**
 
-- Play count (ID 30) and show play count (ID 31) - Jellyfin tracks play attempts separately from completed views; Plex does not have this concept
+- Total play attempts including unfinished (ID 30) and its show-level equivalent (ID 31). Jellyfin and Emby track play attempts separately from completed views; Plex has no equivalent.
+- Favorited by (username) (ID 39), its show-level equivalent (ID 40), and the incl. parents variant (ID 41). Plex has no favourites concept.
 
-**Jellyfin ↔ Emby:**
+**Jellyfin / Emby -> Plex remapped:**
 
-- Emby mirrors Jellyfin's rule property list, so Jellyfin ↔ Emby migration is a direct property-ID match with no special remapping.
+- IMDb rating (44 to 31)
+- Is Watched (42 to 43)
+- Newest view date across collection (45 to 44)
+
+Emby behaves identically to Jellyfin in both directions because its property set is derived from Jellyfin's at runtime. Jellyfin and Emby migration is therefore a direct property-ID match with no special remapping.
 
 <details>
 <summary><strong>Technical Details</strong></summary>

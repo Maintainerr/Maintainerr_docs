@@ -6,7 +6,6 @@ title: API Docs
 hide:
   - navigation
   - toc
-status: recent
 ---
 
 :::danger
@@ -17,14 +16,14 @@ status: recent
 ## API endpoints
 
 :::info
-The Docusaurus site does not yet embed the generated Swagger reference. Use the live Swagger UI in your Maintainerr instance at `http://<maintainerr_url>/api/swagger` for the current API surface, including newer modules such as overlays and storage metrics.
+The Docusaurus site does not yet embed the generated Swagger reference. Use the live Swagger UI in your Maintainerr instance at `http://<maintainerr_url>/api/swagger` for the current API surface, including modules such as overlays and storage metrics.
 :::
 
 The repository also carries a bundled OpenAPI YAML at `static/openapi-spec/maintainerr_api_specs.yaml`, but the live Swagger UI should still be treated as the source of truth for the running instance.
 
-## Notable current endpoints
+## Notable endpoints
 
-These are some of the newer user-facing API groups that are relevant to the current docs set.
+These sections cover notable user-facing API groups.
 
 ### Health
 
@@ -151,7 +150,7 @@ The lower-level `POST /api/media-server/collection` request body matches `Create
 | `POST /api/overlays/templates/import`        | Import a template from JSON                                                   |
 | `POST /api/overlays/templates/:id/preview`   | Render a server-side preview of a template on real artwork                    |
 
-`POST /api/overlays/process` accepts an optional `{ force: true }` body to reapply overlays even when the saved day-count state is already current. Its run summary now always reports `processed`, `reverted`, `skipped`, and `errors`.
+`POST /api/overlays/process` accepts an optional `{ force: true }` body to reapply overlays even when the saved day-count state is already current. Its run summary always reports `processed`, `reverted`, `skipped`, and `errors`.
 
 `POST /api/overlays/process` and `DELETE /api/overlays/reset` both return `409 Conflict` if another overlay-processing run is already active.
 
@@ -162,8 +161,8 @@ The lower-level `POST /api/media-server/collection` request body matches `Create
 | `GET /api/storage-metrics`               | Return aggregated disk usage, instance health, collection-size summaries, and cumulative cleanup totals |
 | `GET /api/storage-metrics/library-sizes` | Compute per-library sizes on demand; potentially slow on large libraries                                |
 
-`GET /api/storage-metrics` now includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`, plus reclaimed-byte totals in `bytesHandled`, `movieBytesHandled`, `showBytesHandled`, `seasonBytesHandled`, and `episodeBytesHandled`.
+`GET /api/storage-metrics` includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`, plus reclaimed-byte totals in `bytesHandled`, `movieBytesHandled`, `showBytesHandled`, `seasonBytesHandled`, and `episodeBytesHandled`.
 
 The same response also includes `collectionSummary` type breakdowns for `movieSizeBytes`, `showSizeBytes`, `seasonSizeBytes`, `episodeSizeBytes`, and per-type reclaimable collection counts such as `reclaimableMovieCount`.
 
-Collection payloads also now carry an optional `mediaServerSort` key. It stores the collection's saved media-server sort order as `{field}.{order}` (for example `deleteSoonest.asc`) when the connected server supports collection sorting.
+Collection payloads carry an optional `mediaServerSort` key. It stores the collection's saved media-server sort order as `{field}.{order}` (for example `deleteSoonest.asc`) when the connected server supports collection sorting.

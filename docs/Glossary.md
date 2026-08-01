@@ -50,7 +50,7 @@ The release date of the Plex item.
 :::info
 The user rating of the Plex item on a scale of 1 to 10.
 
-Currently, only checks for the server owner's ratings.
+Only checks for the server owner's ratings.
 
 :::
 
@@ -355,7 +355,7 @@ List of labels associated with the Plex item.
 #### Watchlisted by (username)
 
 :::info
-List of Plex users that have the item in their watchlist. Maintainerr scans all users returned by the Plex server account list for this lookup, not only the current user, and there is currently no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, is experimental, and might be more fragile than purely local metadata rules. Plex only.
+List of Plex users that have the item in their watchlist. Maintainerr scans all users returned by the Plex server account list for this lookup, not only the current user, and there is no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, is experimental, and might be more fragile than purely local metadata rules. Plex only.
 
 :::
 
@@ -366,7 +366,7 @@ List of Plex users that have the item in their watchlist. Maintainerr scans all 
 #### Is Watchlisted
 
 :::info
-Indicates whether the item is on any Plex user's watchlist. Maintainerr checks all users returned by the Plex server account list for this lookup, not only the current user, and there is currently no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, not only the local Plex server. Plex only.
+Indicates whether the item is on any Plex user's watchlist. Maintainerr checks all users returned by the Plex server account list for this lookup, not only the current user, and there is no per-user exclude option. Private watchlists can produce expected warnings because they are not visible to Maintainerr. This rule depends on Plex cloud services such as `plex.tv` and `community.plex.tv`, not only the local Plex server. Plex only.
 
 :::
 

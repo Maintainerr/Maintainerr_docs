@@ -8,7 +8,7 @@ title: Overlays
 Overlays let Maintainerr draw collection-specific artwork onto media so it is easier to see that an item is queued for action.
 
 :::note
-Overlays are intended for supported media servers in this release line.
+Overlays are available for supported media servers.
 :::
 
 ## Where to find it
@@ -122,4 +122,4 @@ Collection posters (see [Collections — Custom Poster](./Collections.md#custom-
 
 ## Upgrade notes
 
-Recent Maintainerr releases add overlay tables and new collection fields to the database. On first startup after upgrading, allow database migration to finish before opening the Overlays pages.
+On first startup after upgrading, allow database migration to finish before opening the Overlays pages.

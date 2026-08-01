@@ -42,7 +42,7 @@ Turning the custom sort back off does not restore Plex's previous order automati
 
 ## Calendar and overlays
 
-Collections now power additional Maintainerr views beyond cleanup.
+Collections power additional Maintainerr views beyond cleanup.
 
 - The [Calendar](./Calendar.md) page shows when collection media is scheduled to reach its configured action date.
 
