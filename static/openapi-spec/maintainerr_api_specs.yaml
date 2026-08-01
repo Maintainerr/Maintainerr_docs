@@ -1450,6 +1450,40 @@ paths:
           description: Resolves a poster image URL from the configured metadata providers.
       tags:
         - /metadata
+  /api/metadata/overview/{type}:
+    get:
+      operationId: MetadataController_getOverview
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: tmdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: tvdbId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: imdbId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resolves an overview from the configured metadata providers.
+      tags:
+        - /metadata
   /api/overlays/settings:
     get:
       operationId: OverlaysController_getSettings

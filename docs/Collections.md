@@ -178,14 +178,16 @@ The rule comes from `leftoverCleanupScope` in `packages/contracts/src/collection
 The cleanup **requires** the media library to be bind-mounted into the Maintainerr container at the **identical path** that the \*arr reports in its `/api/v3/rootfolder` response.
 
 - The mount must be read-write.
-- The container user (UID 1000, `node` by default) must be able to write to the mount.
+- The configured `user:group` must be able to write to the mount.
 - Mounting the same data at a different container path does not work: Maintainerr checks the paths the \*arr reports, and a different container path will not match.
 
 When the paths do not match, Maintainerr logs:
 
 ```
-None of the *arr root folders are visible to Maintainerr; mount the library at the same path the *arr uses. Skipping.
+None of the *arr root folders are visible to Maintainerr for 'Some Movie'; mount the library at the same path the *arr uses. Skipping.
 ```
+
+`Some Movie` is the affected item's title.
 
 If you see this message, check that the host path and the container path are both identical across your Radarr/Sonarr and Maintainerr service definitions.
 :::
@@ -222,12 +224,19 @@ Maintainerr applies several checks before removing a folder:
 - At least one of the files the \*arr just deleted must have lived inside the folder (prevents removing an unrelated same-named directory).
 - The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS\_Store, Thumbs.db) may remain. Anything else keeps the folder.
 - The folder must not be at or above another tracked item's folder.
+- The folder must not be a symlink.
+- For a season, the folder must be strictly under the series folder; seasonFolder=off layouts are skipped.
+- Cleanup bypasses the \*arr's Recycle Bin: sidecars it removes are deleted outright, not recycled.
 
 These checks are fail-closed: when in doubt, Maintainerr leaves the folder in place.
 
-### Limitation: item not tracked in the \*arr
+### Deletes that go through the media server
 
-When an item is not found in Radarr or Sonarr, Maintainerr falls back to deleting it directly via the media server. In that path the leftover-folder cleanup cannot run because it relies on the \*arr's root-folder list and file paths as safety fences. The media file is removed, but the parent folder may remain. Maintainerr logs a warning when this happens. If you notice persistent leftover folders, check whether the affected items are tracked in your \*arr instance.
+Maintainerr deletes through the media server in two cases: when no \*arr is configured for the collection, and when an \*arr is configured but does not track the item. In both cases the leftover-folder cleanup does not run - every fence it needs (root folders, the paths just deleted, the other tracked items' folders) comes from the \*arr. When the option is enabled, Maintainerr logs a line saying the cleanup does not apply.
+
+That is not a gap for Jellyfin and Emby, because they already remove the folder themselves. Deleting an item deletes its containing folder, recursively, sidecars and extras included - not just the media file. In a mixed-folder library (several movies sharing one folder) they delete only the file, which is also correct, because the folder still holds the other movies.
+
+Plex is not covered: Maintainerr does not clean up after a Plex media-server delete, and makes no claim about what Plex leaves behind.
 
 ## Misc
 
