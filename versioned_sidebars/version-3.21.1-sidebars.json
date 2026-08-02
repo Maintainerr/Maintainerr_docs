@@ -1,0 +1,66 @@
+{
+  "docsSidebar": [
+    "introduction",
+    {
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        "installation",
+        "configuration",
+        "works",
+        "common",
+        "reverseproxy",
+        "downgrade",
+        "migration"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Rules",
+      "items": [
+        "rules",
+        "glossary"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Collections",
+      "items": [
+        "collections",
+        "test-media"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Features",
+      "items": [
+        "calendar-feature",
+        "media-server-switching-feature",
+        "overlays-feature",
+        "storage-metrics-feature"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Notifications",
+      "items": [
+        "notifications"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Community",
+      "items": [
+        "contributing",
+        "changelog"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "API",
+      "items": [
+        "api"
+      ]
+    }
+  ]
+}
