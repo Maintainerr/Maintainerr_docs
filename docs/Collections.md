@@ -134,12 +134,9 @@ This button is only shown when the collection has a real action configured and t
 
 ### Bulk exclusions
 
-From the Overview page you can switch into selection mode to exclude multiple items at once. Enable selection mode with the toggle in the action bar, then check the items you want to exclude. Once you have a selection, choose either **Exclude globally** or **Exclude from collection** from the bulk actions bar.
+From the Overview page you can exclude multiple items at once. Click **Select items** in the action bar to enter selection mode, then check the items you want to exclude. Once you have a selection, click **Exclude selected** to globally exclude all selected items from every collection.
 
-- **Exclude globally** excludes every selected item from all collections.
-- **Exclude from collection** excludes every selected item from the collection currently shown in the filter.
-
-Excluding a show or season also marks its visible child items (seasons or episodes) as excluded in the current view.
+Any collection-scoped exclusions for the same items are replaced by the global exclusion. Excluding a show or season also excludes everything it contains.
 
 Up to 250 items can be excluded in a single bulk operation.
 
