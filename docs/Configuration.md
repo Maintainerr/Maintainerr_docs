@@ -260,3 +260,17 @@ Tautulli's configuration is required to use its parameters in rules.
 | ------- | ---------------------------------------------------------------- |
 | URL     | The domain name or local IP address of the host running Tautulli |
 | API key | The API key from Tautulli settings                               |
+
+## Tracearr
+
+Tracearr's configuration is required to use its watch history parameters in rules.
+
+:::note
+Tracearr does not backfill media-server history. Only watch events recorded by Tracearr after it was connected to your media server are available to rules.
+:::
+
+| Setting          | Description                                                                                                                   |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| URL              | The base URL of your Tracearr instance, such as `http://localhost:3000` or `https://tracearr.example.com`                    |
+| API key          | The API key from Tracearr settings                                                                                            |
+| Tracearr server  | The Tracearr server to use. Enter a valid URL and API key first, then select from the servers discovered from that Tracearr instance. |

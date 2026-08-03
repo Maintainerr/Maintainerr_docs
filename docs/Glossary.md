@@ -2100,6 +2100,103 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 
 ---
 
+### Tracearr
+
+:::note
+Tracearr rules are available for all supported media servers. These rule properties only appear when Tracearr is configured. The watched percentage used to decide whether a play counts as "viewed" can be overridden at the collection level using the same `Watched percent override` setting shared with Tautulli. Tracearr does not backfill media-server history, so only watch events recorded after Tracearr was connected to your media server are reflected in these rules.
+
+:::
+
+#### Viewed by (username)
+
+:::info
+List of usernames who have viewed (according to Tracearr) the item.
+
+:::
+
+- Key: Tracearr.seenBy
+- Availability: movies
+- Type: text[]
+
+#### Users that watched every episode
+
+:::info
+List of usernames who have watched (according to Tracearr) every available episode of the item.
+
+:::
+
+- Key: Tracearr.sw_allEpisodesSeenBy
+- Availability: shows, seasons
+- Type: text[]
+
+#### Times viewed
+
+:::info
+The number of times the item has been viewed (according to Tracearr).
+
+:::
+
+- Key: Tracearr.viewCount
+- Availability: movies
+- Type: number
+
+#### Last view date
+
+:::info
+The date when the item was last viewed (according to Tracearr).
+
+:::
+
+- Key: Tracearr.lastViewedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Total views
+
+:::info
+The total number of views (according to Tracearr) for the item. This rule is only available for shows.
+
+:::
+
+- Key: Tracearr.sw_amountOfViews
+- Availability: shows, seasons, episodes
+- Type: number
+
+#### Amount of watched episodes
+
+:::info
+The number of episodes that have been watched (according to Tracearr) for the item. This rule is only available for shows.
+
+:::
+
+- Key: Tracearr.sw_viewedEpisodes
+- Availability: shows, seasons
+- Type: number
+
+#### Newest episode view date
+
+:::info
+The date when the newest episode of the item was viewed (according to Tracearr). This rule is only available for shows.
+
+:::
+
+- Key: Tracearr.sw_lastWatched
+- Availability: shows, seasons
+- Type: date
+
+#### Users that watched at least one episode
+
+:::info
+List of usernames who have watched (according to Tracearr) at least one episode of the item. This rule is only available for shows.
+
+:::
+
+- Key: Tracearr.sw_watchers
+- Availability: shows, seasons, episodes
+- Type: text[]
+
+---
+
 ### Streamystats
 
 :::note
