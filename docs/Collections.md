@@ -132,6 +132,14 @@ For collection items that are still eligible for action, the media details modal
 
 This button is only shown when the collection has a real action configured and the item is not already excluded or manually added.
 
+### Bulk exclusions
+
+From the Overview page you can exclude multiple items at once. Click **Select items** in the action bar to enter selection mode, then check the items you want to exclude. Once you have a selection, click **Exclude selected** to globally exclude all selected items from every collection.
+
+Any collection-scoped exclusions for the same items are replaced by the global exclusion. Excluding a show or season also excludes everything it contains.
+
+Up to 250 items can be excluded in a single bulk operation.
+
 ### Data syncing from media server
 
 If media is added to the collection outside of Maintainerr, it will be added to the associated Maintainerr collection. These manually added items will be ignored by the rule processor. This is separate from the `Custom collection` option, which controls whether Maintainerr owns the collection itself.

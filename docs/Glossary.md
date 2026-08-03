@@ -539,6 +539,17 @@ The newest `lastViewedAt` value across all movies that share a Plex collection w
 - Availability: movies
 - Type: date
 
+#### Studios
+
+:::info
+List of studio names associated with the Plex item.
+
+:::
+
+- Key: Plex.studios
+- Availability: movies, shows, seasons, episodes
+- Type: text[]
+
 ---
 
 ### Jellyfin
@@ -1069,6 +1080,17 @@ playCount >= 1 AND viewCount = 0
 ```
 
 :::
+
+#### Studios
+
+:::info
+List of studio names associated with the Jellyfin item. Also available on Emby.
+
+:::
+
+- Key: Jellyfin.studios
+- Availability: movies, shows, seasons, episodes
+- Type: text[]
 
 ---
 
