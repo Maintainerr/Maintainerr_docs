@@ -196,13 +196,13 @@ The only path worth allowlisting is `/api/health/*`, and only if an **external u
 
 The recommendation to use authentik is not a hard requirement. Any of the following also work:
 
-| Option                       | Notes                                                                                                                                                       |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Authelia**                 | Open-source SSO and 2FA proxy. Works as forward-auth middleware for nginx, Caddy, and Traefik.                                                              |
-| **Tinyauth**                 | Lightweight single-user forward-auth server, easier to set up than Authelia or authentik when you only need one user.                                       |
-| **Cloudflare Access**        | Zero-trust tunnel; no self-hosted infrastructure required. Maintainerr does not need to be reachable from the public internet at all.                       |
-| **Reverse proxy basic auth** | nginx's `auth_basic` or Caddy's `basicauth` directive. Simple but credentials are sent in every request and there is no SSO. Acceptable if TLS is in place. |
-| **VPN only**                 | Expose nothing publicly; access Maintainerr through WireGuard or Tailscale. The simplest option if you do not need remote access.                           |
+| Option                       | Notes                                                                                                                                                                                                                                                                                           |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Authelia**                 | Open-source SSO and 2FA proxy. Works as forward-auth middleware for nginx, Caddy, and Traefik.                                                                                                                                                                                                  |
+| **Tinyauth**                 | Lightweight single-user forward-auth server, easier to set up than Authelia or authentik when you only need one user.                                                                                                                                                                           |
+| **Cloudflare Access**        | Zero-trust tunnel; no self-hosted infrastructure required. Maintainerr does not need to be reachable from the public internet at all.                                                                                                                                                           |
+| **Reverse proxy basic auth** | nginx's `auth_basic` or Caddy's `basicauth` directive. Simple but credentials are sent in every request and there is no SSO. Acceptable if TLS is in place.                                                                                                                                     |
+| **VPN only**                 | Publish nothing at all, and reach Maintainerr remotely over WireGuard or Tailscale as if you were on its local network. The simplest option when you want remote access without exposing anything. (If you only ever use Maintainerr on your own LAN, you do not need a VPN or a proxy at all.) |
 
 ## The API key in Settings is not a protection boundary
 
