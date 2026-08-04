@@ -99,6 +99,12 @@ server {
         proxy_set_header        X-Original-URL $scheme://$http_host$request_uri;
         auth_request_set        $auth_cookie $upstream_http_set_cookie;
         add_header              Set-Cookie $auth_cookie;
+
+        # The outpost's response headers can exceed nginx's default buffer,
+        # producing "upstream sent too big header". These apply to the auth
+        # subrequest, so they must live here, not under `location /`.
+        proxy_buffer_size 32k;
+        proxy_buffers     8 16k;
     }
 
     location / {
@@ -109,10 +115,10 @@ server {
 
         proxy_pass http://maintainerr:6246;
 
-        # Required for Server-Sent Events (live logs and task progress)
-        proxy_buffering    off;
-        proxy_buffer_size  32k;
-        proxy_buffers      8 16k;
+        # Required for Server-Sent Events (live logs and task progress).
+        # Note: proxy_buffers is ignored while buffering is off, so the
+        # buffer sizes above belong with the outpost location, not here.
+        proxy_buffering off;
     }
 
     location @goauthentik_proxy_signin {
@@ -126,6 +132,59 @@ server {
 :::note Server-Sent Events and `proxy_buffering`
 Maintainerr streams live logs and task events over **Server-Sent Events** from `/api/logs/stream` and `/api/events/stream`. These endpoints do not send the `X-Accel-Buffering: no` header. Under nginx forward auth, the Logs page and live task progress will appear to hang unless `proxy_buffering off` is set for the location that forwards to Maintainerr. authentik's own Proxy mode outpost flushes immediately and is not affected.
 :::
+
+### Forward auth (single application) - Traefik example
+
+With Traefik, define a `forwardAuth` middleware that calls the authentik outpost, then attach it to the Maintainerr router. This dynamic configuration uses Traefik's file provider:
+
+```yaml
+# traefik-dynamic.yml
+http:
+  middlewares:
+    authentik:
+      forwardAuth:
+        address: http://<authentik-outpost-host>:9000/outpost.goauthentik.io/auth/traefik
+        trustForwardHeader: true
+        authResponseHeaders:
+          - X-authentik-username
+          - X-authentik-groups
+          - X-authentik-email
+          - X-authentik-name
+          - X-authentik-uid
+```
+
+Then attach the middleware to Maintainerr and give the outpost's own paths a router on the same hostname. Using Docker labels on the two containers:
+
+```yaml
+services:
+  maintainerr:
+    image: ghcr.io/maintainerr/maintainerr:latest
+    # Still no published port - only Traefik can reach this container.
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.maintainerr.rule: "Host(`maintainerr.example.com`)"
+      traefik.http.routers.maintainerr.entrypoints: "websecure"
+      traefik.http.routers.maintainerr.tls: "true"
+      traefik.http.routers.maintainerr.middlewares: "authentik@file"
+      traefik.http.services.maintainerr.loadbalancer.server.port: "6246"
+    networks:
+      - proxy
+
+  authentik-outpost:
+    image: ghcr.io/goauthentik/proxy:latest
+    # Standard authentik outpost env (AUTHENTIK_HOST, AUTHENTIK_TOKEN, ...).
+    labels:
+      traefik.enable: "true"
+      # Route the outpost's auth and redirect paths on the same hostname.
+      traefik.http.routers.authentik.rule: "Host(`maintainerr.example.com`) && PathPrefix(`/outpost.goauthentik.io/`)"
+      traefik.http.routers.authentik.entrypoints: "websecure"
+      traefik.http.routers.authentik.tls: "true"
+      traefik.http.services.authentik.loadbalancer.server.port: "9000"
+    networks:
+      - proxy
+```
+
+Unlike nginx, Traefik streams upstream responses and does not buffer them by default, so Server-Sent Events work without extra configuration - there is no `proxy_buffering` equivalent to set, and no outpost header-buffer tuning is required.
 
 ### What does not need an authentication exemption
 
@@ -153,7 +212,7 @@ Maintainerr's Settings page contains an **API key** field with a regenerate butt
 
 If your Maintainerr instance has been publicly reachable without authentication:
 
-- [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr API keys, Seerr API key, Tautulli API key, Jellyfin/Emby API key, Streamystats credentials, TMDB API key, TVDB API key, and the qBittorrent download-client password.
+- [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr/Sportarr API keys, Seerr API key, Tautulli API key, Tracearr API key, Jellyfin/Emby API key, TMDB API key, TVDB API key, and the qBittorrent download-client password. (Streamystats needs nothing separate - Maintainerr authenticates to it with the Jellyfin API key already listed here.)
 - [ ] Rotate any webhook URLs or SMTP credentials configured in Maintainerr's notification agents.
 - [ ] Review recent collection runs in Maintainerr's logs for unexpected deletions or rule changes.
 - [ ] Check Sonarr/Radarr/Seerr audit logs if available.

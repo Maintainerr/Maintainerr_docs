@@ -17,6 +17,10 @@ All Base URL settings are to be entered without the leading slash.
 
 :::
 
+:::danger Publishing Maintainerr online
+Maintainerr has **no built-in authentication**, and anyone who can reach it can read the service credentials you configure below. If you plan to make this instance reachable from outside your local network, put it behind an authenticating reverse proxy first. See [Security & Authentication](/security) for how to do that and what is exposed if you do not.
+:::
+
 ## General
 
 These settings are OK for most installations.
