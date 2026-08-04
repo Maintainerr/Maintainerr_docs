@@ -18,7 +18,7 @@ All Base URL settings are to be entered without the leading slash.
 :::
 
 :::info Exposing Maintainerr to the internet
-Maintainerr has no built-in login, so anyone who can reach it can read the credentials you enter below. Running it locally or reaching it over a VPN is fine and needs nothing extra. Only if you plan to put it directly on the internet, add an authenticating reverse proxy in front first - see [Security & Authentication](/security).
+Maintainerr has no built-in login, so anyone who can reach it can read the credentials you enter below. Running it locally or reaching it over a VPN is fine and needs nothing extra. Only if you plan to put it directly on the internet, add an authenticating reverse proxy in front first - see [Security & Authentication](./Security.md).
 :::
 
 ## General
