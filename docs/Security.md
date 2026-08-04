@@ -9,6 +9,16 @@ title: Security & Authentication
 Maintainerr has **no built-in login**, so anyone who can reach the UI or API can read your connected-service credentials and change collections. On a network you trust this is fine: running Maintainerr locally and reaching it remotely over a VPN (the most common setup) needs nothing on this page. You only need this if you want to put Maintainerr directly on the internet, or add a login in front of it for some other reason.
 :::
 
+## Design and threat model
+
+Maintainerr's security model is deliberate: it is built to run as an appliance on a network you control, and it assumes that anyone who can reach it is a trusted administrator. That is a design choice, not an oversight. In practice it means Maintainerr does not, on its own:
+
+- authenticate requests (there is no login, and the API key in Settings is only for internal calls - see below),
+- rate-limit or throttle requests, or
+- encrypt its stored data at rest.
+
+Security is expected at the boundary you already control - your LAN, a VPN, or an authenticating reverse proxy - which is what the rest of this page is about. Keep Maintainerr on a trusted network or reach it over a VPN and that boundary is already there; expose it more widely and you add the boundary yourself with a reverse proxy.
+
 ## How Maintainerr handles your data
 
 Maintainerr is built to keep your data on your own hardware and to be careful with it internally:
@@ -18,7 +28,7 @@ Maintainerr is built to keep your data on your own hardware and to be careful wi
 - **Secrets are kept out of the logs.** Every log line passes through a sanitizer that masks API keys, tokens, `Authorization` headers, and credential-bearing URLs, so secrets do not leak into log files or error dumps.
 - **The rules engine cannot run code or shell out.** Rules are evaluated by a typed comparator, never `eval`-ed. Database access is fully parameterized, so there is no SQL-injection surface, and the server runs no shell commands.
 - **Destructive actions are deliberately conservative.** Deletes are tied to explicit collection and rule actions, and the folder-cleanup path is fail-closed: it refuses unexpected paths, rejects symlinks and `..` traversal, canonicalizes with `realpath`, and only removes a folder once it has proven the folder is empty and safely inside the intended directory.
-- **The container is hardened.** The official image runs as a non-root user, is built in multiple stages from a digest-pinned base, and pins security-sensitive dependencies.
+- **Non-root, pinned container image.** The official image runs as a non-root user, is built in multiple stages from a digest-pinned base, and pins security-sensitive dependencies.
 
 **One important caveat:** the credentials you enter (Plex token, \*arr and Seerr keys, qBittorrent and SMTP passwords, notifier tokens) are stored **unencrypted** in that SQLite database - Maintainerr does not encrypt data at rest. So the database file, and any backup of it, is as sensitive as the credentials it holds: keep the data directory private, restrict its permissions, and encrypt your backups. And because Maintainerr has no login of its own, none of this replaces putting it behind an authenticating reverse proxy when you expose it (the rest of this page).
 
