@@ -1,28 +1,28 @@
 ---
 id: security
 slug: /security
-description: How to secure Maintainerr with an identity-aware reverse proxy, and what the risks are if you do not.
+description: How to put Maintainerr behind a login, and what is at risk if you do not.
 title: Security & Authentication
 ---
 
-:::danger
-Maintainerr has **no built-in authentication**. Anyone who can reach the UI or API can read credentials for every connected service and trigger destructive collection actions. Read this page before exposing Maintainerr outside your local network.
+:::info Who this page is for
+Maintainerr has **no built-in login**, so anyone who can reach the UI or API can read your connected-service credentials and change collections. On a network you trust this is fine: running Maintainerr locally and reaching it remotely over a VPN (the most common setup) needs nothing on this page. You only need this if you want to put Maintainerr directly on the internet, or add a login in front of it for some other reason.
 :::
 
-## What an unauthenticated instance exposes
+## What is exposed if you publish it
 
-Every endpoint in Maintainerr's API is unauthenticated. The most severe examples:
+This only matters if people you do not trust can reach Maintainerr. On a private network or over a VPN, none of the below is reachable. If you do put it on the internet without a login, though, nothing in the API checks who is calling, so:
 
-- `GET /api/settings/database/download` streams the entire SQLite database file, unredacted. This is the single most dangerous endpoint: it contains all stored credentials and configuration.
-- `GET /api/settings/radarr`, `/api/settings/sonarr`, and equivalent per-service endpoints return raw repository rows including API keys.
-- Collection and rule endpoints let any caller create, modify, or delete rules and trigger immediate media deletion.
-- The live-log stream (`/api/logs/stream`) exposes internal application activity.
+- `GET /api/settings/database/download` downloads the whole database, with nothing hidden. This is the big one: it holds every credential and setting you have saved.
+- `GET /api/settings/radarr`, `/api/settings/sonarr`, and the other per-service endpoints hand back the saved settings, including API keys.
+- Anyone can create, change, or delete rules, and start deleting media right away.
+- The live-log stream (`/api/logs/stream`) shows what the app is doing inside.
 
-The only safe assumption is that **the port is secret**.
+So if you expose it, treat the port as a secret and put a login in front.
 
-## The core rule: never publish the Maintainerr port directly
+## If you expose it, do not publish the port directly
 
-Do not map the Maintainerr container port to a public interface. Instead, let only a reverse proxy that sits in front of it be reachable from outside your network, and add authentication at that proxy layer.
+Do not map Maintainerr's container port to a public address. Instead, put a reverse proxy in front of it, make only the proxy reachable from outside your network, and add the login at the proxy.
 
 ### Docker Compose example - no published port
 
@@ -43,9 +43,9 @@ networks:
     external: true
 ```
 
-When there is no `ports:` entry, the container is reachable only from other containers on the same Docker network. Your reverse proxy container joins that network and forwards traffic; nothing else can.
+With no `ports:` entry, only other containers on the same Docker network can reach it. Your reverse proxy joins that network and passes traffic through; nothing else can get in.
 
-If you need local access while troubleshooting without exposing the port publicly, bind only to loopback:
+If you need to reach it locally while troubleshooting, without opening the port to the world, bind it to loopback only:
 
 ```yaml
 ports:
@@ -54,13 +54,13 @@ ports:
 
 ## Recommended approach: authentik Proxy Provider
 
-[authentik](https://goauthentik.io/) is an open-source identity provider that can place an authenticated outpost in front of any web application, including Maintainerr, without any changes to Maintainerr itself.
+[authentik](https://goauthentik.io/) is a free identity provider. It puts a login in front of any web app, including Maintainerr, without changing Maintainerr at all.
 
-This approach mirrors how [authentik's own documentation](https://integrations.goauthentik.io/) already covers Sonarr, Tautulli, Seerr, and Jellyfin.
+This is the same approach authentik's [own documentation](https://integrations.goauthentik.io/) already uses for Sonarr, Tautulli, Seerr, and Jellyfin.
 
 ### How it works
 
-authentik's **Proxy Provider** deploys a small outpost container that intercepts every request. Unauthenticated requests are redirected to the authentik login page. Once authenticated, the outpost forwards the request to Maintainerr with no involvement from Maintainerr itself.
+authentik's **Proxy Provider** runs a small outpost container that catches every request. If you are not logged in, it sends you to the authentik login page. Once you are, it passes the request on to Maintainerr, which never has to deal with any of it.
 
 There are two sub-modes:
 
@@ -74,16 +74,16 @@ There are two sub-modes:
 1. In the authentik Admin Interface, go to **Applications -> Providers -> Create**.
 2. Select **Proxy Provider**.
 3. Set **External host** to the public URL of Maintainerr (e.g. `https://maintainerr.example.com`).
-4. Set **Internal host** to the upstream URL of the Maintainerr container (e.g. `http://maintainerr:6246`). This is the address the outpost forwards authenticated requests to.
+4. Set **Internal host** to the Maintainerr container's URL (e.g. `http://maintainerr:6246`). This is where the outpost sends requests once you are logged in.
 5. Select **Proxy mode**.
 6. Create or select an **Outpost** and bind the provider to it.
 7. Create an **Application** that points to the provider, and assign it to the users or groups you want to allow.
 
-The outpost container is now the only thing that should be reachable at `maintainerr.example.com`. The Maintainerr container itself stays off the public network.
+Now the outpost is the only thing reachable at `maintainerr.example.com`. Maintainerr itself stays off the public network.
 
 ### Forward auth (single application) - nginx example
 
-If you already run an nginx reverse proxy, you can call the authentik outpost as a forward-auth server instead of replacing nginx:
+If you already run nginx, you can have it check the authentik outpost on each request instead of replacing nginx:
 
 ```nginx
 server {
@@ -130,12 +130,12 @@ server {
 ```
 
 :::note Server-Sent Events and `proxy_buffering`
-Maintainerr streams live logs and task events over **Server-Sent Events** from `/api/logs/stream` and `/api/events/stream`. These endpoints do not send the `X-Accel-Buffering: no` header. Under nginx forward auth, the Logs page and live task progress will appear to hang unless `proxy_buffering off` is set for the location that forwards to Maintainerr. authentik's own Proxy mode outpost flushes immediately and is not affected.
+Maintainerr sends live logs and task updates as **Server-Sent Events** from `/api/logs/stream` and `/api/events/stream`, and it does not set the `X-Accel-Buffering: no` header. Under nginx forward auth, the Logs page and live task progress look frozen unless you set `proxy_buffering off` on the location that forwards to Maintainerr. authentik's own Proxy mode outpost sends data through right away, so it is not affected.
 :::
 
 ### Forward auth (single application) - Traefik example
 
-With Traefik, define a `forwardAuth` middleware that calls the authentik outpost, then attach it to the Maintainerr router. This dynamic configuration uses Traefik's file provider:
+With Traefik, add a `forwardAuth` middleware that checks the authentik outpost, then attach it to the Maintainerr router. This uses Traefik's file provider:
 
 ```yaml
 # traefik-dynamic.yml
@@ -153,7 +153,7 @@ http:
           - X-authentik-uid
 ```
 
-Then attach the middleware to Maintainerr and give the outpost's own paths a router on the same hostname. Using Docker labels on the two containers:
+Then attach that middleware to Maintainerr, and add a router so the outpost's own paths are served on the same hostname. With Docker labels on the two containers:
 
 ```yaml
 services:
@@ -184,17 +184,17 @@ services:
       - proxy
 ```
 
-Unlike nginx, Traefik streams upstream responses and does not buffer them by default, so Server-Sent Events work without extra configuration - there is no `proxy_buffering` equivalent to set, and no outpost header-buffer tuning is required.
+Unlike nginx, Traefik passes responses straight through and does not buffer them by default, so Server-Sent Events just work - there is no `proxy_buffering` setting to change, and no header buffers to tune.
 
-### What does not need an authentication exemption
+### What you do not need to leave open
 
-Maintainerr has no inbound webhook receivers - all integrations are outbound. The UI and API share a single port. The Docker `HEALTHCHECK` runs inside the container and bypasses the proxy entirely.
+Maintainerr does not receive any webhooks - it only makes outgoing calls. The UI and API share one port. The Docker `HEALTHCHECK` runs inside the container, so it never goes through the proxy.
 
-The only path worth allowlisting is `/api/health/*`, and only if an **external uptime monitor** needs unauthenticated access to the health endpoint. Be conservative: in authentik's proxy mode, allowlisted paths bypass outpost processing entirely and receive no session headers. Allowlisting anything beyond health endpoints is not necessary and widens the attack surface.
+The only path worth leaving open is `/api/health/*`, and only if an **outside uptime monitor** needs to reach the health check without logging in. Keep it tight: in authentik's proxy mode, an open path skips the outpost completely and gets no session headers. Opening anything more than the health check is not needed and only gives an attacker more to work with.
 
 ## Alternatives
 
-The recommendation to use authentik is not a hard requirement. Any of the following also work:
+authentik is a recommendation, not a requirement. Any of these also work, and for many people the VPN option at the bottom is all they need:
 
 | Option                       | Notes                                                                                                                                                                                                                                                                                           |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -204,13 +204,13 @@ The recommendation to use authentik is not a hard requirement. Any of the follow
 | **Reverse proxy basic auth** | nginx's `auth_basic` or Caddy's `basicauth` directive. Simple but credentials are sent in every request and there is no SSO. Acceptable if TLS is in place.                                                                                                                                     |
 | **VPN only**                 | Publish nothing at all, and reach Maintainerr remotely over WireGuard or Tailscale as if you were on its local network. The simplest option when you want remote access without exposing anything. (If you only ever use Maintainerr on your own LAN, you do not need a VPN or a proxy at all.) |
 
-## The API key in Settings is not a protection boundary
+## The API key in Settings does not protect anything
 
-Maintainerr's Settings page contains an **API key** field with a regenerate button. This key is generated at first boot and is used only for internal loopback calls between Maintainerr's own services. It is never validated on any inbound request from outside the container. Do not treat it as a substitute for network-level access control.
+The Settings page has an **API key** field with a regenerate button. Maintainerr creates this key on first start and uses it only for internal calls between its own services. It is never checked on requests coming from outside the container, so do not rely on it in place of real network access control.
 
 ## Credential rotation checklist
 
-If your Maintainerr instance has been publicly reachable without authentication:
+Only needed if your Maintainerr was reachable from the internet without a login. If it has only ever been local or behind a VPN, you can skip this.
 
 - [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr/Sportarr API keys, Seerr API key, Tautulli API key, Tracearr API key, Jellyfin/Emby API key, TMDB API key, TVDB API key, and the qBittorrent download-client password. (Streamystats needs nothing separate - Maintainerr authenticates to it with the Jellyfin API key already listed here.)
 - [ ] Rotate any webhook URLs or SMTP credentials configured in Maintainerr's notification agents.
