@@ -9,14 +9,6 @@ All configuration is done inside the application. No extra config files are requ
 
 When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
 
-:::note
-All Base URL settings are to be entered without the leading slash.
-
-- Right: `tautulli`
-- Wrong: `/tautulli`
-
-:::
-
 :::info Exposing Maintainerr to the internet
 Maintainerr has no built-in login, so anyone who can reach it can read the credentials you enter below. Running it locally or reaching it over a VPN is fine and needs nothing extra. Only if you plan to put it directly on the internet, add an authenticating reverse proxy in front first - see [Security & Authentication](./Security.md).
 :::
@@ -44,7 +36,7 @@ Maintainerr's normal Plex setup uses Plex authentication and server discovery in
 
 After you authenticate with a Plex **admin** account, Maintainerr validates the token, loads the servers available to that account, and lets you choose from discovered connection candidates. This is the recommended setup because Maintainerr can use the discovered server details directly and keep automatic reconnection behavior enabled.
 
-:::tip
+:::note
 Proper DNS is preferred. Plex discovery and failover can depend on resolvable Plex endpoints, and Docker users in particular may run into intermittent connection or discovery problems when container DNS is unstable. If possible, make sure your environment has working DNS resolution for Plex-related hostnames and service names.
 :::
 
@@ -54,9 +46,7 @@ Proper DNS is preferred. Plex discovery and failover can depend on resolvable Pl
 | Server            | Shows the currently selected discovered server, or lets you choose one from the discovered server list.                               |
 | Refresh icon      | Re-runs Plex server discovery for the authenticated account. Use this if the server list is stale or discovery failed the first time. |
 
-:::tip
-`Test Connection` is disabled until you are authenticated and have either selected a discovered server or enabled manual override with saved settings.
-:::
+`Test Connection` stays disabled until you are authenticated and have either selected a discovered server or enabled manual override with saved settings.
 
 <details>
 <summary>Server list is empty (VPS, cloud host, or custom networking)</summary>
@@ -71,7 +61,7 @@ Fix it on the Plex side by publishing a reachable address:
 
 Back in Maintainerr, press the **Refresh icon** next to the server selector; the server appears in the list.
 
-:::tip
+:::note
 If Maintainerr and Plex share a Docker network, you can instead skip discovery and point Maintainerr at Plex's **internal** address (e.g. `http://plex:32400`) with manual connection override below.
 :::
 
@@ -138,6 +128,10 @@ Seerr configuration is required if you want to use Seerr-related rule parameters
 ## Radarr
 
 Radarr's configuration is required to use its parameters in rules and to remove or unmonitor movies.
+
+:::note
+Enter the `Base URL` for Radarr and Sonarr without a leading slash - `radarr`, not `/radarr`.
+:::
 
 | Setting        | Description                                                    |
 | -------------- | -------------------------------------------------------------- |
@@ -220,7 +214,7 @@ How it works:
 - Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation. For more advanced usage; look elsewhere.
 - `Test Connection` verifies the URL and credentials against the qBittorrent Web UI before saving.
 
-:::tip Troubleshooting: "403 Forbidden" after a successful login
+:::note Troubleshooting: "403 Forbidden" after a successful login
 A `403 Forbidden` on the connection test (or in the logs) means qBittorrent accepted the credentials but its Web UI security then blocked the request — it is **not** a wrong username/password. The usual cause is that Maintainerr and qBittorrent run on different IPs (e.g. separate Docker containers). In qBittorrent go to **Options → Web UI → Security** and add Maintainerr's IP or subnet to **"Bypass authentication for clients in whitelisted IP subnets"**. A reverse proxy or host-header validation can also cause it.
 :::
 
