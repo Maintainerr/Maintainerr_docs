@@ -11,14 +11,12 @@ Maintainerr has **no built-in login**, so anyone who can reach the UI or API can
 
 ## What is exposed if you publish it
 
-This only matters if people you do not trust can reach Maintainerr. On a private network or over a VPN, none of the below is reachable. If you do put it on the internet without a login, though, nothing in the API checks who is calling, so:
+If you do put it on the internet without a login, nothing in the API checks who is calling, so:
 
 - `GET /api/settings/database/download` downloads the whole database, with nothing hidden. This is the big one: it holds every credential and setting you have saved.
 - `GET /api/settings/radarr`, `/api/settings/sonarr`, and the other per-service endpoints hand back the saved settings, including API keys.
 - Anyone can create, change, or delete rules, and start deleting media right away.
 - The live-log stream (`/api/logs/stream`) shows what the app is doing inside.
-
-So if you expose it, treat the port as a secret and put a login in front.
 
 ## If you expose it, do not publish the port directly
 
@@ -196,13 +194,13 @@ The only path worth leaving open is `/api/health/*`, and only if an **outside up
 
 authentik is a recommendation, not a requirement. Any of these also work, and for many people the VPN option at the bottom is all they need:
 
-| Option                       | Notes                                                                                                                                                                                                                                                                                           |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Authelia**                 | Open-source SSO and 2FA proxy. Works as forward-auth middleware for nginx, Caddy, and Traefik.                                                                                                                                                                                                  |
-| **Tinyauth**                 | Lightweight single-user forward-auth server, easier to set up than Authelia or authentik when you only need one user.                                                                                                                                                                           |
-| **Cloudflare Access**        | Zero-trust tunnel; no self-hosted infrastructure required. Maintainerr does not need to be reachable from the public internet at all.                                                                                                                                                           |
-| **Reverse proxy basic auth** | nginx's `auth_basic` or Caddy's `basicauth` directive. Simple but credentials are sent in every request and there is no SSO. Acceptable if TLS is in place.                                                                                                                                     |
-| **VPN only**                 | Publish nothing at all, and reach Maintainerr remotely over WireGuard or Tailscale as if you were on its local network. The simplest option when you want remote access without exposing anything. (If you only ever use Maintainerr on your own LAN, you do not need a VPN or a proxy at all.) |
+| Option                       | Notes                                                                                                                                                                                              |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Authelia**                 | Open-source SSO and 2FA proxy. Works as forward-auth middleware for nginx, Caddy, and Traefik.                                                                                                     |
+| **Tinyauth**                 | Lightweight single-user forward-auth server, easier to set up than Authelia or authentik when you only need one user.                                                                              |
+| **Cloudflare Access**        | Zero-trust tunnel; no self-hosted infrastructure required. Maintainerr does not need to be reachable from the public internet at all.                                                              |
+| **Reverse proxy basic auth** | nginx's `auth_basic` or Caddy's `basicauth` directive. Simple but credentials are sent in every request and there is no SSO. Acceptable if TLS is in place.                                        |
+| **VPN only**                 | Publish nothing at all, and reach Maintainerr remotely over WireGuard or Tailscale as if you were on its local network. The simplest option when you want remote access without exposing anything. |
 
 ## The API key in Settings does not protect anything
 
@@ -210,7 +208,7 @@ The Settings page has an **API key** field with a regenerate button. Maintainerr
 
 ## Credential rotation checklist
 
-Only needed if your Maintainerr was reachable from the internet without a login. If it has only ever been local or behind a VPN, you can skip this.
+Only needed if your Maintainerr was reachable from the internet without a login.
 
 - [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr/Sportarr API keys, Seerr API key, Tautulli API key, Tracearr API key, Jellyfin/Emby API key, TMDB API key, TVDB API key, and the qBittorrent download-client password. (Streamystats needs nothing separate - Maintainerr authenticates to it with the Jellyfin API key already listed here.)
 - [ ] Rotate any webhook URLs or SMTP credentials configured in Maintainerr's notification agents.
