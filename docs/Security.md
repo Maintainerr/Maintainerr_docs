@@ -9,6 +9,19 @@ title: Security & Authentication
 Maintainerr has **no built-in login**, so anyone who can reach the UI or API can read your connected-service credentials and change collections. On a network you trust this is fine: running Maintainerr locally and reaching it remotely over a VPN (the most common setup) needs nothing on this page. You only need this if you want to put Maintainerr directly on the internet, or add a login in front of it for some other reason.
 :::
 
+## How Maintainerr handles your data
+
+Maintainerr is built to keep your data on your own hardware and to be careful with it internally:
+
+- **Everything stays local.** All configuration and state lives in a single SQLite database in your data directory (`/opt/data`). There is no cloud component, no telemetry, and no analytics - Maintainerr never phones home. The only outbound traffic goes to the services you configure (your media server, the \*arrs, Seerr, and so on) and to the metadata providers (TMDB/TVDB) used to match your library.
+- **Outbound connections use verified TLS.** Calls to your services and to metadata providers use HTTPS with normal certificate verification, which the app never disables on its own. Notification email can use TLS and can optionally be PGP-encrypted.
+- **Secrets are kept out of the logs.** Every log line passes through a sanitizer that masks API keys, tokens, `Authorization` headers, and credential-bearing URLs, so secrets do not leak into log files or error dumps.
+- **The rules engine cannot run code or shell out.** Rules are evaluated by a typed comparator, never `eval`-ed. Database access is fully parameterized, so there is no SQL-injection surface, and the server runs no shell commands.
+- **Destructive actions are deliberately conservative.** Deletes are tied to explicit collection and rule actions, and the folder-cleanup path is fail-closed: it refuses unexpected paths, rejects symlinks and `..` traversal, canonicalizes with `realpath`, and only removes a folder once it has proven the folder is empty and safely inside the intended directory.
+- **The container is hardened.** The official image runs as a non-root user, is built in multiple stages from a digest-pinned base, and pins security-sensitive dependencies.
+
+**One important caveat:** the credentials you enter (Plex token, \*arr and Seerr keys, qBittorrent and SMTP passwords, notifier tokens) are stored **unencrypted** in that SQLite database - Maintainerr does not encrypt data at rest. So the database file, and any backup of it, is as sensitive as the credentials it holds: keep the data directory private, restrict its permissions, and encrypt your backups. And because Maintainerr has no login of its own, none of this replaces putting it behind an authenticating reverse proxy when you expose it (the rest of this page).
+
 ## What is exposed if you publish it
 
 If you do put it on the internet without a login, nothing in the API checks who is calling, so:
@@ -205,6 +218,19 @@ authentik is a recommendation, not a requirement. Any of these also work, and fo
 ## The API key in Settings does not protect anything
 
 The Settings page has an **API key** field with a regenerate button. Maintainerr creates this key on first start and uses it only for internal calls between its own services. It is never checked on requests coming from outside the container, so do not rely on it in place of real network access control.
+
+## Hardening checklist
+
+If you want to run Maintainerr as safely as possible:
+
+- [ ] **Do not publish the container port.** Reach it only through a reverse proxy, over a VPN, or on your LAN.
+- [ ] **Put a login in front of it** if it is reachable from the internet - authentik, Authelia, Tinyauth, Cloudflare Access, or basic auth.
+- [ ] **Do not allowlist `/api/settings/*` at your proxy.** In particular, `/api/settings/database/download` hands out the entire database. `/api/health/*` is the only path safe to leave open, and only if you actually need it.
+- [ ] **Keep the data directory private.** It holds your credentials in cleartext, so restrict its permissions on the host and make sure only Maintainerr and you can read it.
+- [ ] **Encrypt backups** of the data directory, and do not commit it or paste its contents anywhere.
+- [ ] **Use least-privilege API keys** for the connected services where they support it, so a leaked key does less damage.
+- [ ] **Run as a non-root user** with a persistent, well-permissioned volume (the official image already runs as UID 1000).
+- [ ] **Keep it updated** - pull new images so dependency and security fixes land.
 
 ## Credential rotation checklist
 
