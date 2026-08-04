@@ -11,6 +11,7 @@ const sidebars = {
         "works",
         "common",
         "reverseproxy",
+        "security",
         "downgrade",
         "migration",
       ],
