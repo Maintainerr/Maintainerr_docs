@@ -138,7 +138,7 @@ An exclusion tied to one specific collection / rule group only applies there. Ot
 
 Adding a global exclusion removes that item's existing collection-specific exclusions, and the confirmation dialog lists which ones it will drop. If you later remove the global exclusion, those narrower exclusions are not restored automatically.
 
-When media carries a global exclusion, an `EXCL` badge is shown on the top-right side of the card.
+When media carries a global exclusion, an `EXCL` badge sits in the bottom-left corner of the card, on the `Overview` and on a collection's own pages. Hover or tap the card to read its title and summary and the badge is hidden along with the rest of the artwork.
 
 Collections also have a dedicated `Exclusions` view. Open a collection, then switch to the `Exclusions` tab to review everything excluded from that collection, sort the list, and open the same media test flow from the collection context.
 
