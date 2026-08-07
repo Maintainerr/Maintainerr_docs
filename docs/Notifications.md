@@ -48,7 +48,7 @@ Maintainerr supports several notification types that you can enable for each age
 
 Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
 
-`Update Available` is checked twice a day and sent on the `latest`, `stable`, and `main` image tags. The `development` tag moves with every merged commit, so it only shows the sidebar update indicator instead of announcing each one. Release notes are linked only when the newer build is a published release.
+Maintainerr checks for a newer build twice a day, and sends `Update Available` on the `latest`, `stable`, and `main` image tags. The `development` tag moves with every merged commit, so it only shows the sidebar update indicator instead of announcing each one. Release notes are linked only when the newer build is a published release.
 
 :::note Seerr requester in pre-deletion warnings
 When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item, for example: _'Some Title' (requested by alice) will be handled in 3 days_. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.

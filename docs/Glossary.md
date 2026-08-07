@@ -2022,7 +2022,7 @@ Indicates whether the media was requested in Seerr.
 ### Tautulli
 
 :::note
-The `... by user` properties answer for one Plex user instead of the whole household. Selecting one adds a `User` field to the rule - see [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics) for how the user is picked and what happens when the account is gone.
+The `... by user` properties count one Plex user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics) for how you pick the user, and what happens if that account disappears.
 
 :::
 
@@ -2165,7 +2165,7 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 :::note
 Tracearr rules are available for all supported media servers. These rule properties only appear when Tracearr is configured. The watched percentage used to decide whether a play counts as "viewed" can be overridden at the collection level using the same `Watched percent override` setting shared with Tautulli. Tracearr does not backfill media-server history, so only watch events recorded after Tracearr was connected to your media server are reflected in these rules.
 
-The `... by user` properties answer for one user instead of everyone. Selecting one adds a `User` field to the rule - see [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics).
+The `... by user` properties count one user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics).
 
 :::
 
@@ -2297,7 +2297,7 @@ List of usernames who have watched (according to Tracearr) at least one episode 
 :::note
 Streamystats is only available when Jellyfin is the active media server, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules. Maintainerr rebuilds that public-watchlist membership snapshot for each rule-group run and reuses it across items during that run.
 
-The `... by user` properties answer for one Jellyfin user instead of everyone. Selecting one adds a `User` field to the rule - see [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics). Streamystats keeps no watch session against a season, so those three are unavailable for seasons.
+The `... by user` properties count one Jellyfin user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics). Streamystats does not track watching per season, so those three are unavailable for seasons.
 
 :::
 

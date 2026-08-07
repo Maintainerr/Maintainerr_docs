@@ -39,7 +39,9 @@ When Plex is your configured media server, the rule group or collection form can
 Turning the custom sort back off does not restore Plex's previous order automatically. If you want the old order back, change it directly in Plex.
 :::
 
-`Manual Added First` and `Excluded First` are not part of this list. They sort what you see in Maintainerr, on the `Overview` page and on a collection's `Media` tab, and are never pushed to the media server: they compare Maintainerr-side state the media server does not hold, so every item would tie and the pushed order would be arbitrary. A `Studio` sort is offered on those views and on a collection's `Exclusions` tab, on media servers that support it - which now includes Plex alongside Jellyfin and Emby.
+`Manual Added First` and `Excluded First` are not in that list. They change the order you see inside Maintainerr, on the `Overview` page and on a collection's `Media` tab, and Maintainerr never sends them to your media server. Your media server has no idea which items you added by hand or excluded, so it cannot sort by them.
+
+A `Studio` sort is available on those two views and on a collection's `Exclusions` tab, on Plex, Jellyfin, and Emby.
 
 ## Calendar and overlays
 
@@ -99,11 +101,11 @@ Pick an `Action` in the modal:
 | `Add exclusion`               | Exclude the selection from one collection, or from all of them               |
 | `Remove exclusion`            | Drop the selection's exclusions for one collection, or all of its exclusions |
 
-- Only collections that match the selection's media type and library are offered. A mixed selection cannot be added to a collection, since a collection holds one type.
+- You can only pick collections from the same library that hold the same kind of media you selected. A collection holds one kind, so you cannot add a mix of movies and shows to one.
 - Selecting exactly one show or season also lets you narrow the action to specific `Seasons` or `Episodes`.
 - There is no cap on how many items you can select. Maintainerr sends them to the server 25 at a time, so a large selection becomes several requests rather than one.
-- Results are reported per item, so a partial failure names the media it could not handle rather than failing the whole request.
-- Anything that targets every collection asks for confirmation first.
+- Maintainerr reports a result for each item. If some fail, it tells you which ones and still handles the rest.
+- Anything that affects every collection asks you to confirm first.
 
 :::warning
 Removing media from a collection does not stop your rules from putting it back on the next run. Add an exclusion as well if you want it to stay out.

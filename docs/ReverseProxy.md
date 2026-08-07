@@ -54,7 +54,7 @@ Whatever you put in front of Maintainerr must cover the whole application. `GET 
 
 ### Server-Sent Events
 
-Maintainerr streams live logs and task updates as Server-Sent Events and does not send the `X-Accel-Buffering: no` header, so nginx has no way to work it out for itself. Without `proxy_buffering off` on the location that forwards to Maintainerr, the Logs page and live task progress look frozen. Caddy and Traefik pass responses straight through and need no equivalent setting.
+Maintainerr streams live logs and task updates as Server-Sent Events, and it does not send the `X-Accel-Buffering: no` header that would tell nginx to stop buffering. Without `proxy_buffering off` on the location that forwards to Maintainerr, the Logs page and live task progress look frozen. Caddy and Traefik pass responses straight through and need no equivalent setting.
 
 ## Choosing how to add a login
 
@@ -374,7 +374,7 @@ The outpost is the reverse proxy, replacing nginx, Caddy, or Traefik for this ap
 6. Create or select an **Outpost** and bind the provider to it.
 7. Create an **Application** that points to the provider, and assign it to the users or groups you want to allow.
 
-Now the outpost is the only thing reachable at `maintainerr.example.com`. Maintainerr itself stays off the public network. authentik's proxy-mode outpost sends data through right away, so Server-Sent Events need nothing extra.
+With that in place, the outpost is the only thing reachable at `maintainerr.example.com`. Maintainerr itself stays off the public network. authentik's proxy-mode outpost sends data through right away, so Server-Sent Events need nothing extra.
 
 ### authentik forward auth
 

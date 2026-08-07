@@ -79,9 +79,19 @@ These back the `Add / Remove Media` modal described in [Collections](./Collectio
 | `POST /api/collections/media/bulk` | Add a media selection to one collection, or remove it from one or from all of them |
 | `POST /api/rules/exclusions/bulk`  | Exclude a media selection, or drop its exclusions, globally or for one rule group  |
 
-Both take `mediaIds` and `action`, where `0` adds and `1` removes. One request carries 1 to 250 media-server ids. That is a per-request limit rather than a limit on what a user can select: the web UI sends 25 per request and splits a larger selection across several calls, so only direct API callers meet the 250 ceiling. `collectionId` scopes the call to one collection; omitting it means every collection, which `POST /api/collections/media/bulk` accepts only for a removal. `POST /api/collections/media/bulk` also requires `mediaType` (`movie`, `show`, `season`, or `episode`) so the server can resolve the hierarchy without a metadata read per item. An optional `context` of `{ id, type }` narrows a single-item selection to one season or episode, and is rejected when more than one id is sent.
+Both endpoints take the same fields:
 
-Neither endpoint fails the whole request on a partial failure. Both answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `0` for success and `1` for failure. A request is rejected outright with `400` only when it is empty, exceeds 250 ids, or asks to add without naming a collection.
+| Field          | Description                                                                                                                                                      |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mediaIds`     | 1 to 250 media-server ids                                                                                                                                        |
+| `action`       | `0` adds, `1` removes                                                                                                                                            |
+| `collectionId` | Limits the call to one collection. Leave it out to mean every collection, which `/collections/media/bulk` allows only for a removal                              |
+| `mediaType`    | `movie`, `show`, `season`, or `episode`. Required by `/collections/media/bulk`, so the server can work out the seasons and episodes without looking up each item |
+| `context`      | Optional `{ id, type }` that narrows a one-item selection to a single season or episode. Sending it with more than one id is an error                            |
+
+The 250 limits one request, not how much a user can select. The web UI sends 25 ids per request and splits a bigger selection across several calls, so only direct API callers reach it.
+
+If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `0` for success and `1` for failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
 
 ### Metadata
 
