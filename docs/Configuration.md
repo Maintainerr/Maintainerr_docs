@@ -196,7 +196,7 @@ qBittorrent is the only supported client.
 ### qBittorrent
 
 :::note
-Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.1 or newer). Media grabbed through a different qBittorrent, or through a Usenet or other download client, won't be found and is left untouched.
+Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.3.4 or newer). Media grabbed through a different qBittorrent, or through a Usenet or other download client, won't be found and is left untouched.
 :::
 
 | Setting                | Description                                                                                                                                                                                                       |
