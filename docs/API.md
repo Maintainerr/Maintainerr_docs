@@ -70,6 +70,29 @@ Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed w
 
 The lower-level `POST /api/media-server/collection` request body matches `CreateCollectionParams`: `libraryId`, `title`, and `type` are required, with optional `summary`, `sortTitle`, and `initialItemId`. `initialItemId` is a single media-server item id used when a collection must be created with one initial member; remaining items are still added afterwards through the normal collection-sync path.
 
+### Bulk media actions
+
+These back the `Add / Remove Media` modal described in [Collections](./Collections.md#add-remove-media-modal).
+
+| Endpoint                           | Purpose                                                                            |
+| ---------------------------------- | ---------------------------------------------------------------------------------- |
+| `POST /api/collections/media/bulk` | Add a media selection to one collection, or remove it from one or from all of them |
+| `POST /api/rules/exclusions/bulk`  | Exclude a media selection, or drop its exclusions, globally or for one rule group  |
+
+Both endpoints take the same fields:
+
+| Field          | Description                                                                                                                                                      |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mediaIds`     | 1 to 250 media-server ids                                                                                                                                        |
+| `action`       | `0` adds, `1` removes                                                                                                                                            |
+| `collectionId` | Limits the call to one collection. Leave it out to mean every collection, which `/collections/media/bulk` allows only for a removal                              |
+| `mediaType`    | `movie`, `show`, `season`, or `episode`. Required by `/collections/media/bulk`, so the server can work out the seasons and episodes without looking up each item |
+| `context`      | Optional `{ id, type }` that narrows a one-item selection to a single season or episode. Sending it with more than one id is an error                            |
+
+The 250 limits one request, not how much a user can select. The web UI sends 25 ids per request and splits a bigger selection across several calls, so only direct API callers reach it.
+
+If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `1` for success and `0` for failure, with `message` explaining a failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
+
 ### Metadata
 
 | Endpoint                                        | Purpose                                                                                                                                                     |
@@ -116,6 +139,16 @@ The lower-level `POST /api/media-server/collection` request body matches `Create
 | `DELETE /api/settings/streamystats`    | Remove the saved Streamystats base URL                                                               |
 | `GET /api/streamystats/info`           | Return the configured Streamystats URL plus the resolved Jellyfin server id used for deep links      |
 | `GET /api/streamystats/items/:itemId`  | Return Streamystats watch-history totals, per-user stats, and episode progress for one Jellyfin item |
+
+### Tracearr
+
+| Endpoint                              | Purpose                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /api/settings/tracearr`          | Read the saved Tracearr base URL, API key, and selected Tracearr server                                    |
+| `POST /api/settings/test/tracearr`    | Test a Tracearr URL, API key, and server selection before saving                                           |
+| `POST /api/settings/tracearr/servers` | Discover the Tracearr servers available for a URL and API key so the settings UI can populate the selector |
+| `POST /api/settings/tracearr`         | Save the Tracearr connection settings                                                                      |
+| `DELETE /api/settings/tracearr`       | Remove the saved Tracearr connection settings                                                              |
 
 ### Overlays
 

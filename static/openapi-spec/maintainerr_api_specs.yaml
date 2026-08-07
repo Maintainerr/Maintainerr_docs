@@ -472,6 +472,77 @@ paths:
           description: Tests Streamystats connectivity with the configured Jellyfin API key.
       tags:
         - /settings
+  /api/settings/tracearr:
+    get:
+      operationId: SettingsController_getTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved Tracearr URL, API key, and selected server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TracearrSettingForm'
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateTracearrSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrSetting'
+      responses:
+        '201':
+          description: Saves Tracearr connection settings.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved Tracearr connection settings.
+      tags:
+        - /settings
+  /api/settings/test/tracearr:
+    post:
+      operationId: SettingsController_testTracearr
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrSetting'
+      responses:
+        '201':
+          description: Tests Tracearr connectivity with a selected server.
+      tags:
+        - /settings
+  /api/settings/tracearr/servers:
+    post:
+      operationId: SettingsController_getTracearrServers
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrConnection'
+      responses:
+        '201':
+          description: Returns the Tracearr servers available for the supplied URL and API key.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TracearrServer'
+      tags:
+        - /settings
   /api/settings/cron/validate:
     post:
       operationId: SettingsController_validateSingleCron
@@ -1048,6 +1119,29 @@ paths:
           description: ''
       tags:
         - /rules
+  /api/rules/exclusions/bulk:
+    post:
+      operationId: RulesController_setBulkExclusions
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkExclusionRequest'
+      responses:
+        '201':
+          description: Per-item results; failures are reported per media id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkMediaResponse'
+        '400':
+          description: >-
+            Rejected without processing: empty, more than 250 media ids, or a
+            context sent with more than one id.
+      tags:
+        - /rules
   /api/rules/exclusions/{plexId}:
     delete:
       operationId: RulesController_removeAllExclusion
@@ -1259,6 +1353,29 @@ paths:
       responses:
         '200':
           description: ''
+      tags:
+        - /collections
+  /api/collections/media/bulk:
+    post:
+      operationId: CollectionsController_bulkMediaCollectionAction
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkCollectionMediaRequest'
+      responses:
+        '201':
+          description: Per-item results; failures are reported per media id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkMediaResponse'
+        '400':
+          description: >-
+            Rejected without processing: empty, more than 250 media ids, or an
+            add without a collection.
       tags:
         - /collections
   /api/collections/media/handle:
@@ -1983,6 +2100,155 @@ components:
           type: string
       required:
         - url
+    TracearrConnection:
+      type: object
+      properties:
+        url:
+          type: string
+        api_key:
+          type: string
+      required:
+        - url
+        - api_key
+    TracearrSetting:
+      type: object
+      properties:
+        url:
+          type: string
+        api_key:
+          type: string
+        server_id:
+          type: string
+          format: uuid
+      required:
+        - url
+        - api_key
+        - server_id
+    TracearrSettingForm:
+      type: object
+      description: >-
+        Saved Tracearr settings as stored. Every field is null until Tracearr
+        has been configured.
+      properties:
+        url:
+          type: string
+          nullable: true
+        api_key:
+          type: string
+          nullable: true
+        server_id:
+          type: string
+          nullable: true
+    TracearrServer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+        - id
+        - name
+    BulkMediaContext:
+      type: object
+      description: >-
+        Narrows a single-item selection to one season or episode. Rejected when
+        more than one media id is sent.
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - movie
+            - show
+            - season
+            - episode
+      required:
+        - id
+        - type
+    BulkExclusionRequest:
+      type: object
+      properties:
+        mediaIds:
+          type: array
+          minItems: 1
+          maxItems: 250
+          items:
+            type: string
+        collectionId:
+          type: integer
+          description: >-
+            Scopes the exclusion to this collection's rule group. Omit for every
+            collection.
+        action:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 0 adds an exclusion, 1 removes one.
+        context:
+          $ref: '#/components/schemas/BulkMediaContext'
+      required:
+        - mediaIds
+    BulkCollectionMediaRequest:
+      type: object
+      properties:
+        mediaIds:
+          type: array
+          minItems: 1
+          maxItems: 250
+          items:
+            type: string
+        collectionId:
+          type: integer
+          description: Required to add. Omit only for a removal from every collection.
+        action:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 0 adds to the collection, 1 removes from it.
+        mediaType:
+          type: string
+          enum:
+            - movie
+            - show
+            - season
+            - episode
+          description: Lets the server resolve the hierarchy without a metadata read per item.
+        context:
+          $ref: '#/components/schemas/BulkMediaContext'
+      required:
+        - mediaIds
+        - action
+        - mediaType
+    BulkMediaItemResult:
+      type: object
+      properties:
+        mediaId:
+          type: string
+        code:
+          type: integer
+          enum:
+            - 0
+            - 1
+          description: 1 succeeded, 0 failed.
+        message:
+          type: string
+      required:
+        - mediaId
+        - code
+    BulkMediaResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkMediaItemResult'
+      required:
+        - results
     StreamystatsInfoResponse:
       type: object
       properties:

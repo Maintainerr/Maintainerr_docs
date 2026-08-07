@@ -31,14 +31,17 @@ When Plex is your configured media server, the rule group or collection form can
 
 - This is a Plex-only feature. Jellyfin and Emby do not expose a safe collection reorder API, so the sort control is not available there.
 - `Default (no custom sort)` leaves the collection order alone.
-- Custom sort options include title, air date or release date, rating, watch count, manual items first, excluded items first, and delete soonest or latest.
+- The options are delete soonest or latest, title, air date or release date, rating, and watch count.
 - Saving a new or changed sort applies it to Plex immediately; you do not need to wait for the next collection add cycle.
 - Air date / release date, rating, watch count, and delete soonest / latest sorts break ties by title so Plex keeps the same order you see in Maintainerr.
-- `Manual items first` and `Excluded items first` only partition those flagged items to the front; within each group Maintainerr preserves the current relative order.
 
 :::note
 Turning the custom sort back off does not restore Plex's previous order automatically. If you want the old order back, change it directly in Plex.
 :::
+
+`Manual Added First` and `Excluded First` are not in that list. They change the order you see inside Maintainerr, on the `Overview` page and on a collection's `Media` tab, and Maintainerr never sends them to your media server. Your media server has no idea which items you added by hand or excluded, so it cannot sort by them.
+
+A `Studio` sort is available on those two views and on a collection's `Exclusions` tab, on Plex, Jellyfin, and Emby.
 
 ## Calendar and overlays
 
@@ -78,22 +81,49 @@ The collection-poster endpoints live under `/api/collections/:id`.
 
 ## Manual actions
 
-### Adding
+### The `Add / Remove Media` modal {#add-remove-media-modal}
 
-You can manually add media to a collection on the `Overview` page, by using the `Add` button on the media. Using the button will open a popup where you are able to pick the collection you wish to add the media to.
+Every manual collection and exclusion change runs through one modal. Click `Select items` in the action bar to enter selection mode, check the media you want, then click `Add/Exclude selected`. It is available in three places:
+
+| Page                            | Scope                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| `Overview`                      | The selection can target any collection, or every collection at once   |
+| A collection's `Media` tab      | Locked to that collection, so `Add to collection` is not offered there |
+| A collection's `Exclusions` tab | Locked to that collection, so `Add exclusion` is not offered there     |
+
+Pick an `Action` in the modal:
+
+| Action                        | Effect                                                                       |
+| ----------------------------- | ---------------------------------------------------------------------------- |
+| `Add to collection`           | Add the selection to the collection you pick                                 |
+| `Remove from collection`      | Remove the selection from the collection you pick                            |
+| `Remove from all collections` | Remove the selection from every collection it is in                          |
+| `Add exclusion`               | Exclude the selection from one collection, or from all of them               |
+| `Remove exclusion`            | Drop the selection's exclusions for one collection, or all of its exclusions |
+
+- The `Collection` list only offers collections from the library you are looking at. A show selection can target a show, season, or episode collection, a season selection a season or episode one, and a movie selection a movie collection.
+- If your selection mixes media types, no collection can take it, so only `Add exclusion` and `Remove exclusion` are offered.
+- Select exactly one show and you can narrow the action to specific `Seasons`, and from there to specific `Episodes`. The show stays the entry point, so you can still undo the change through the show later. Narrowing is not offered on a show collection's own tab, where the action applies to the show itself.
+- There is no cap on how many items you can select. Maintainerr sends them to the server 25 at a time, so a large selection becomes several requests rather than one.
+- Maintainerr reports a result for each item. If some fail, it tells you which ones and still handles the rest.
+- Anything that affects every collection asks you to confirm first.
 
 :::warning
-Please note that the first option selected is to **remove** media from all collections. However, if the media was added by the rule handler, it will be added again. If you wish to counter this behaviour, you must also exclude it from all collections.
+Removing media from a collection does not stop your rules from putting it back on the next run. Add an exclusion as well if you want it to stay out.
 :::
+
+### Adding
+
+Select the media on the `Overview` page and choose `Add to collection`. Manually added items are ignored by the rule processor and carry a [`MANUAL` badge](#manual-membership-badge).
 
 ### Removing
 
-As mentioned in the section above, you are able to remove media from all collections using the `Add` popup on the `Overview` page by choosing the `Remove from all collections` option.
+Choose `Remove from collection` for one collection, or `Remove from all collections` to clear the selection out of every collection it is in.
 
-However, if you wish to just remove media from 1 collection it's easier to click on the collection's name on the `collections` page. This will show all media currently added to the collection. There you're able to remove specific media from the collection by using the `Remove` button.
+To remove a single item, open the collection from the `Collections` page and use the `Remove` button on its card.
 
 :::note
-This will also exclude media from rule handling for this collection, so it won't be added again.
+Removing an item from a collection this way also excludes it from rule handling for that collection, so it won't be added again.
 :::
 
 ### Postponing deletion
@@ -102,27 +132,25 @@ Use `Postpone` from an item's collection details to delay its scheduled action b
 
 ### Excluding
 
-You're able to exclude media from all, or specific, collections by using the `Excl` button on the media's card from the `Overview` page. This will open a similar popup as adding media.
-
-Here you're able to remove the media's current exclusions, exclude for all collections or exclude for a specific collection.
+Select the media and choose `Add exclusion`. Pick a single collection to scope the exclusion to that collection's rule group, or `All collections` to exclude it everywhere. `Remove exclusion` works the same way. Excluding a show or season also covers everything it contains.
 
 An exclusion tied to one specific collection / rule group only applies there. Other rule groups can still add or act on the same item unless you exclude it globally.
 
-When media has exclusions, an `Excl` badge will be shown on the top-right side of the card.
+Adding a global exclusion removes that item's existing collection-specific exclusions, and the confirmation dialog lists which ones it will drop. If you later remove the global exclusion, those narrower exclusions are not restored automatically.
+
+When media carries a global exclusion, an `EXCL` badge is shown on the top-right side of the card.
 
 Collections also have a dedicated `Exclusions` view. Open a collection, then switch to the `Exclusions` tab to review everything excluded from that collection, sort the list, and open the same media test flow from the collection context.
 
-On a collection's media page, the `Remove` action also manages collection-level exclusions:
+On a collection's media page, the `Remove` button also manages collection-level exclusions:
 
 - removing an item from a collection creates an exclusion for that collection so rules do not immediately add it back
 - if the item is already excluded for that collection, the same control removes that exclusion instead
 - removing a global exclusion shows a warning because it affects every collection, not just the one you are viewing
 
-Adding a global exclusion removes that item's existing collection-specific exclusions. If you later remove the global exclusion, those narrower exclusions are not restored automatically.
-
 If you enable [exclusion tagging](./Configuration.md#exclusion-tag) for Radarr or Sonarr, excluding an item also applies a protective tag to the matching movie or series so your \*arr instance knows not to touch it. This covers both global and collection-scoped exclusions.
 
-If you open the media details modal, Maintainerr also shows where the item is excluded from. That modal is informational for exclusions; you still manage exclusion changes from the card actions or the collection views.
+If you open the media details modal, Maintainerr also shows where the item is excluded from. That modal is informational for exclusions; exclusion changes are made from the selection actions or the collection views.
 
 For collection items that are still eligible for action, the media details modal also shows a `Trigger Rule Action` button.
 
@@ -131,14 +159,6 @@ For collection items that are still eligible for action, the media details modal
 - on success, the item is removed from the collection right away
 
 This button is only shown when the collection has a real action configured and the item is not already excluded or manually added.
-
-### Bulk exclusions
-
-From the Overview page you can exclude multiple items at once. Click **Select items** in the action bar to enter selection mode, then check the items you want to exclude. Once you have a selection, click **Exclude selected** to globally exclude all selected items from every collection.
-
-Any collection-scoped exclusions for the same items are replaced by the global exclusion. Excluding a show or season also excludes everything it contains.
-
-Up to 250 items can be excluded in a single bulk operation.
 
 ### Data syncing from media server
 
@@ -207,7 +227,7 @@ Maintainerr applies several checks before removing a folder:
 
 - The folder must be inside one of the \*arr's configured root folders.
 - At least one of the files the \*arr just deleted must have lived inside the folder (prevents removing an unrelated same-named directory).
-- The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS\_Store, Thumbs.db) may remain. A dangling symlink is also treated as a leftover and removed; a live symlink or one whose status cannot be confirmed keeps the folder.
+- The folder must not contain a media file or an unrecognized file type - only recognized sidecars (.srt, .nfo, .jpg, etc.) and OS junk files (.DS_Store, Thumbs.db) may remain. A dangling symlink is also treated as a leftover and removed; a live symlink or one whose status cannot be confirmed keeps the folder.
 - The folder must not be at or above another tracked item's folder.
 - The folder itself must not be a symlink.
 - For a season, the folder must be strictly under the series folder; seasonFolder=off layouts are skipped.

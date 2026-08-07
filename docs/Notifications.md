@@ -44,11 +44,14 @@ Maintainerr supports several notification types that you can enable for each age
 | Media Handled                 | Confirmation that media has been processed/deleted                                                                                               |
 | Rule Handling Failed          | Alert when there's an error processing rules                                                                                                     |
 | Collection Handling Failed    | Alert when there's an error processing collections. When Maintainerr can tie the failure to one collection, the message names that collection.   |
+| Update Available              | Sent when a newer Maintainerr build is available, naming the current and new version and linking the upgrade guide (see note below).             |
 
 Infrastructure-level collection failures that happen before Maintainerr can identify a specific collection still send the generic `Collection Handling Failed` message.
 
+Maintainerr checks for a newer build twice a day, and sends `Update Available` on the `latest`, `stable`, and `main` image tags. The `development` tag moves with every merged commit, so it only shows the sidebar update indicator instead of announcing each one. Release notes are linked only when the newer build is a published release.
+
 :::note Seerr requester in pre-deletion warnings
-When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item — for example: _'Some Title' (requested by alice) will be handled in 3 days_. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
+When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item, for example: _'Some Title' (requested by alice) will be handled in 3 days_. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
 :::
 
 ## Supported Notification Agents

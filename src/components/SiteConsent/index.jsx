@@ -78,7 +78,7 @@ function trackSiteSearch(keyword) {
     return;
   }
 
-  // category and result count are left unset (false) — cookieless, aggregate.
+  // category and result count are left unset (false): cookieless, aggregate.
   window._paq.push(["trackSiteSearch", keyword, false, false]);
 }
 

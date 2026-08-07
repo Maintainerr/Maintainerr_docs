@@ -771,7 +771,7 @@ The number of episodes that have been watched for the Jellyfin item.
 :::
 
 :::note
-On Jellyfin — and on Emby, which mirrors Jellyfin's rule-property set — this rule already uses watched state and includes manual watched marks, so there is no separate `Jellyfin.sw_markedWatchedEpisodes` rule.
+On Jellyfin, and on Emby which mirrors Jellyfin's rule-property set, this rule already uses watched state and includes manual watched marks, so there is no separate `Jellyfin.sw_markedWatchedEpisodes` rule.
 
 :::
 
@@ -2021,6 +2021,11 @@ Indicates whether the media was requested in Seerr.
 
 ### Tautulli
 
+:::note
+The `... by user` properties count one Plex user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics) for how you pick the user, and what happens if that account disappears.
+
+:::
+
 #### Viewed by (username)
 
 :::info
@@ -2076,6 +2081,28 @@ The number of times the Plex item has been viewed (according to Tautulli). The p
 - Availability: movies
 - Type: number
 
+#### Times viewed by user
+
+:::info
+The number of times the selected Plex user has viewed the Plex item (according to Tautulli). The percentage for the Plex item to be considered as viewed is configured in the Tautulli settings.
+
+:::
+
+- Key: Tautulli.viewCountByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected Plex user (according to Tautulli). This counts played minutes, not only completed views.
+
+:::
+
+- Key: Tautulli.watchTimeByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
 #### Total views
 
 :::info
@@ -2095,6 +2122,17 @@ The date when the Plex item was last viewed (according to Tautulli). The percent
 :::
 
 - Key: Tautulli.lastViewedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Last view date by user
+
+:::info
+The date when the selected Plex user last viewed the Plex item (according to Tautulli). The percentage for the Plex item to be considered as viewed is configured in the Tautulli settings.
+
+:::
+
+- Key: Tautulli.lastViewedAtByUser
 - Availability: movies, shows, seasons, episodes
 - Type: date
 
@@ -2126,6 +2164,8 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 
 :::note
 Tracearr rules are available for all supported media servers. These rule properties only appear when Tracearr is configured. The watched percentage used to decide whether a play counts as "viewed" can be overridden at the collection level using the same `Watched percent override` setting shared with Tautulli. Tracearr does not backfill media-server history, so only watch events recorded after Tracearr was connected to your media server are reflected in these rules.
+
+The `... by user` properties count one user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics).
 
 :::
 
@@ -2162,6 +2202,28 @@ The number of times the item has been viewed (according to Tracearr).
 - Availability: movies
 - Type: number
 
+#### Times viewed by user
+
+:::info
+The number of times the selected user has viewed the item (according to Tracearr).
+
+:::
+
+- Key: Tracearr.viewCountByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected user (according to Tracearr). This counts played minutes, not only completed views.
+
+:::
+
+- Key: Tracearr.watchTimeByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
 #### Last view date
 
 :::info
@@ -2170,6 +2232,17 @@ The date when the item was last viewed (according to Tracearr).
 :::
 
 - Key: Tracearr.lastViewedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Last view date by user
+
+:::info
+The date when the selected user last viewed the item (according to Tracearr).
+
+:::
+
+- Key: Tracearr.lastViewedAtByUser
 - Availability: movies, shows, seasons, episodes
 - Type: date
 
@@ -2224,6 +2297,8 @@ List of usernames who have watched (according to Tracearr) at least one episode 
 :::note
 Streamystats is only available when Jellyfin is the active media server, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules. Maintainerr rebuilds that public-watchlist membership snapshot for each rule-group run and reuses it across items during that run.
 
+The `... by user` properties count one Jellyfin user's viewing instead of everyone's. Selecting one adds a `User` field to the rule. See [Per-user watch statistics](./Rules.mdx#per-user-watch-statistics). Streamystats does not track watching per season, so those three are unavailable for seasons.
+
 :::
 
 #### Is in a watchlist
@@ -2277,3 +2352,36 @@ Use this parent-inclusive rule for season or episode rules when a Streamystats w
 - Key: Streamystats.watchlistedByUsers_including_parent
 - Availability: seasons, episodes
 - Type: text[]
+
+#### Times viewed by user
+
+:::info
+The number of times the selected Jellyfin user has viewed the item (according to Streamystats).
+
+:::
+
+- Key: Streamystats.viewCountByUser
+- Availability: movies, shows, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected Jellyfin user (according to Streamystats). This counts played minutes, not only completed views.
+
+:::
+
+- Key: Streamystats.watchTimeByUser
+- Availability: movies, shows, episodes
+- Type: number
+
+#### Last view date by user
+
+:::info
+The date when the selected Jellyfin user last viewed the item (according to Streamystats).
+
+:::
+
+- Key: Streamystats.lastViewedAtByUser
+- Availability: movies, shows, episodes
+- Type: date
