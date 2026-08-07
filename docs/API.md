@@ -70,6 +70,19 @@ Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed w
 
 The lower-level `POST /api/media-server/collection` request body matches `CreateCollectionParams`: `libraryId`, `title`, and `type` are required, with optional `summary`, `sortTitle`, and `initialItemId`. `initialItemId` is a single media-server item id used when a collection must be created with one initial member; remaining items are still added afterwards through the normal collection-sync path.
 
+### Bulk media actions
+
+These back the `Add / Remove Media` modal described in [Collections](./Collections.md#add-remove-media-modal).
+
+| Endpoint                           | Purpose                                                                            |
+| ---------------------------------- | ---------------------------------------------------------------------------------- |
+| `POST /api/collections/media/bulk` | Add a media selection to one collection, or remove it from one or from all of them |
+| `POST /api/rules/exclusions/bulk`  | Exclude a media selection, or drop its exclusions, globally or for one rule group  |
+
+Both take `mediaIds` (1 to 250 media-server ids) and `action`, where `0` adds and `1` removes. `collectionId` scopes the call to one collection; omitting it means every collection, which `POST /api/collections/media/bulk` accepts only for a removal. `POST /api/collections/media/bulk` also requires `mediaType` (`movie`, `show`, `season`, or `episode`) so the server can resolve the hierarchy without a metadata read per item. An optional `context` of `{ id, type }` narrows a single-item selection to one season or episode, and is rejected when more than one id is sent.
+
+Neither endpoint fails the whole request on a partial failure. Both answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `0` for success and `1` for failure. A request is rejected outright with `400` only when it is empty, exceeds 250 ids, or asks to add without naming a collection.
+
 ### Metadata
 
 | Endpoint                                        | Purpose                                                                                                                                                     |

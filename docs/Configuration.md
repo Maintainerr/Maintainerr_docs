@@ -10,7 +10,7 @@ All configuration is done inside the application. No extra config files are requ
 When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
 
 :::note Service URLs
-Every service URL field expects an `http://` or `https://` base URL. If you paste one with trailing slashes, Maintainerr strips them automatically when you save or test the setting; a bare scheme such as `http://` is still rejected.
+Every service URL field expects a base URL starting with `http://` or `https://`. Any trailing slashes are removed for you when you save or test the setting.
 :::
 
 :::info Exposing Maintainerr to the internet
@@ -60,8 +60,8 @@ Maintainerr only lists Plex servers that publish a **reachable** connection to p
 Fix it on the Plex side by publishing a reachable address:
 
 1. In Plex Web, open `Settings → (your server) → Network` and click **Show Advanced** (top-right) to reveal `Custom server access URLs`.
-2. Into that comma-separated field, add a reachable **HTTPS** URL — e.g. your server's `*.plex.direct` address: `https://<dashed-public-ip>.<hash>.plex.direct:32400`. The `.plex.direct` host keeps a valid certificate (a reverse-proxied domain with its own cert works too). Including the port is recommended; otherwise Plex falls back to your Remote Access port. You can usually copy the correct address from Seerr if it's connected to the same Plex server.
-3. Save and restart Plex. On some Docker images this setting is an environment variable instead — e.g. `PLEX_ADVERTISE_URL` on the hotio image — in which case set it there (the in-app field is managed by that variable).
+2. Into that comma-separated field, add a reachable **HTTPS** URL, e.g. your server's `*.plex.direct` address: `https://<dashed-public-ip>.<hash>.plex.direct:32400`. The `.plex.direct` host keeps a valid certificate (a reverse-proxied domain with its own cert works too). Including the port is recommended; otherwise Plex falls back to your Remote Access port. You can usually copy the correct address from Seerr if it's connected to the same Plex server.
+3. Save and restart Plex. On some Docker images this setting is an environment variable instead, e.g. `PLEX_ADVERTISE_URL` on the hotio image, in which case set it there (the in-app field is managed by that variable).
 
 Back in Maintainerr, press the **Refresh icon** next to the server selector; the server appears in the list.
 
@@ -172,14 +172,14 @@ Sportarr runs alongside Sonarr and Radarr, and all three can be configured at on
 When Maintainerr excludes an item, it can apply a protective tag to the matching Radarr movie or Sonarr series, so the \*arr instance carries a single source of truth for "do not touch". This covers both global and collection-scoped exclusions.
 
 :::note
-The `Exclusion tag` section appears on the `Settings -> Radarr` and `Settings -> Sonarr` pages once that service is configured. Radarr and Sonarr are configured independently — each has its own enable toggle, label, and removal policy.
+The `Exclusion tag` section appears on the `Settings -> Radarr` and `Settings -> Sonarr` pages once that service is configured. Radarr and Sonarr are configured independently: each has its own enable toggle, label, and removal policy.
 :::
 
-| Setting                  | Description                                                                                                                                                                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tag excluded content     | Apply the tag below to the matching movie/series whenever an item is excluded. Off by default.                                                                                                                                           |
-| Tag label                | The tag to apply, created on the \*arr instance if missing (default `dnd`). Lowercase letters, numbers, and hyphens only (`a-z`, `0-9`, `-`), with no leading, trailing, or repeated hyphens — the only characters Radarr/Sonarr accept. |
-| Remove tag on un-exclude | Off by default, so a manually-set tag is never stripped. When on, Maintainerr removes only this label on un-exclude, and never while another exclusion still protects the item.                                                          |
+| Setting                  | Description                                                                                                                                                                                                                                       |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tag excluded content     | Apply the tag below to the matching movie/series whenever an item is excluded. Off by default.                                                                                                                                                    |
+| Tag label                | The tag to apply, created on the \*arr instance if missing (default `dnd`). Lowercase letters, numbers, and hyphens only (`a-z`, `0-9`, `-`), with no leading, trailing, or repeated hyphens, which are the only characters Radarr/Sonarr accept. |
+| Remove tag on un-exclude | Off by default, so a manually-set tag is never stripped. When on, Maintainerr removes only this label on un-exclude, and never while another exclusion still protects the item.                                                                   |
 
 Tagging is best-effort: the tag is added or removed through the Radarr/Sonarr editor without replacing any other tags on the item, and a failure to reach the \*arr instance is logged without blocking the exclusion itself.
 
@@ -196,7 +196,7 @@ qBittorrent is the only supported client.
 ### qBittorrent
 
 :::note
-Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.1 or newer). Media grabbed through a different qBittorrent — or through a Usenet/other download client — won't be found and is left untouched.
+Maintainerr matches downloads by the hash recorded in the Radarr/Sonarr download history, so point it at the **same qBittorrent instance Radarr/Sonarr use as their download client**, with the Web UI enabled (qBittorrent 4.1 or newer). Media grabbed through a different qBittorrent, or through a Usenet or other download client, won't be found and is left untouched.
 :::
 
 | Setting                | Description                                                                                                                                                                                                       |
@@ -219,7 +219,7 @@ How it works:
 - `Test Connection` verifies the URL and credentials against the qBittorrent Web UI before saving.
 
 :::note Troubleshooting: "403 Forbidden" after a successful login
-A `403 Forbidden` on the connection test (or in the logs) means qBittorrent accepted the credentials but its Web UI security then blocked the request — it is **not** a wrong username/password. The usual cause is that Maintainerr and qBittorrent run on different IPs (e.g. separate Docker containers). In qBittorrent go to **Options → Web UI → Security** and add Maintainerr's IP or subnet to **"Bypass authentication for clients in whitelisted IP subnets"**. A reverse proxy or host-header validation can also cause it.
+A `403 Forbidden` on the connection test (or in the logs) means qBittorrent accepted the credentials but its Web UI security then blocked the request; it is **not** a wrong username/password. The usual cause is that Maintainerr and qBittorrent run on different IPs (e.g. separate Docker containers). In qBittorrent go to **Options → Web UI → Security** and add Maintainerr's IP or subnet to **"Bypass authentication for clients in whitelisted IP subnets"**. A reverse proxy or host-header validation can also cause it.
 :::
 
 ## Metadata

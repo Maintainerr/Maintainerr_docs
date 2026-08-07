@@ -374,10 +374,15 @@ When you use Radarr or Sonarr disk space properties, Maintainerr may also ask yo
 
 ### Per-user watch statistics
 
-Some Tautulli, Tracearr, and Streamystats properties are scoped to one selected user: `Times viewed by user`, `Watch time by user (minutes)`, and `Last view date by user`.
+Tautulli, Tracearr, and Streamystats each offer three properties that answer for one person instead of the whole household: `Times viewed by user`, `Watch time by user (minutes)`, and `Last view date by user`.
 
-- When you choose one of these properties, Maintainerr also asks you to pick a media-server username on that rule.
-- If the saved username can no longer be resolved during a later rule run, Maintainerr treats the value as unknown for that evaluation instead of reading it as `0` or "never watched".
+- Choosing one of these properties adds a `User` field to the rule. Type to filter the list, then pick the username the property should answer for.
+- The list holds the usernames your media server reports, and a name it does not report is refused when you save. On Plex the list is the Plex.tv-corrected one, which can spell an account differently from the server's own list.
+- If the saved username can no longer be resolved during a later rule run, Maintainerr treats the value as unknown for that evaluation instead of reading it as `0` or "never watched". A renamed or deleted account therefore pauses the rule instead of matching your whole library.
+- `Watch time by user (minutes)` counts played minutes, not only completed views. The view count and last view date keep each integration's existing watched-percentage semantics.
+- Uploading a rule to the community list leaves the username behind, because it names someone in your household and resolves to nobody elsewhere. Pick a user again after importing such a rule.
+
+Availability differs per integration, since Streamystats keeps no per-season watch session. The [Glossary](./Glossary.md) lists it per key.
 
 ### Episode and season retention rules (Sonarr)
 
