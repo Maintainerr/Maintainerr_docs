@@ -9,6 +9,10 @@ All configuration is done inside the application. No extra config files are requ
 
 When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
 
+:::note Service URLs
+Every service URL field expects an `http://` or `https://` base URL. If you paste one with trailing slashes, Maintainerr strips them automatically when you save or test the setting; a bare scheme such as `http://` is still rejected.
+:::
+
 :::info Exposing Maintainerr to the internet
 Maintainerr has no built-in login, so anyone who can reach it can read the credentials you enter below. Running it locally or reaching it over a VPN is fine and needs nothing extra. Only if you plan to put it directly on the internet, add an authenticating reverse proxy in front first - see [Security & Authentication](./Security.md).
 :::

@@ -372,6 +372,13 @@ When you use Radarr or Sonarr disk space properties, Maintainerr may also ask yo
 - The path list is populated from the selected Radarr or Sonarr server.
 - For `Total disk space`, Maintainerr only shows paths where the server can report an accurate total size.
 
+### Per-user watch statistics
+
+Some Tautulli, Tracearr, and Streamystats properties are scoped to one selected user: `Times viewed by user`, `Watch time by user (minutes)`, and `Last view date by user`.
+
+- When you choose one of these properties, Maintainerr also asks you to pick a media-server username on that rule.
+- If the saved username can no longer be resolved during a later rule run, Maintainerr treats the value as unknown for that evaluation instead of reading it as `0` or "never watched".
+
 ### Episode and season retention rules (Sonarr)
 
 Long-running shows, daily series especially, can grow to thousands of episodes.

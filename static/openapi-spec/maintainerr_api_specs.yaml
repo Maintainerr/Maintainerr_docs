@@ -472,6 +472,77 @@ paths:
           description: Tests Streamystats connectivity with the configured Jellyfin API key.
       tags:
         - /settings
+  /api/settings/tracearr:
+    get:
+      operationId: SettingsController_getTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: Returns the saved Tracearr URL, API key, and selected server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TracearrSettingForm'
+      tags:
+        - /settings
+    post:
+      operationId: SettingsController_updateTracearrSetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrSetting'
+      responses:
+        '201':
+          description: Saves Tracearr connection settings.
+      tags:
+        - /settings
+    delete:
+      operationId: SettingsController_removeTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: Removes the saved Tracearr connection settings.
+      tags:
+        - /settings
+  /api/settings/test/tracearr:
+    post:
+      operationId: SettingsController_testTracearr
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrSetting'
+      responses:
+        '201':
+          description: Tests Tracearr connectivity with a selected server.
+      tags:
+        - /settings
+  /api/settings/tracearr/servers:
+    post:
+      operationId: SettingsController_getTracearrServers
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TracearrConnection'
+      responses:
+        '201':
+          description: Returns the Tracearr servers available for the supplied URL and API key.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TracearrServer'
+      tags:
+        - /settings
   /api/settings/cron/validate:
     post:
       operationId: SettingsController_validateSingleCron
@@ -1983,6 +2054,55 @@ components:
           type: string
       required:
         - url
+    TracearrConnection:
+      type: object
+      properties:
+        url:
+          type: string
+        api_key:
+          type: string
+      required:
+        - url
+        - api_key
+    TracearrSetting:
+      type: object
+      properties:
+        url:
+          type: string
+        api_key:
+          type: string
+        server_id:
+          type: string
+          format: uuid
+      required:
+        - url
+        - api_key
+        - server_id
+    TracearrSettingForm:
+      type: object
+      properties:
+        url:
+          type: string
+        api_key:
+          type: string
+        server_id:
+          type: string
+          format: uuid
+      required:
+        - url
+        - api_key
+        - server_id
+    TracearrServer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+      required:
+        - id
+        - name
     StreamystatsInfoResponse:
       type: object
       properties:

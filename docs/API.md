@@ -117,6 +117,16 @@ The lower-level `POST /api/media-server/collection` request body matches `Create
 | `GET /api/streamystats/info`           | Return the configured Streamystats URL plus the resolved Jellyfin server id used for deep links      |
 | `GET /api/streamystats/items/:itemId`  | Return Streamystats watch-history totals, per-user stats, and episode progress for one Jellyfin item |
 
+### Tracearr
+
+| Endpoint                              | Purpose                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `GET /api/settings/tracearr`          | Read the saved Tracearr base URL, API key, and selected Tracearr server                                    |
+| `POST /api/settings/test/tracearr`    | Test a Tracearr URL, API key, and server selection before saving                                           |
+| `POST /api/settings/tracearr/servers` | Discover the Tracearr servers available for a URL and API key so the settings UI can populate the selector |
+| `POST /api/settings/tracearr`         | Save the Tracearr connection settings                                                                      |
+| `DELETE /api/settings/tracearr`       | Remove the saved Tracearr connection settings                                                              |
+
 ### Overlays
 
 | Endpoint                                     | Purpose                                                                       |

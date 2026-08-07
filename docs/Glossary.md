@@ -2076,6 +2076,28 @@ The number of times the Plex item has been viewed (according to Tautulli). The p
 - Availability: movies
 - Type: number
 
+#### Times viewed by user
+
+:::info
+The number of times the selected Plex user has viewed the Plex item (according to Tautulli). The percentage for the Plex item to be considered as viewed is configured in the Tautulli settings.
+
+This rule only appears after you pick a username on the rule itself. If that saved username can no longer be resolved later, Maintainerr treats the value as unknown instead of `0`.
+:::
+
+- Key: Tautulli.viewCountByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected Plex user (according to Tautulli). Unlike the viewed-count properties, this includes played minutes from every play attempt, not only completed views.
+:::
+
+- Key: Tautulli.watchTimeByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
 #### Total views
 
 :::info
@@ -2095,6 +2117,16 @@ The date when the Plex item was last viewed (according to Tautulli). The percent
 :::
 
 - Key: Tautulli.lastViewedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Last view date by user
+
+:::info
+The date when the selected Plex user last viewed the Plex item (according to Tautulli). The percentage for the Plex item to be considered as viewed is configured in the Tautulli settings.
+:::
+
+- Key: Tautulli.lastViewedAtByUser
 - Availability: movies, shows, seasons, episodes
 - Type: date
 
@@ -2162,6 +2194,28 @@ The number of times the item has been viewed (according to Tracearr).
 - Availability: movies
 - Type: number
 
+#### Times viewed by user
+
+:::info
+The number of times the selected user has viewed the item (according to Tracearr).
+
+This rule only appears after you pick a username on the rule itself. If that saved username can no longer be resolved later, Maintainerr treats the value as unknown instead of `0`.
+:::
+
+- Key: Tracearr.viewCountByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected user (according to Tracearr).
+:::
+
+- Key: Tracearr.watchTimeByUser
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
 #### Last view date
 
 :::info
@@ -2170,6 +2224,16 @@ The date when the item was last viewed (according to Tracearr).
 :::
 
 - Key: Tracearr.lastViewedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Last view date by user
+
+:::info
+The date when the selected user last viewed the item (according to Tracearr).
+:::
+
+- Key: Tracearr.lastViewedAtByUser
 - Availability: movies, shows, seasons, episodes
 - Type: date
 
@@ -2224,7 +2288,38 @@ List of usernames who have watched (according to Tracearr) at least one episode 
 :::note
 Streamystats is only available when Jellyfin is the active media server, and these rule properties only appear when Streamystats is configured. Maintainerr authenticates to Streamystats with your Jellyfin API key, so only public Streamystats watchlists are visible to these rules. Maintainerr rebuilds that public-watchlist membership snapshot for each rule-group run and reuses it across items during that run.
 
+The three per-user watch-stat properties below only appear after you pick a Jellyfin username on the rule itself. If that saved username can no longer be resolved later, Maintainerr treats the value as unknown instead of `0` or "never watched". Because Streamystats keeps no per-season watch session, those three properties are unavailable for seasons.
 :::
+
+#### Times viewed by user
+
+:::info
+The number of times the selected Jellyfin user has viewed the item (according to Streamystats).
+:::
+
+- Key: Streamystats.viewCountByUser
+- Availability: movies, shows, episodes
+- Type: number
+
+#### Watch time by user (minutes)
+
+:::info
+The total watch time, in minutes, for the selected Jellyfin user (according to Streamystats).
+:::
+
+- Key: Streamystats.watchTimeByUser
+- Availability: movies, shows, episodes
+- Type: number
+
+#### Last view date by user
+
+:::info
+The date when the selected Jellyfin user last viewed the item (according to Streamystats).
+:::
+
+- Key: Streamystats.lastViewedAtByUser
+- Availability: movies, shows, episodes
+- Type: date
 
 #### Is in a watchlist
 
