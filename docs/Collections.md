@@ -101,7 +101,7 @@ Pick an `Action` in the modal:
 
 - Only collections that match the selection's media type and library are offered. A mixed selection cannot be added to a collection, since a collection holds one type.
 - Selecting exactly one show or season also lets you narrow the action to specific `Seasons` or `Episodes`.
-- Up to 250 items can be handled in a single operation.
+- There is no cap on how many items you can select. Maintainerr sends them to the server 25 at a time, so a large selection becomes several requests rather than one.
 - Results are reported per item, so a partial failure names the media it could not handle rather than failing the whole request.
 - Anything that targets every collection asks for confirmation first.
 
