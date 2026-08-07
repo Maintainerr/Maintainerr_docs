@@ -101,8 +101,9 @@ Pick an `Action` in the modal:
 | `Add exclusion`               | Exclude the selection from one collection, or from all of them               |
 | `Remove exclusion`            | Drop the selection's exclusions for one collection, or all of its exclusions |
 
-- You can only pick collections from the same library that hold the same kind of media you selected. A collection holds one kind, so you cannot add a mix of movies and shows to one.
-- Selecting exactly one show or season also lets you narrow the action to specific `Seasons` or `Episodes`.
+- The `Collection` list only offers collections from the library you are looking at. A show selection can target a show, season, or episode collection, a season selection a season or episode one, and a movie selection a movie collection.
+- If your selection mixes media types, no collection can take it, so only `Add exclusion` and `Remove exclusion` are offered.
+- Select exactly one show and you can narrow the action to specific `Seasons`, and from there to specific `Episodes`. The show stays the entry point, so you can still undo the change through the show later. Narrowing is not offered on a show collection's own tab, where the action applies to the show itself.
 - There is no cap on how many items you can select. Maintainerr sends them to the server 25 at a time, so a large selection becomes several requests rather than one.
 - Maintainerr reports a result for each item. If some fail, it tells you which ones and still handles the rest.
 - Anything that affects every collection asks you to confirm first.

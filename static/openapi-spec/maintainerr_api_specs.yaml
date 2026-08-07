@@ -2234,7 +2234,7 @@ components:
           enum:
             - 0
             - 1
-          description: 0 succeeded, 1 failed.
+          description: 1 succeeded, 0 failed.
         message:
           type: string
       required:

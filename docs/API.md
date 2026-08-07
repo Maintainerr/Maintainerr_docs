@@ -91,7 +91,7 @@ Both endpoints take the same fields:
 
 The 250 limits one request, not how much a user can select. The web UI sends 25 ids per request and splits a bigger selection across several calls, so only direct API callers reach it.
 
-If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `0` for success and `1` for failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
+If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `1` for success and `0` for failure, with `message` explaining a failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
 
 ### Metadata
 

@@ -379,7 +379,8 @@ Tautulli, Tracearr, and Streamystats each offer three properties that count one 
 - Choosing one of these properties adds a `User` field to the rule. Type to filter the list, then pick the username the property should answer for.
 - The list holds the usernames your media server reports. If you enter a name it does not report, Maintainerr refuses to save the rule. On Plex the list comes from Plex.tv, which can spell an account differently from the server's own list.
 - If Maintainerr cannot find the saved username on a later rule run, it treats the value as unknown for that item instead of reading it as `0` or "never watched". So renaming or deleting that account stops the rule from matching, rather than making it match your whole library.
-- `Watch time by user (minutes)` counts every minute played, not only finished views. The view count and last view date still use each integration's watched-percentage setting.
+- `Watch time by user (minutes)` counts every minute played, not only finished views.
+- On Tautulli and Tracearr, the view count and last view date only count plays that reach the watched percentage, including a collection's `Watched percent override`. Streamystats has no such setting, so its view count counts every play session.
 - Maintainerr removes the username when you upload a rule to the community list, because it names someone in your household and would match nobody on anyone else's install. Pick a user again after importing a rule like this.
 
 Streamystats does not track watching per season, so its three properties are unavailable for seasons. The [Glossary](./Glossary.md) lists availability for every key.
