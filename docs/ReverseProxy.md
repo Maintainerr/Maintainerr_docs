@@ -358,7 +358,7 @@ services:
 
 ## authentik Proxy Provider
 
-[authentik](https://goauthentik.io/) is a free identity provider. Its **Proxy Provider** runs a small outpost container that catches every request: if you are not logged in, it sends you to the authentik login page, and once you are, it passes the request on to Maintainerr, which never has to deal with any of it. This is the same approach authentik's [own documentation](https://integrations.goauthentik.io/) already uses for Sonarr, Tautulli, Seerr, and Jellyfin.
+[authentik](https://goauthentik.io/) is a free identity provider. Its **Proxy Provider** runs a small outpost container that catches every request: if you are not logged in, it sends you to the authentik login page, and once you are, it passes the request on to Maintainerr, which never has to deal with any of it. authentik maintains [their own documentation page for Maintainerr](https://integrations.goauthentik.io/media/maintainerr/).
 
 There are two sub-modes.
 
