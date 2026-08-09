@@ -50,7 +50,7 @@ Every configuration lives on one page: **[Reverse Proxy](./ReverseProxy.md)** co
 
 ## Recommended approach: authentik Proxy Provider
 
-[authentik](https://goauthentik.io/) is a free identity provider. It puts a login in front of any web app, including Maintainerr, without changing Maintainerr at all, and and authentik maintains [their own documentation page for Maintainerr](https://integrations.goauthentik.io/media/maintainerr/).
+[authentik](https://goauthentik.io/) is a free identity provider. It puts a login in front of any web app, including Maintainerr, without changing Maintainerr at all, and it is the same approach authentik's [own documentation](https://integrations.goauthentik.io/) already uses for Sonarr, Tautulli, Seerr, and Jellyfin.
 
 Its **Proxy Provider** runs a small outpost container that catches every request. If you are not logged in, it sends you to the authentik login page. Once you are, it passes the request on to Maintainerr, which never has to deal with any of it. It runs in either of two sub-modes:
 
