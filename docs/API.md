@@ -93,6 +93,8 @@ The 250 limits one request, not how much a user can select. The web UI sends 25 
 
 If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `1` for success and `0` for failure, with `message` explaining a failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
 
+Adding an exclusion takes the collection and rule execution lock, on both `POST /api/rules/exclusions/bulk` and `POST /api/rules/exclusion`, so it cannot land while a run is acting on the same item. Both wait up to 30 seconds for a running job and answer `409` if it is still going. Removing an exclusion takes no lock.
+
 ### Metadata
 
 | Endpoint                                        | Purpose                                                                                                                                                     |
@@ -144,11 +146,13 @@ If some items fail, the rest still go through. Both endpoints answer `{ results:
 
 | Endpoint                              | Purpose                                                                                                    |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `GET /api/settings/tracearr`          | Read the saved Tracearr base URL, API key, and selected Tracearr server                                    |
-| `POST /api/settings/test/tracearr`    | Test a Tracearr URL, API key, and server selection before saving                                           |
+| `GET /api/settings/tracearr`          | Read the saved Tracearr base URL, API key, and bound Tracearr server                                       |
+| `POST /api/settings/test/tracearr`    | Test a Tracearr URL and API key before saving                                                              |
 | `POST /api/settings/tracearr/servers` | Discover the Tracearr servers available for a URL and API key so the settings UI can populate the selector |
 | `POST /api/settings/tracearr`         | Save the Tracearr connection settings                                                                      |
 | `DELETE /api/settings/tracearr`       | Remove the saved Tracearr connection settings                                                              |
+
+`server_id` is optional on `POST /api/settings/tracearr`. Leave it out and Maintainerr picks the Tracearr server that tracks your media server; send it only when Tracearr has several servers of that type. Either way the save is refused if no server matches, or if the one you sent tracks a different media server.
 
 ### Overlays
 

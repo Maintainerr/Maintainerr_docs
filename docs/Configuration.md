@@ -271,8 +271,16 @@ Tracearr's configuration is required to use its watch history parameters in rule
 Tracearr does not backfill media-server history. Only watch events recorded by Tracearr after it was connected to your media server are available to rules.
 :::
 
-| Setting         | Description                                                                                                                           |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| URL             | The base URL of your Tracearr instance, such as `http://localhost:3000` or `https://tracearr.example.com`                             |
-| API key         | The API key from Tracearr settings                                                                                                    |
-| Tracearr server | The Tracearr server to use. Enter a valid URL and API key first, then select from the servers discovered from that Tracearr instance. |
+| Setting         | Description                                                                                                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------- |
+| URL             | The base URL of your Tracearr instance, such as `http://localhost:3000` or `https://tracearr.example.com`             |
+| API key         | The API key from Tracearr, under `Settings`, `General`, `API Key`                                                     |
+| Tracearr server | Only shown when Tracearr has more than one server of your media server's type. Otherwise Maintainerr picks it for you |
+
+Maintainerr uses the Tracearr server that tracks your media server. Watch history belongs to one media server, so the wrong Tracearr server matches nothing and every Tracearr rule reads as unwatched.
+
+- Saving is refused if no Tracearr server matches, or if the one you picked tracks a different media server. Add your media server in Tracearr and let it sync a library first.
+- Point Maintainerr at a different media server, even another one of the same type, and the choice is checked again and cleared if it no longer fits.
+- Every run checks the server before reading its history. If that fails, Tracearr rule values are unavailable for that run and the log says why, instead of the rules reading as watched by nobody.
+
+`Test Connection` checks the URL and the API key. The server is checked when you save.
