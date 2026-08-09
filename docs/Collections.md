@@ -13,7 +13,7 @@ When the specified amount of days that media must live in the collection is pass
 Collection handling is a batch process that runs every 12 hours. You can manually trigger it with the `Handle Collections` button on the Collections page.
 This runs each collection's configured action (such as delete, unmonitor, or do nothing), but it does not remove items from collections on its own.
 
-     If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling.
+     If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling, unless an exclusion covers them. That means an exclusion for this collection or a global one, and excluding a show or season covers everything inside it.
      When a delete-style action removes files, Maintainerr also prunes that media from any other Maintainerr-managed collections that still list it. This prevents already-deleted items from being re-processed while Jellyfin or Emby are still catching up on their next library scan.
      If eligible media is actively being streamed, Maintainerr defers it to the next collection-handler run instead of acting on it mid-playback. This is a best-effort snapshot taken once per run, so playback that starts later is only protected on the following pass.
 
@@ -83,29 +83,27 @@ The collection-poster endpoints live under `/api/collections/:id`.
 
 ### The `Add / Remove Media` modal {#add-remove-media-modal}
 
-Every manual collection and exclusion change runs through one modal. Click `Select items` in the action bar to enter selection mode, check the media you want, then click `Add/Exclude selected`. It is available in three places:
+Every manual collection and exclusion change runs through one modal. Click `Select items` in the action bar to enter selection mode, check the media you want, then click `Add/Exclude selected`. It is available on the `Overview`, on a collection's `Media` tab, and on a collection's `Exclusions` tab.
 
-| Page                            | Scope                                                                  |
-| ------------------------------- | ---------------------------------------------------------------------- |
-| `Overview`                      | The selection can target any collection, or every collection at once   |
-| A collection's `Media` tab      | Locked to that collection, so `Add to collection` is not offered there |
-| A collection's `Exclusions` tab | Locked to that collection, so `Add exclusion` is not offered there     |
+All three offer the same actions. On a collection page the `Collection` list starts on that collection, and you can switch it to another one or to `All collections`.
 
 Pick an `Action` in the modal:
 
-| Action                        | Effect                                                                       |
-| ----------------------------- | ---------------------------------------------------------------------------- |
-| `Add to collection`           | Add the selection to the collection you pick                                 |
-| `Remove from collection`      | Remove the selection from the collection you pick                            |
-| `Remove from all collections` | Remove the selection from every collection it is in                          |
-| `Add exclusion`               | Exclude the selection from one collection, or from all of them               |
-| `Remove exclusion`            | Drop the selection's exclusions for one collection, or all of its exclusions |
+| Action                   | Effect                                                                       |
+| ------------------------ | ---------------------------------------------------------------------------- |
+| `Add to collection`      | Add the selection to the collection you pick                                 |
+| `Remove from collection` | Remove the selection from the collection you pick, or from every collection  |
+| `Add exclusion`          | Exclude the selection from one collection, or from all of them               |
+| `Remove exclusion`       | Drop the selection's exclusions for one collection, or all of its exclusions |
 
-- The `Collection` list only offers collections from the library you are looking at. A show selection can target a show, season, or episode collection, a season selection a season or episode one, and a movie selection a movie collection.
+- Every action except `Add to collection` can also target `All collections`. An add needs one collection to add to.
+- A show selection can target a show, season, or episode collection, a season selection a season or episode one, and a movie selection a movie collection.
+- On Plex, a collection only holds items from its own library, so the `Collection` list shows that library's collections and an add from another library is refused. Jellyfin and Emby collections take any library, so all of them are offered.
+- You can add search results to a collection too. A search covers every library, so Maintainerr takes the library from the items you picked. On Plex, if they are not all from one library, only the exclusion actions are left.
 - If your selection mixes media types, no collection can take it, so only `Add exclusion` and `Remove exclusion` are offered.
-- Select exactly one show and you can narrow the action to specific `Seasons`, and from there to specific `Episodes`. The show stays the entry point, so you can still undo the change through the show later. Narrowing is not offered on a show collection's own tab, where the action applies to the show itself.
+- Select exactly one show and you can narrow the action to specific `Seasons`, and from there to specific `Episodes`. The show stays the entry point, so you can still undo the change through the show later.
 - There is no cap on how many items you can select. Maintainerr sends them to the server 25 at a time, so a large selection becomes several requests rather than one.
-- Maintainerr reports a result for each item. If some fail, it tells you which ones and still handles the rest.
+- Maintainerr reports a result for each item. If some fail, it tells you which ones and why, and still handles the rest.
 - Anything that affects every collection asks you to confirm first.
 
 :::warning
@@ -118,7 +116,7 @@ Select the media on the `Overview` page and choose `Add to collection`. Manually
 
 ### Removing
 
-Choose `Remove from collection` for one collection, or `Remove from all collections` to clear the selection out of every collection it is in.
+Choose `Remove from collection`, then pick a collection, or `All collections` to take the selection out of every collection it is in.
 
 To remove a single item, open the collection from the `Collections` page and use the `Remove` button on its card.
 
@@ -133,6 +131,10 @@ Use `Postpone` from an item's collection details to delay its scheduled action b
 ### Excluding
 
 Select the media and choose `Add exclusion`. Pick a single collection to scope the exclusion to that collection's rule group, or `All collections` to exclude it everywhere. `Remove exclusion` works the same way. Excluding a show or season also covers everything it contains.
+
+Excluding also removes the selection from the collections it covers: the one you picked, or every collection when you exclude everywhere. The confirmation says so first.
+
+If a collection or rule run is busy, an exclusion waits up to 30 seconds for it to finish, so it cannot land while the run is acting on the same item. If the run is still going after that, Maintainerr asks you to try again. Removing an exclusion never waits.
 
 An exclusion tied to one specific collection / rule group only applies there. Other rule groups can still add or act on the same item unless you exclude it globally.
 

@@ -519,7 +519,7 @@ paths:
               $ref: '#/components/schemas/TracearrSetting'
       responses:
         '201':
-          description: Tests Tracearr connectivity with a selected server.
+          description: Tests Tracearr connectivity with the supplied URL and API key.
       tags:
         - /settings
   /api/settings/tracearr/servers:
@@ -1022,6 +1022,9 @@ paths:
       responses:
         '201':
           description: ''
+        '409':
+          description: >-
+            A collection or rule run held the execution lock for too long.
       tags:
         - /rules
   /api/rules/{id}:
@@ -1140,6 +1143,9 @@ paths:
           description: >-
             Rejected without processing: empty, more than 250 media ids, or a
             context sent with more than one id.
+        '409':
+          description: >-
+            A collection or rule run held the execution lock for too long.
       tags:
         - /rules
   /api/rules/exclusions/{plexId}:
@@ -2118,12 +2124,15 @@ components:
         api_key:
           type: string
         server_id:
+          description: >-
+            Omit it to let Maintainerr pick the Tracearr server that tracks the
+            configured media server. Send it only when Tracearr has several
+            servers of that type.
           type: string
           format: uuid
       required:
         - url
         - api_key
-        - server_id
     TracearrSettingForm:
       type: object
       description: >-
