@@ -21,10 +21,11 @@ Maintainerr has no built-in login, so anyone who can reach it can read the crede
 
 These settings are OK for most installations.
 
-| Setting  | Description                                                |
-| -------- | ---------------------------------------------------------- |
-| Hostname | The hostname or IP address of the host running Maintainerr |
-| API key  | Maintainerr's API key. It is reserved for future use.      |
+| Setting          | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| Hostname         | The hostname or IP address of the host running Maintainerr                  |
+| API key          | Maintainerr's API key. It is reserved for future use.                       |
+| Display language | The language the web UI is shown in. See [Translations](./Translations.md). |
 
 ## Media Server
 

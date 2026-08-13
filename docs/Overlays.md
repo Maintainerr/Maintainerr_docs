@@ -21,22 +21,15 @@ Maintainerr exposes three overlay screens:
 
 ## Overlay settings
 
-The `Settings` tab contains the global controls for overlay processing.
+The `Settings` tab contains the global controls for overlay processing. Overlay settings are stored globally, while template selection is stored per collection.
 
 - `Enable overlays` is the master switch.
-- `Run Now` starts an immediate forced reapply pass for all eligible collections, even if an item's saved overlay state already matches the current days-left value.
-- `Reset All Overlays` reverts posters that Maintainerr has changed.
-
-Overlay settings are stored globally, while template selection is stored per collection.
-
-Use `Reset All Overlays` carefully. It is intended to undo Maintainerr-managed overlay artwork across collections, and it is unavailable while another overlay-processing run is already in progress.
+- `Run Now` starts an overlay run immediately, instead of waiting for the next scheduled one. It also redraws overlays that are already up to date, which a scheduled run leaves alone. Use it after another artwork tool or a manual edit has replaced an overlay.
+- `Reset All Overlays` puts the original artwork back on every item Maintainerr has drawn on. Use it carefully. It is unavailable while an overlay run is going on.
 
 ## Templates
 
-Templates define how Maintainerr renders overlays.
-
-- `Poster` templates are used for movie, show, and season collections.
-- `Title card` templates are used for episode collections.
+Templates define how Maintainerr draws overlays. Which template is used depends on the item it is drawn on. Episodes use a `Title card` template. Movies, shows and seasons use a `Poster` template. Each kind has its own default, so you see a `Default` badge in both lists.
 
 Template management supports:
 
@@ -46,21 +39,18 @@ Template management supports:
 - setting a default template for each mode
 - importing and exporting templates as JSON
 
-Maintainerr seeds preset templates automatically on first run. Presets are meant to be a starting point, not something you edit in place.
-
-Preset templates cannot be edited directly. Duplicate them first, then edit the duplicate.
+Maintainerr seeds preset templates automatically on first run. They are a starting point and cannot be edited in place: duplicate one first, then edit the duplicate.
 
 ## Template editor
 
 The editor lets you design overlay elements on top of a preview image.
 
+- The kind of template you are editing is shown next to its name. You choose it when you create the template, and it cannot be changed later.
 - For poster templates, Maintainerr can load a random item from a media server library section.
 - For title card templates, Maintainerr can load a random episode from a media server library section.
 - You can upload custom fonts in `.ttf`, `.otf`, or `.woff` format.
 - Image elements can use uploaded `.png`, `.jpg`/`.jpeg`, or `.webp` assets up to `500 KB`.
 - Template previews are rendered server-side against real media artwork.
-
-If you leave a collection without a specific overlay template selected, Maintainerr uses the current default template for that mode.
 
 Uploaded image assets are stored by filename and appear in the image-element picker after upload. Maintainerr validates both the filename and the file contents, so renamed or unsupported files are rejected instead of being served back later with the wrong content type.
 
@@ -69,18 +59,15 @@ Uploaded image assets are stored by filename and appear in the image-element pic
 When Maintainerr processes an overlay-enabled collection, template resolution is:
 
 1. the collection-specific template, if one is selected and still exists
-2. the default template for that mode (`poster` or `titlecard`)
-3. skip overlay processing for that collection if no template can be resolved
-
-Episode collections use `titlecard` mode. Other supported collection types use `poster` mode.
+2. otherwise the default poster or title card template, whichever fits the item
+3. if there is no template either way, the collection is skipped
 
 ## Enabling overlays on a collection
 
 Overlay controls also appear in the rule or collection form.
 
 - `Enable overlays` turns overlays on for that collection.
-- `Overlay template` optionally selects a specific template.
-- Leaving `Overlay template` empty uses the default poster or title card template.
+- `Overlay template` optionally selects a specific template. Leave it empty to follow the default.
 
 This setting is stored on the collection, so existing collections can be updated later without rebuilding your whole setup.
 
@@ -96,7 +83,22 @@ Overlay processing only applies when all of these are true:
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
 
-Normal scheduled runs skip items whose saved overlay state already matches the current visible day count. `Run Now` uses the forced path instead, so you can reapply overlays after another artwork tool or a manual media-server edit replaced them without waiting for the countdown to change first.
+Deleting a collection restores its overlays first, so its items keep their original artwork.
+
+## Media that gets deleted along with a collection
+
+When a collection's action deletes files, more than the items in the collection are deleted. Maintainerr draws the same countdown on those extra items:
+
+- Everything under an item in the collection. Deleting a show also deletes its seasons and episodes. Deleting a season also deletes its episodes.
+- A season or show that is left empty. If every episode of a season is in the collection, the season goes with them. If every season of a show is in the collection, the show goes too. Both get the date of the last item to be deleted. A leftover `Specials` season does not stop this.
+
+These extra items only get an overlay. They are never added to the collection, so nothing extra is deleted.
+
+This happens for show, season and episode collections that have `Take action after days` set and an action that deletes files. Actions that keep the files, such as `Unmonitor and keep files`, `Change quality profile` and `Do nothing`, draw nothing extra. Neither do movie collections, because deleting a movie deletes nothing else.
+
+Episodes need a title card template, so make sure you have one if a show or season collection reaches down to episodes. Without it, those episodes are skipped and the log says so.
+
+If Maintainerr cannot reach your media server while it works out what else gets deleted, it leaves the overlays it has already drawn instead of removing them.
 
 ## Stored files and reverting
 
