@@ -43,6 +43,11 @@ const sidebars = {
     },
     {
       type: "category",
+      label: "Translations",
+      items: ["translations"],
+    },
+    {
+      type: "category",
       label: "Community",
       items: ["contributing", "changelog"],
     },
