@@ -550,6 +550,19 @@ List of studio names associated with the Plex item.
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
 
+#### Last play date (including unfinished)
+
+:::info
+The date when the Plex item was last played, including a play that was stopped before the end.
+
+Plex moves an item's own last-viewed date on any playback and only writes a history row once a view completes, so on Plex this reports the same date as `Plex.lastViewedAt`. It reads that field directly instead of the watch history, so it still answers when a history lookup fails. The property exists so the same rule keeps working on a media server where playing and viewing are two different dates.
+
+:::
+
+- Key: Plex.lastPlayedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
 ---
 
 ### Jellyfin
@@ -1091,6 +1104,21 @@ List of studio names associated with the Jellyfin item. Also available on Emby.
 - Key: Jellyfin.studios
 - Availability: movies, shows, seasons, episodes
 - Type: text[]
+
+#### Last play date (including unfinished)
+
+:::info
+The newest date any user played the item, including a play that was stopped before the end. Unlike `Jellyfin.lastViewedAt`, it is not limited to views that count as watched. Also available on Emby.
+
+Shows and seasons hold no play date of their own, so for those Maintainerr takes the newest play date of their episodes.
+
+If the play date cannot be read for every user, the value is treated as unknown instead of falling back to an older date. That keeps an item that was just started from being handled as if nobody had touched it in months.
+
+:::
+
+- Key: Jellyfin.lastPlayedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
 
 ---
 
@@ -2158,6 +2186,19 @@ The date when the newest episode of the Plex item was viewed (according to Tautu
 - Availability: shows, seasons
 - Type: date
 
+#### Last play date (including unfinished)
+
+:::info
+The date of the last playback session Tautulli recorded for the Plex item, however much of it was played.
+
+Unlike `Tautulli.lastViewedAt`, this ignores the percentage configured in the Tautulli settings and the collection's `Watched percent override`, so a session someone abandoned after a minute still counts.
+
+:::
+
+- Key: Tautulli.lastPlayedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
 ---
 
 ### Tracearr
@@ -2290,6 +2331,19 @@ List of usernames who have watched (according to Tracearr) at least one episode 
 - Availability: shows, seasons, episodes
 - Type: text[]
 
+#### Last play date (including unfinished)
+
+:::info
+The date of the last playback session Tracearr recorded for the item, however much of it was played.
+
+Unlike `Tracearr.lastViewedAt`, this ignores the watched threshold and the collection's `Watched percent override`, so a session someone abandoned early still counts.
+
+:::
+
+- Key: Tracearr.lastPlayedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
 ---
 
 ### Streamystats
@@ -2383,5 +2437,18 @@ The date when the selected Jellyfin user last viewed the item (according to Stre
 :::
 
 - Key: Streamystats.lastViewedAtByUser
+- Availability: movies, shows, episodes
+- Type: date
+
+#### Last play date (including unfinished)
+
+:::info
+The date the item was last played by anyone, according to Streamystats. Streamystats records every session it sees, so a play someone stopped early counts too. This property covers all users, while `Last view date by user` answers for the one user you pick.
+
+Streamystats builds a show's numbers from its episodes and records nothing against a season, so this property is unavailable for seasons. If Maintainerr cannot read the item's Streamystats details, the value is treated as unknown instead of "never played".
+
+:::
+
+- Key: Streamystats.lastPlayedAt
 - Availability: movies, shows, episodes
 - Type: date
