@@ -54,6 +54,12 @@ Maintainerr checks for a newer build twice a day, and sends `Update Available` o
 When Seerr (Overseerr or Jellyseerr) is configured, the **Media About to be Handled** message includes who requested the item, for example: _'Some Title' (requested by alice) will be handled in 3 days_. The lookup is season-aware for TV content and best-effort by design: if Seerr is unreachable or the item was not requested through Seerr, the requester line is silently omitted and the warning is still sent.
 :::
 
+### How messages are grouped and delivered
+
+During a collection handling run, `Media Removed from Collection` is collected per collection and sent as one message when the run ends, listing every item that left that collection during the run. This covers items removed after they were handled, items cleaned up because they were gone from the media server, and items pruned from other collections. A rule run reports its own removals in grouped messages while it runs, so those arrive during the run. Emptying a collection by hand is picked up by the next rule run and reported as one message as well.
+
+If a notification service answers with a rate limit, Maintainerr waits the time that service asks for and sends again, up to a minute, instead of dropping the message. Discord messages are cut to Discord's embed limits, so a very long list of items can end in `...`.
+
 ## Supported Notification Agents
 
 ### Discord

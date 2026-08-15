@@ -41,6 +41,8 @@ This also means Maintainerr keeps these states separate on purpose:
 
 The watch-history getters keep these cases separate: a confirmed empty history returns no watch date, while server or history lookup failures stay unknown instead of falling back to an empty history result. That prevents outages from being misread as "never watched" and keeps `NOT_EXISTS` from matching the wrong items.
 
+`Last play date (including unfinished)` (`lastPlayedAt`) is the played counterpart of `Last view date`. It answers with the last time an item was played at all, including a play someone stopped early, while `lastViewedAt` only counts a play that got far enough to be a view. It is offered for Plex, Jellyfin, Emby, Tautulli, Tracearr, and Streamystats, and it treats a failed lookup as unknown in the same way. On Plex both properties report the same date, because Plex already moves an item's last-viewed date on any playback.
+
 :::
 
 :::warning Plex Watchlist Rules
