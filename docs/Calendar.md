@@ -37,6 +37,8 @@ The details dialog shows:
 - collection name
 - media type
 
+A season or episode is named under its show, as `Some Show - S02` and `Some Show - S02E05`, so several seasons of one show can be told apart. When the library leaves the season number unset, the season's own name is used instead.
+
 From that dialog, you can jump directly to the related collection.
 
 ## Reading the schedule correctly

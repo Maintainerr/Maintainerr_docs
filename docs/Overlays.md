@@ -79,7 +79,10 @@ Overlay processing only applies when all of these are true:
 - a supported media server is configured
 - the collection has overlays enabled
 - the collection has `Take action after days` set
+- the collection's action deletes files
 - a matching template can be resolved
+
+A countdown says the media leaves the library on that date, so a collection whose action keeps the files draws nothing at all. That covers the actions that only unmonitor, `Change quality profile and search`, and `Do nothing`. Point a collection at one of them and the next overlay run puts the original artwork back on everything it had drawn on before.
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
 
@@ -90,11 +93,11 @@ Deleting a collection restores its overlays first, so its items keep their origi
 When a collection's action deletes files, more than the items in the collection are deleted. Maintainerr draws the same countdown on those extra items:
 
 - Everything under an item in the collection. Deleting a show also deletes its seasons and episodes. Deleting a season also deletes its episodes.
-- A season or show that is left empty. If every episode of a season is in the collection, the season goes with them. If every season of a show is in the collection, the show goes too. Both get the date of the last item to be deleted. A leftover `Specials` season does not stop this.
+- A season or show that is left empty. If every episode of a season is in the collection, the season goes with them. If every season of a show is in the collection, the show goes too. Both get the date of the last item to be deleted. Every child has to be covered, `Specials` included: a season 0 left outside the collection keeps its episode files, so the show stays in the library and gets no countdown.
 
 These extra items only get an overlay. They are never added to the collection, so nothing extra is deleted.
 
-This happens for show, season and episode collections that have `Take action after days` set and an action that deletes files. Actions that keep the files, such as `Unmonitor and keep files`, `Change quality profile` and `Do nothing`, draw nothing extra. Neither do movie collections, because deleting a movie deletes nothing else.
+This happens for show, season and episode collections. Movie collections draw nothing extra, because deleting a movie deletes nothing else.
 
 Episodes need a title card template, so make sure you have one if a show or season collection reaches down to episodes. Without it, those episodes are skipped and the log says so.
 

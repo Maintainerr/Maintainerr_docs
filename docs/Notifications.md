@@ -239,12 +239,31 @@ Example `mediaItems` value for a **Media About to be Handled** notification when
 
 ```json
 [
-  { "mediaServerId": "abc123", "requestedBy": ["alice"] },
+  {
+    "mediaServerId": "abc123",
+    "type": "movie",
+    "title": "A Sample Movie",
+    "providerIds": { "imdb": ["tt0000000"], "tmdb": ["1234"], "tvdb": [] },
+    "requestedBy": ["alice"]
+  },
   { "mediaServerId": "def456" }
 ]
 ```
 
-Each entry contains `mediaServerId`. The optional `requestedBy` array lists the Seerr usernames who requested the item; it is omitted when Seerr is not configured or the item was not requested there.
+Every entry contains `mediaServerId`. The rest are optional:
+
+| Field         | Description                                                                          |
+| ------------- | ------------------------------------------------------------------------------------ |
+| `type`        | `movie`, `show`, `season` or `episode`                                               |
+| `title`       | The item's name, worded the same way as in the message text                          |
+| `providerIds` | The item's IMDb, TMDB and TVDB ids. Each is an array, and empty when there is no id. |
+| `requestedBy` | The Seerr usernames who requested the item                                           |
+
+`type`, `title` and `providerIds` come from a snapshot Maintainerr takes just before it handles an item, so they still name it once the deletion has made its media server id useless. Only **Media About to be Handled** and **Media Handled** carry them, and they are left out for an item the media server could not be asked about at the time.
+
+The ids are the item's own, so a season or episode carries season or episode ids rather than the show's. If you match on them, resolve the show yourself.
+
+`requestedBy` is left out when Seerr is not configured or the item was not requested there.
 
 Example JSON payload:
 
