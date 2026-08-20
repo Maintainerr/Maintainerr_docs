@@ -25,7 +25,9 @@ The `Settings` tab contains the global controls for overlay processing. Overlay 
 
 - `Enable overlays` is the master switch.
 - `Run Now` starts an overlay run immediately, instead of waiting for the next scheduled one. It also redraws overlays that are already up to date, which a scheduled run leaves alone. Use it after another artwork tool or a manual edit has replaced an overlay.
-- `Reset All Overlays` puts the original artwork back on every item Maintainerr has drawn on. Use it carefully. It is unavailable while an overlay run is going on.
+- `Reset All Overlays` puts the original artwork back on every item Maintainerr has drawn on, including any item it saved an original for but has no record of drawing on. Use it carefully. It is unavailable while an overlay run is going on.
+
+`Run Now` and `Reset All Overlays` hand the work to the server and answer straight away. The page follows the run from there, so a slow run cannot time out in the browser, and closing the page does not stop it.
 
 ## Templates
 
@@ -51,6 +53,8 @@ The editor lets you design overlay elements on top of a preview image.
 - You can upload custom fonts in `.ttf`, `.otf`, or `.woff` format.
 - Image elements can use uploaded `.png`, `.jpg`/`.jpeg`, or `.webp` assets up to `500 KB`.
 - Template previews are rendered server-side against real media artwork.
+
+Maintainerr draws the template onto the largest centered area of the artwork that has the same shape as the template canvas, and leaves the rest of the image alone. Media servers crop artwork to that shape when they draw a card, so this keeps your layout where you placed it on artwork of another shape, such as a 4:3 or 21:9 still under a 16:9 title card template.
 
 Uploaded image assets are stored by filename and appear in the image-element picker after upload. Maintainerr validates both the filename and the file contents, so renamed or unsupported files are rejected instead of being served back later with the wrong content type.
 
@@ -86,7 +90,7 @@ A countdown says the media leaves the library on that date, so a collection whos
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
 
-Deleting a collection restores its overlays first, so its items keep their original artwork.
+Deleting a collection restores its overlays first, so its items keep their original artwork. If a run is going on at the time, that restore waits for the run to finish instead of being skipped.
 
 ## Media that gets deleted along with a collection
 
