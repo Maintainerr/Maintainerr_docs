@@ -1705,8 +1705,8 @@ paths:
                   type: boolean
                   description: Force a reapply pass even when overlay state already matches the current day count.
       responses:
-        '201':
-          description: Runs overlay processing for all eligible collections and returns processed, reverted, skipped, and error counts.
+        '202':
+          description: Starts overlay processing for all eligible collections. The run continues in the background; follow it on GET /api/overlays/status.
         '409':
           description: Returned when another overlay-processing run is already active.
       tags:
@@ -1744,8 +1744,8 @@ paths:
       operationId: OverlaysController_resetAll
       parameters: []
       responses:
-        '200':
-          description: Reverts all overlays.
+        '202':
+          description: Starts reverting all overlays. The reset continues in the background; follow it on GET /api/overlays/status.
         '409':
           description: Returned when another overlay-processing run is already active.
       tags:
