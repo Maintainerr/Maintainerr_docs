@@ -89,6 +89,12 @@ If you want Maintainerr to connect securely in manual mode, use your `*.plex.dir
 
 </details>
 
+### Plex in a separate Docker stack
+
+If Plex and Maintainerr sit on different Docker networks, for example because each has its own Compose stack, Plex advertises an address that only exists inside its own network. Authentication succeeds and the server may even be listed, but connecting to it always fails.
+
+Add your server's LAN address, such as `http://192.168.1.10:32400`, to `Custom server access URLs` under `Settings → (your server) → Network` in Plex Web (click **Show Advanced** to reveal the field), then press the **Refresh icon** next to the server selector in Maintainerr.
+
 ## Jellyfin
 
 Jellyfin can also be used as your media server connection.
