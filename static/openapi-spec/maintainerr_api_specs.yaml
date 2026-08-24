@@ -292,6 +292,54 @@ paths:
           description: Updates the primary metadata provider.
       tags:
         - /settings
+  /api/settings/telemetry/preview:
+    get:
+      operationId: SettingsController_previewTelemetry
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Returns the exact report this server would send, detail block
+            included, so it can be reviewed before anything is sent.
+      tags:
+        - /settings
+  /api/settings/telemetry/status:
+    get:
+      operationId: SettingsController_telemetryStatus
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            Returns forcedOff, set when TELEMETRY=off is in the environment,
+            with the ISO timestamps of the next weekly report and of the next
+            one that also carries the detail block. Both timestamps are null
+            when nothing is being sent.
+      tags:
+        - /settings
+  /api/settings/telemetry:
+    post:
+      operationId: SettingsController_updateTelemetrySetting
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+                  description: Whether the weekly usage report is sent.
+              required:
+                - enabled
+      responses:
+        '201':
+          description: >-
+            Stores the telemetry choice. Answers status NOK when TELEMETRY=off
+            is set in the environment, since a stored value would change
+            nothing.
+      tags:
+        - /settings
   /api/settings/metadata/refresh/{provider}:
     post:
       operationId: SettingsController_refreshMetadataCache

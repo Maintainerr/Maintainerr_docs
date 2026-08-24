@@ -25,6 +25,8 @@ A collection will be reflected in your media server when it contains media. When
 
 If the `Show on home` option was checked, the collection will be shown on all users' home screens. This allows you to create, for instance, a 'Leaving soon' list.
 
+The `Keep in Maintainerr only` option on a rule group turns this off for that one collection. Maintainerr then creates nothing on your media server and syncs nothing to it, so there is no collection there to browse or to add media to by hand. The collection still works everywhere else in Maintainerr: rules pick up media, the deletion countdown runs, and actions, overlays, and \*arr tags all apply. See [Creating rules](./Rules.mdx#general).
+
 ## Collection items sort
 
 When Plex is your configured media server, the rule group or collection form can also save a `Collection items sort` value for Maintainerr-managed collections.
