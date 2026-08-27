@@ -172,8 +172,12 @@ Maintainerr matches a show to its league through the `sportarr` id the Sportarr 
 stamp on it, for example `lg-000278`. A library that has not been refreshed since those agents
 started stamping it carries only the numeric alias they write into the tvdb namespace, and
 Maintainerr resolves the league from that instead. Posters, backdrops and descriptions for those
-shows come from the configured Sportarr connection, and from sportarr.net for a league it does not
-track. Setting the `SPORTARR_NET` environment variable to `off` stops the sportarr.net read.
+shows come from the configured Sportarr connection. For a league none of your connections tracks,
+Maintainerr can read that artwork from sportarr.net instead, which is off unless you set the
+`SPORTARR_NET` environment variable to `on`. Nothing is requested from sportarr.net otherwise.
+
+Artwork and descriptions are cached. `Refresh Metadata` in the Sportarr server dialog drops that
+cache, so the next view fetches them again.
 
 | Setting     | Description                                 |
 | ----------- | ------------------------------------------- |
