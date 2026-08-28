@@ -291,3 +291,5 @@ Maintainerr uses the Tracearr server that tracks your media server. Watch histor
 - Every run checks the server before reading its history. If that fails, Tracearr rule values are unavailable for that run and the log says why, instead of the rules reading as watched by nobody.
 
 `Test Connection` checks the URL and the API key. The server is checked when you save.
+
+If a Tracearr rule reports 0 views on something you know was watched, see [Tracearr rules always say 0 views](./Common.md#tracearr-rules-always-say-0-views) under Common Problems.
