@@ -61,6 +61,28 @@ If `Take action after days` is set to `0`, the action will run when one of these
 So `0` means "no waiting period before eligibility," not "take action instantly at save time."
 :::
 
+## Tracearr rules always say 0 views
+
+**Problem:** My Tracearr rules report 0 views on items I know have been watched, and Tracearr itself shows the plays.
+
+Maintainerr reads watch history from exactly one Tracearr server: the one that tracks the media server Maintainerr is connected to. Plays that Tracearr recorded against any of its other servers are not counted.
+
+So when the viewing happened on a different server, the rule returns 0 views. That 0 is a real answer and not a failure, which means nothing appears in the log and the rule acts on it. A rule that removes items nobody has watched will go ahead and remove them.
+
+If you run two media servers over the same files and watch on both, Maintainerr counts only the server it is connected to. There is no way to combine the two.
+
+:::tip Fix
+
+- Check which server is selected under `Settings`, `Tracearr`, `Tracearr server`.
+- Connect Maintainerr to the media server where the watching actually happens.
+- If the watching really is split across two servers, Tracearr rules cannot give a complete answer, so do not let a deletion rule depend on them alone.
+
+:::
+
+:::note
+A Tracearr rule can also read 0 views for a different reason: Tracearr does not backfill history from before it was connected to your media server. See [Tracearr](./Configuration.md#tracearr) under Configuration.
+:::
+
 ## Pre-made Rules
 
 **Problem:** Is there a set of pre-made rules I can use as a starting point?
