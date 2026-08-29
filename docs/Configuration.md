@@ -168,6 +168,17 @@ Sonarr's configuration is required to use its parameters in rules and to remove 
 
 Sportarr runs alongside Sonarr and Radarr, and all three can be configured at once. Sportarr's configuration is required to use its parameters in rules and manage sports leagues, seasons, and events. Maintainerr requires Sportarr 4.0.1022 or later.
 
+Maintainerr matches a show to its league through the `sportarr` id the Sportarr media server agents
+stamp on it, for example `lg-000278`. A library that has not been refreshed since those agents
+started stamping it carries only the numeric alias they write into the tvdb namespace, and
+Maintainerr resolves the league from that instead. Posters, backdrops and descriptions for those
+shows come from the configured Sportarr connection. For a league none of your connections tracks,
+Maintainerr can read that artwork from sportarr.net instead, which is off unless you set the
+`SPORTARR_NET` environment variable to `on`. Nothing is requested from sportarr.net otherwise.
+
+Artwork and descriptions are cached. `Refresh Metadata` in the Sportarr server dialog drops that
+cache, so the next view fetches them again.
+
 | Setting     | Description                                 |
 | ----------- | ------------------------------------------- |
 | Server Name | A friendly name to help identify the server |
