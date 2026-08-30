@@ -563,6 +563,23 @@ Plex moves an item's own last-viewed date on any playback and only writes a hist
 - Availability: movies, shows, seasons, episodes
 - Type: date
 
+#### Newest episode view date in this or an earlier season
+
+:::info
+The newest view date across this season and every season before it. A rule on season 3 answers with the last time anyone watched anything in seasons 1, 2, or 3. Use it to keep a later season while someone is still working their way towards it.
+
+Only offered for season rules. Specials are kept separate: a specials season counts only views of its own episodes, and a numbered season never counts views of specials.
+
+Plex keeps history rows for episodes that have since left the library, so those views still count.
+
+If a history row comes back without the season it belongs to, the value is treated as unknown for that run instead of reporting a date that leaves views out.
+
+:::
+
+- Key: Plex.sw_lastViewedAtThroughSeason
+- Availability: seasons
+- Type: date
+
 ---
 
 ### Jellyfin
@@ -1118,6 +1135,23 @@ If the play date cannot be read for every user, the value is treated as unknown 
 
 - Key: Jellyfin.lastPlayedAt
 - Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Newest episode view date in this or an earlier season
+
+:::info
+The newest view date across this season and every season before it. A rule on season 3 answers with the last time anyone watched anything in seasons 1, 2, or 3. Use it to keep a later season while someone is still working their way towards it. Also available on Emby.
+
+Only offered for season rules. Specials are kept separate: a specials season counts only views of its own episodes, and a numbered season never counts views of specials.
+
+Jellyfin and Emby read the episodes the show holds at the time of the run, so a view of an episode that has since left the library no longer counts. Plex answers from its own history, where those views still count.
+
+A season filed without a number, such as `Season Unknown`, has no place in the order of seasons, so the value is treated as unknown.
+
+:::
+
+- Key: Jellyfin.sw_lastViewedAtThroughSeason
+- Availability: seasons
 - Type: date
 
 ---

@@ -68,6 +68,8 @@ Rule groups are **deactivated** after switching and libraries must be re-assigne
 
 Property remapping is derived at runtime by matching each property's name between the source and target application definitions, with an explicit mapping used only when no name matches. The ID pairs below illustrate the mappings resolved by that behavior and are not a stable contract. The switch preview reports exactly which of your rules will be migrated or deleted and is authoritative where this illustrative list is not.
 
+A property that migrates can still answer differently on the new server. `Newest episode view date in this or an earlier season` is one: Plex counts views of episodes that have since left the library, while Jellyfin and Emby count only the episodes the show holds at the time of the run. The [Glossary](./Glossary.md) describes each property per server.
+
 **Plex -> Jellyfin / Emby incompatible (rule deleted):**
 
 - Watchlisted by (username) (ID 28)
