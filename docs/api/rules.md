@@ -157,7 +157,7 @@ Some values you send are deliberately overruled: `cleanupLeftoverFolders` is for
 
 **Update an existing rule group and rewrite all of its rules.**
 
-Same body as the create route plus a required `id`.
+Same body as the create route plus a required `id`. It is not schema-validated either.
 
 | Status | Cause                                                                              |
 | ------ | ---------------------------------------------------------------------------------- |
@@ -337,7 +337,7 @@ Request body:
 { "mediaId": "12345", "rulegroupId": 1 }
 ```
 
-Note the lower-case `g` in `rulegroupId`. `mediaId` may be a show, season or episode id.
+Note the lower-case `g` in `rulegroupId`. `mediaId` may be a show, season or episode id. Nothing validates the body, so a misspelled field is not rejected but read as missing.
 
 Response on success is `code: 1` and a `result` array. Each entry carries `mediaServerId`, an overall `result` boolean, and `sectionResults`, each holding per-rule results with `firstValueName`, `firstValue`, `secondValue`, `action`, `operator` and `result`, plus reason strings when a value could not be read.
 
@@ -395,6 +395,8 @@ Request body:
 ```json
 { "mediaId": "12345", "collectionId": 1, "action": 0 }
 ```
+
+Nothing validates the body. The fields below are simply what the handler reads.
 
 | Field          | Type   | Required | Description                                                           |
 | -------------- | ------ | -------- | --------------------------------------------------------------------- |
@@ -575,7 +577,7 @@ Request body:
 { "rules": "[{\"action\":0,\"firstVal\":[0,1],\"section\":0}]" }
 ```
 
-`rules` is a **JSON-encoded string**, not an array.
+`rules` is a **JSON-encoded string**, not an array. Nothing validates the body, and a string that will not parse comes back as `code: 0` with `Invalid input` rather than a `400`.
 
 | Status | Cause                                                                                                     |
 | ------ | --------------------------------------------------------------------------------------------------------- |
@@ -597,7 +599,7 @@ Request body:
 { "rules": "[]", "mediaType": "movie" }
 ```
 
-`rules` is a JSON-encoded string.
+`rules` is a JSON-encoded string. Nothing validates the body, and a string that will not parse comes back as `code: 0` with `Invalid input` rather than a `400`.
 
 | Status | Cause                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------------------------------------------------- |
@@ -615,7 +617,7 @@ Request body:
 { "yaml": "...", "mediaType": "movie" }
 ```
 
-`mediaType` must match the document's own media type.
+`mediaType` must match the document's own media type. Nothing validates the body itself.
 
 | Status | Cause                                                                                                                                                                                                                                    |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -687,7 +689,7 @@ Request body:
 { "id": 12, "karma": 6 }
 ```
 
-`karma` is the **absolute new value**, not a change. The UI computes it as the current karma plus or minus one.
+`karma` is the **absolute new value**, not a change. The UI computes it as the current karma plus or minus one. Nothing validates the body.
 
 | Status | Cause                                                                                                                                                                                                                                                                           |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -232,7 +232,7 @@ Request body:
 { "rulegroupId": 1, "notificationId": 2 }
 ```
 
-Both ids are checked for truthiness, so `0` counts as missing.
+Both ids are checked for truthiness, so `0` counts as missing. That is the only check the route makes, because nothing validates the body.
 
 Response:
 
@@ -257,6 +257,8 @@ Request body:
 ```json
 { "rulegroupId": 1, "notificationId": 2 }
 ```
+
+Both ids are checked for truthiness, so `0` counts as missing. Nothing else validates the body.
 
 | Status | Cause                                                                                                             |
 | ------ | ----------------------------------------------------------------------------------------------------------------- |
@@ -284,7 +286,7 @@ The response is a bare JSON string, not an object. It is `Success`, or `Failure:
 Nothing is written to the database and the live agent list is untouched. Because no media items are involved, a test works even with no media server configured.
 
 :::warning This sends a real message to a destination you name in the request
-The credentials and the target URL both come from the request body, so this route will make an outbound request to whatever address the caller supplies. The only check is that webhook style agents use an `http` or `https` scheme. There is no host or private network filtering, and Gotify's URL is not checked at all.
+The credentials and the target URL both come from the request body, so this route will make an outbound request to whatever address the caller supplies. The only check is that webhook style agents use an `http` or `https` scheme, and nothing validates the body itself. There is no host or private network filtering, and Gotify's URL is not checked at all.
 
 On an unauthenticated instance that is a way to make your server issue requests on someone else's behalf. Treat this as an operator-only endpoint and see [Security and Authentication](../Security.md).
 :::

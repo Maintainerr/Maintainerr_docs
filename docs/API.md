@@ -66,7 +66,7 @@ Bodies are validated per endpoint. Where a schema exists, a failure returns:
 
 `errors` holds the individual validation problems.
 
-Validation is not universal. Of the 70 endpoints that take a body, **17 have no schema at all**, so the body reaches the service unchecked. Most numeric path parameters are checked and reject a non-numeric value with a `400` before the handler runs, but not all: `DELETE /api/notifications/configuration/{id}` declares a numeric id without that check.
+Validation is not universal. Of the 70 endpoints that take a body, **17 have no schema at all**, so the body reaches the service unchecked. Each of those 17 says so on its own entry. Most numeric path parameters are checked and reject a non-numeric value with a `400` before the handler runs, but not all: `DELETE /api/notifications/configuration/{id}` declares a numeric id without that check.
 
 ### Success and failure in the same status code
 

@@ -521,7 +521,7 @@ Request body:
 }
 ```
 
-`libraryId` and `collectionId` are required. The rest are optional.
+`libraryId` and `collectionId` are required. The rest are optional. Nothing validates the body, so a wrong `collectionId` is only caught when the media server rejects the write.
 
 | Status | Cause                                                       |
 | ------ | ----------------------------------------------------------- |
@@ -556,7 +556,7 @@ Request body:
 }
 ```
 
-`libraryId` and `collectionId` are required, plus at least one of the three flags.
+`libraryId` and `collectionId` are required, plus at least one of the three flags. That check is written by hand in the handler, and nothing else validates the body.
 
 | Status | Cause                                                                                  |
 | ------ | -------------------------------------------------------------------------------------- |
