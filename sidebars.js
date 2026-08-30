@@ -54,7 +54,21 @@ const sidebars = {
     {
       type: "category",
       label: "API",
-      items: ["api"],
+      items: [
+        "api",
+        "api/settings",
+        "api/rules",
+        "api/overlays",
+        "api/collections",
+        "api/media-server",
+        "api/notifications",
+        "api/app-and-health",
+        "api/logs",
+        "api/seerr",
+        "api/metadata-and-storage",
+        "api/servarr",
+        "api/streamystats",
+      ],
     },
   ],
 };
