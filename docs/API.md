@@ -13,193 +13,106 @@ hide:
 
 :::
 
-## API endpoints
+Maintainerr exposes 219 HTTP endpoints. Every one of them is documented in the pages below, grouped by area.
 
-:::info
-The Docusaurus site does not yet embed the generated Swagger reference. Use the live Swagger UI in your Maintainerr instance at `http://<maintainerr_url>/api/swagger` for the current API surface, including modules such as overlays and storage metrics.
-:::
+## Endpoints by area
 
-The repository also carries a bundled OpenAPI YAML at `static/openapi-spec/maintainerr_api_specs.yaml`, but the live Swagger UI should still be treated as the source of truth for the running instance.
+| Page                                                          | Endpoints | Covers                                                                             |
+| ------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------- |
+| [Settings](./api/settings.md)                                 | 74        | Every integration's connection settings, connection tests, the media server switch |
+| [Rules](./api/rules.md)                                       | 29        | Rule groups, execution, exclusions, community rules, YAML import and export        |
+| [Overlays](./api/overlays.md)                                 | 28        | Overlay settings, processing runs, templates, fonts and images                     |
+| [Collections](./api/collections.md)                           | 25        | Collections, membership, bulk media actions, handling, posters, logs               |
+| [Media server](./api/media-server.md)                         | 23        | Libraries, items, search, watch state, users, media server collections             |
+| [Notifications](./api/notifications.md)                       | 8         | Agents, configurations, rule group links, test sends                               |
+| [App and health](./api/app-and-health.md)                     | 7         | App status, time zone, releases, health probes, task status                        |
+| [Logs](./api/logs.md)                                         | 6         | Log stream, log files, log level settings                                          |
+| [Seerr](./api/seerr.md)                                       | 6         | Seerr lookups, requester names, request and media deletion                         |
+| [Metadata, storage and events](./api/metadata-and-storage.md) | 6         | Metadata provider lookups, storage metrics, the events stream                      |
+| [Servarr](./api/servarr.md)                                   | 5         | Radarr, Sonarr and Sportarr disk space and quality profiles                        |
+| [Streamystats](./api/streamystats.md)                         | 2         | Streamystats server info and per-item watch statistics                             |
 
-## Notable endpoints
+## API conventions
 
-These sections cover notable user-facing API groups.
+These hold across the whole API. They are worth reading once before using any endpoint.
 
-### Health
+### No authentication
 
-Maintainerr exposes lightweight health endpoints under `/api/health` (prefixed with `BASE_PATH` when set) for orchestration probes and uptime monitoring.
+There is no authentication anywhere. The only access check in Maintainerr confirms that a media server is configured, not who is calling.
 
-| Endpoint                | Purpose                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| `GET /api/health/live`  | Liveness probe; returns `200` while the process is running and does not touch the database |
-| `GET /api/health/ready` | Readiness probe; runs a database `SELECT 1` check and returns `200` or `503`               |
-| `GET /api/health`       | Convenience alias that mirrors `/api/health/ready`                                         |
+`GET /api/settings/api/generate` mints an API key, but **nothing server-side ever validates an inbound `X-Api-Key`**. That key exists only so Maintainerr's own internal client can call its own API. Generating one does not protect anything.
 
-`GET /api/health/live` returns a lightweight envelope such as:
+Anyone who can reach the port can call every endpoint, including the ones that delete media. See [Security & Authentication](./Security.md) for how to put access control in front of it.
+
+### No rate limiting
+
+No request throttling is configured. There is nothing to stop a caller making unlimited requests.
+
+### Base path
+
+When `BASE_PATH` is set it prefixes every path. All paths in these docs are shown in their unprefixed form, so add your prefix to each.
+
+### CORS
+
+In production no CORS middleware is registered at all unless `CORS_ALLOWED_ORIGINS` is set, so no `Access-Control-Allow-Origin` header can be sent and browser calls from another origin will fail. In development the origin that asks is reflected back.
+
+### Request validation
+
+Bodies are validated per endpoint. Where a schema exists, a failure returns:
 
 ```json
-{
-  "status": "ok",
-  "uptimeSeconds": 1234,
-  "timestamp": "2026-06-05T12:00:00.000Z"
-}
+{ "statusCode": 400, "message": "Validation failed", "errors": [] }
 ```
 
-`GET /api/health/ready` and `GET /api/health` include database status:
+`errors` holds the individual validation problems.
+
+Validation is not universal. Of the 70 endpoints that take a body, **17 have no schema at all**, so the body reaches the service unchecked. Most numeric path parameters are checked and reject a non-numeric value with a `400` before the handler runs, but not all: `DELETE /api/notifications/configuration/{id}` declares a numeric id without that check.
+
+### Success and failure in the same status code
+
+Many endpoints, settings especially, report failure as HTTP `200` with a body like this:
 
 ```json
-// 200
-{ "status": "ok", "uptimeSeconds": 1234, "database": "ok", "timestamp": "..." }
-// 503
-{ "status": "degraded", "uptimeSeconds": 1234, "database": "unreachable", "timestamp": "..." }
+{ "status": "NOK", "code": 0, "message": "why it failed" }
 ```
 
-- Only the database gates readiness. External integrations such as Plex/Jellyfin, the `*arr` stack, Seerr, Tautulli, and Streamystats are intentionally excluded so transient upstream outages do not take Maintainerr out of rotation.
-- The bundled Docker image ships a `HEALTHCHECK` that calls `/api/health/ready` and honours both `BASE_PATH` and `UI_PORT`.
-- For Kubernetes, use `/api/health/live` as the `livenessProbe` and `/api/health/ready` as the `readinessProbe`. If `BASE_PATH` is set, prefix both probe paths accordingly.
+`status` is `OK` or `NOK`, and `code` is `1` or `0`. A successful call returns `status: "OK"` and `code: 1`.
 
-### Collections
+**This is the single easiest thing to get wrong.** Check the body, not the status line. Where an endpoint behaves this way it is stated in its status code table.
 
-| Endpoint                             | Purpose                                                                                           |
-| ------------------------------------ | ------------------------------------------------------------------------------------------------- |
-| `GET /api/collections/overlay-data`  | Returns collections with full media membership for overlay consumers, including the Calendar page |
-| `POST /api/collections/media/handle` | Run the configured collection action immediately for one item from the collection detail modal    |
-| `GET /api/collections/:id/poster`    | Return the stored custom collection poster as `image/jpeg`, or `404` when none exists             |
-| `POST /api/collections/:id/poster`   | Upload a custom collection poster with multipart field `poster`; returns `{ pushed, attempted }`  |
-| `DELETE /api/collections/:id/poster` | Clear the stored poster and return `{ cleared, refreshRequested }`                                |
+Some areas use a different envelope with `code` and `result`, or `code`, `result` and `message`. The field names are given per endpoint.
 
-The lower-level `POST /api/media-server/collection` request body matches `CreateCollectionParams`: `libraryId`, `title`, and `type` are required, with optional `summary`, `sortTitle`, and `initialItemId`. `initialItemId` is a single media-server item id used when a collection must be created with one initial member; remaining items are still added afterwards through the normal collection-sync path.
+A third pattern is worth knowing: several read endpoints return `200` with an **empty body** when something failed, which is not the same as an empty array or object. Those are flagged too.
 
-### Bulk media actions
+### POST returns 201
 
-These back the `Add / Remove Media` modal described in [Collections](./Collections.md#add-remove-media-modal).
+Almost no endpoint overrides the default status, so a successful `POST` answers **`201`**, not `200`, even where an annotation in the generated OpenAPI document says otherwise. `PATCH`, `PUT` and `DELETE` answer `200`.
 
-| Endpoint                           | Purpose                                                                            |
-| ---------------------------------- | ---------------------------------------------------------------------------------- |
-| `POST /api/collections/media/bulk` | Add a media selection to one collection, or remove it from one or from all of them |
-| `POST /api/rules/exclusions/bulk`  | Exclude a media selection, or drop its exclusions, globally or for one rule group  |
+### Error bodies
 
-Both endpoints take the same fields:
+There is no global error handler, so error bodies are framework defaults. A denied access check produces:
 
-| Field          | Description                                                                                                                                                      |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mediaIds`     | 1 to 250 media-server ids                                                                                                                                        |
-| `action`       | `0` adds, `1` removes                                                                                                                                            |
-| `collectionId` | Limits the call to one collection. Leave it out to mean every collection, which `/collections/media/bulk` allows only for a removal                              |
-| `mediaType`    | `movie`, `show`, `season`, or `episode`. Required by `/collections/media/bulk`, so the server can work out the seasons and episodes without looking up each item |
-| `context`      | Optional `{ id, type }` that narrows a one-item selection to a single season or episode. Sending it with more than one id is an error                            |
+```json
+{ "statusCode": 403, "message": "Forbidden resource", "error": "Forbidden" }
+```
 
-The 250 limits one request, not how much a user can select. The web UI sends 25 ids per request and splits a bigger selection across several calls, so only direct API callers reach it.
+### Secrets
 
-If some items fail, the rest still go through. Both endpoints answer `{ results: [{ mediaId, code, message? }] }`, where `code` is `1` for success and `0` for failure, with `message` explaining a failure. A request is rejected outright with `400` only when it is empty, holds more than 250 ids, or asks to add without naming a collection.
+`GET /api/settings` masks nine secret fields. The per-integration read routes under `/api/settings` **do not mask** and return the real stored values, because the settings forms need them in order to save them again. `GET /api/settings` also leaves `apikey` and `download_client_username` in the clear.
 
-Adding an exclusion takes the collection and rule execution lock, on both `POST /api/rules/exclusions/bulk` and `POST /api/rules/exclusion`, so it cannot land while a run is acting on the same item. Both wait up to 30 seconds for a running job and answer `409` if it is still going. Removing an exclusion takes no lock.
+Two further routes hand over secrets wholesale: `GET /api/notifications/configurations` returns every notification credential unmasked, and `GET /api/settings/database/download` streams the entire database with every secret in plaintext.
 
-### Metadata
+There is also **no masked-value detection on writes**. Reading a masked body and posting it back stores the mask over your real secret.
 
-| Endpoint                                        | Purpose                                                                                                                                                     |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /api/metadata/backdrop/:type`              | Resolve a backdrop image from the configured metadata providers. `:type` is `movie` or `show`                                                               |
-| `GET /api/metadata/overview/:type`              | Resolve an overview from the configured metadata providers. `:type` is `movie` or `show`; pass a season's or episode's `itemId` to get that item's overview |
-| `GET /api/metadata/image/:type`                 | Resolve a poster image from the configured metadata providers. `:type` is `movie` or `show`                                                                 |
-| `GET /api/settings/tmdb`                        | Read the saved TMDB API key state                                                                                                                           |
-| `POST /api/settings/tmdb`                       | Save a TMDB API key                                                                                                                                         |
-| `DELETE /api/settings/tmdb`                     | Remove the saved TMDB API key                                                                                                                               |
-| `GET /api/settings/tvdb`                        | Read the saved TVDB API key state                                                                                                                           |
-| `POST /api/settings/tvdb`                       | Save a TVDB API key                                                                                                                                         |
-| `DELETE /api/settings/tvdb`                     | Remove the saved TVDB API key                                                                                                                               |
-| `GET /api/settings/metadata-provider`           | Read which metadata provider is currently primary                                                                                                           |
-| `POST /api/settings/metadata-provider`          | Change the primary metadata provider                                                                                                                        |
-| `POST /api/settings/metadata/refresh/:provider` | Clear cached metadata for TMDB or TVDB and queue a media-server refresh pass                                                                                |
+## Interactive reference
 
-### Media server settings
+Your own instance serves a live, interactive reference generated from the running build:
 
-| Endpoint                        | Purpose                                                                                         |
-| ------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `GET /api/settings/emby`        | Read the saved Emby URL, API key, and selected admin user                                       |
-| `POST /api/settings/emby/test`  | Test an Emby URL and API key, and return available admin users                                  |
-| `POST /api/settings/emby`       | Save Emby connection settings                                                                   |
-| `DELETE /api/settings/emby`     | Remove the saved Emby connection settings                                                       |
-| `POST /api/settings/emby/login` | Authenticate with an Emby admin username/password and return an API key plus admin-user choices |
+| URL                                         | What it is               |
+| ------------------------------------------- | ------------------------ |
+| `http://<maintainerr_url>/api/swagger`      | Swagger UI               |
+| `http://<maintainerr_url>/api/swagger-json` | The raw OpenAPI document |
 
-### Download Client
+Both are prefixed by `BASE_PATH` when it is set.
 
-| Endpoint                                  | Purpose                                                                         |
-| ----------------------------------------- | ------------------------------------------------------------------------------- |
-| `GET /api/settings/download-client`       | Read the saved qBittorrent connection and cleanup options                       |
-| `POST /api/settings/download-client`      | Save qBittorrent connection and cleanup options                                 |
-| `DELETE /api/settings/download-client`    | Remove the saved download-client connection settings                            |
-| `POST /api/settings/test/download-client` | Test the qBittorrent Web UI URL, credentials, and cleanup options before saving |
-
-### Streamystats (Jellyfin only)
-
-| Endpoint                               | Purpose                                                                                              |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `GET /api/settings/streamystats`       | Read the saved Streamystats base URL                                                                 |
-| `POST /api/settings/test/streamystats` | Test a Streamystats URL using the currently configured Jellyfin API key                              |
-| `POST /api/settings/streamystats`      | Save the Streamystats base URL                                                                       |
-| `DELETE /api/settings/streamystats`    | Remove the saved Streamystats base URL                                                               |
-| `GET /api/streamystats/info`           | Return the configured Streamystats URL plus the resolved Jellyfin server id used for deep links      |
-| `GET /api/streamystats/items/:itemId`  | Return Streamystats watch-history totals, per-user stats, and episode progress for one Jellyfin item |
-
-### Tracearr
-
-| Endpoint                              | Purpose                                                                                                    |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `GET /api/settings/tracearr`          | Read the saved Tracearr base URL, API key, and bound Tracearr server                                       |
-| `POST /api/settings/test/tracearr`    | Test a Tracearr URL and API key before saving                                                              |
-| `POST /api/settings/tracearr/servers` | Discover the Tracearr servers available for a URL and API key so the settings UI can populate the selector |
-| `POST /api/settings/tracearr`         | Save the Tracearr connection settings                                                                      |
-| `DELETE /api/settings/tracearr`       | Remove the saved Tracearr connection settings                                                              |
-
-`server_id` is optional on `POST /api/settings/tracearr`. Leave it out and Maintainerr picks the Tracearr server that tracks your media server; send it only when Tracearr has several servers of that type. Either way the save is refused if no server matches, or if the one you sent tracks a different media server.
-
-### Overlays
-
-| Endpoint                                     | Purpose                                                                       |
-| -------------------------------------------- | ----------------------------------------------------------------------------- |
-| `GET /api/overlays/settings`                 | Read global overlay settings                                                  |
-| `PUT /api/overlays/settings`                 | Update global overlay settings                                                |
-| `GET /api/overlays/sections`                 | List media server library sections used by the template preview picker        |
-| `GET /api/overlays/random-item`              | Get a random media item for poster-template preview                           |
-| `GET /api/overlays/random-episode`           | Get a random episode for title-card preview                                   |
-| `GET /api/overlays/poster`                   | Proxy media artwork for template preview                                      |
-| `GET /api/overlays/status`                   | Read the latest overlay processing status                                     |
-| `POST /api/overlays/process`                 | Run overlay processing for all eligible collections                           |
-| `POST /api/overlays/process/:collectionId`   | Run overlay processing for one collection                                     |
-| `POST /api/overlays/revert/:collectionId`    | Revert overlays for one collection                                            |
-| `DELETE /api/overlays/reset`                 | Revert all overlays                                                           |
-| `GET /api/overlays/fonts`                    | List available fonts                                                          |
-| `GET /api/overlays/fonts/:name`              | Read a bundled or uploaded font file                                          |
-| `POST /api/overlays/fonts`                   | Upload a `.ttf`, `.otf`, or `.woff` font                                      |
-| `GET /api/overlays/images`                   | List uploaded overlay image assets                                            |
-| `GET /api/overlays/images/:name`             | Read an uploaded overlay image asset                                          |
-| `POST /api/overlays/images`                  | Upload a `.png`, `.jpg`/`.jpeg`, or `.webp` image for template image elements |
-| `DELETE /api/overlays/images/:name`          | Delete an uploaded overlay image asset                                        |
-| `GET /api/overlays/templates`                | List overlay templates                                                        |
-| `GET /api/overlays/templates/:id`            | Fetch one template                                                            |
-| `POST /api/overlays/templates`               | Create a template                                                             |
-| `PUT /api/overlays/templates/:id`            | Update a template                                                             |
-| `DELETE /api/overlays/templates/:id`         | Delete a non-preset template                                                  |
-| `POST /api/overlays/templates/:id/duplicate` | Clone a template into an editable copy                                        |
-| `POST /api/overlays/templates/:id/default`   | Set a template as the default for its mode                                    |
-| `POST /api/overlays/templates/:id/export`    | Export a template as JSON                                                     |
-| `POST /api/overlays/templates/import`        | Import a template from JSON                                                   |
-| `POST /api/overlays/templates/:id/preview`   | Render a server-side preview of a template on real artwork                    |
-
-`POST /api/overlays/process` accepts an optional `{ force: true }` body to reapply overlays even when the saved day-count state is already current. Its run summary always reports `processed`, `reverted`, `skipped`, and `errors`.
-
-`POST /api/overlays/process` and `DELETE /api/overlays/reset` both return `409 Conflict` if another overlay-processing run is already active.
-
-### Storage Metrics
-
-| Endpoint                                 | Purpose                                                                                                 |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `GET /api/storage-metrics`               | Return aggregated disk usage, instance health, collection-size summaries, and cumulative cleanup totals |
-| `GET /api/storage-metrics/library-sizes` | Compute per-library sizes on demand; potentially slow on large libraries                                |
-
-`GET /api/storage-metrics` includes `cleanupTotals` counters for `itemsHandled`, `moviesHandled`, `showsHandled`, `seasonsHandled`, and `episodesHandled`, plus reclaimed-byte totals in `bytesHandled`, `movieBytesHandled`, `showBytesHandled`, `seasonBytesHandled`, and `episodeBytesHandled`.
-
-The same response also includes `collectionSummary` type breakdowns for `movieSizeBytes`, `showSizeBytes`, `seasonSizeBytes`, `episodeSizeBytes`, and per-type reclaimable collection counts such as `reclaimableMovieCount`.
-
-Collection payloads carry an optional `mediaServerSort` key. It stores the collection's saved media-server sort order as `{field}.{order}` (for example `deleteSoonest.asc`) when the connected server supports collection sorting.
+A snapshot of that document also ships with this site at `static/openapi-spec/maintainerr_api_specs.yaml`. For the instance you are actually running, the live document is the authority.
