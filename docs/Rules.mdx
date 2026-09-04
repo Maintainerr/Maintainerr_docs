@@ -45,6 +45,8 @@ The watch-history getters keep these cases separate: a confirmed empty history r
 
 `Newest episode view date in this or an earlier season` (`sw_lastViewedAtThroughSeason`) answers for a run of seasons rather than one. A rule on season 3 sees the last time anyone watched anything in seasons 1 to 3, so you can clear watched seasons without getting ahead of someone still working through the show. It is offered for Plex, Jellyfin, and Emby season rules. Plex counts views of episodes that have since left the library, while Jellyfin and Emby count only the episodes the show holds at the time of the run.
 
+`Users that watched every episode since added` (`sw_allEpisodesSeenBySinceAdded`) and `Users that watched at least one episode since added` (`sw_watchersSinceAdded`) are available for Plex, Jellyfin, and Emby show and season rules. They count only episode views strictly after the selected show or season was added. The first requires a qualifying view for every available episode, while the second returns users with at least one qualifying view. Re-adding a season while its parent show remains does not restart the show's cycle, so use a season rule when the cycle should begin with that season's addition.
+
 :::
 
 :::warning Plex Watchlist Rules

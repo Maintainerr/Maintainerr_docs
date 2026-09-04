@@ -172,6 +172,17 @@ List of users who have watched every available episode of the Plex item. This ru
 - Availability: shows, seasons
 - Type: text[]
 
+#### Users that watched every episode since added
+
+:::info
+List of users who watched every available episode strictly after the selected Plex show or season was added.
+
+:::
+
+- Key: Plex.sw_allEpisodesSeenBySinceAdded
+- Availability: shows, seasons
+- Type: text[]
+
 #### Newest episode view date
 
 :::info
@@ -274,6 +285,17 @@ List of users who have watched at least one episode of the Plex item. This rule 
 
 - Key: Plex.sw_watchers
 - Availability: shows, seasons, episodes
+- Type: text[]
+
+#### Users that watched at least one episode since added
+
+:::info
+List of users who watched at least one available episode strictly after the selected Plex show or season was added.
+
+:::
+
+- Key: Plex.sw_watchersSinceAdded
+- Availability: shows, seasons
 - Type: text[]
 
 #### Collections media is present in (titles)
@@ -771,6 +793,17 @@ List of users who have watched every available episode of the Jellyfin item.
 - Availability: shows, seasons
 - Type: text[]
 
+#### Users that watched every episode since added
+
+:::info
+List of users who watched every available episode strictly after the selected Jellyfin show or season was added.
+
+:::
+
+- Key: Jellyfin.sw_allEpisodesSeenBySinceAdded
+- Availability: shows, seasons
+- Type: text[]
+
 #### Newest episode view date
 
 :::info
@@ -862,6 +895,17 @@ List of users who have watched at least one episode of the Jellyfin item. This r
 
 - Key: Jellyfin.sw_watchers
 - Availability: shows, seasons, episodes
+- Type: text[]
+
+#### Users that watched at least one episode since added
+
+:::info
+List of users who watched at least one available episode strictly after the selected Jellyfin show or season was added.
+
+:::
+
+- Key: Jellyfin.sw_watchersSinceAdded
+- Availability: shows, seasons
 - Type: text[]
 
 #### Collections media is present in (titles)
