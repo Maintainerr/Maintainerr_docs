@@ -1,0 +1,3740 @@
+openapi: 3.0.0
+paths:
+  /api/app/status:
+    get:
+      operationId: AppController_getAppStatus
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - App
+  /api/app/timezone:
+    get:
+      operationId: AppController_getAppTimezone
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - App
+  /api/app/releases:
+    get:
+      operationId: AppController_getGitHubReleases
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - App
+  /api/health/live:
+    get:
+      operationId: HealthController_live
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Health
+  /api/health/ready:
+    get:
+      operationId: HealthController_ready
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Health
+  /api/health:
+    get:
+      operationId: HealthController_health
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Health
+  /api/logs/stream:
+    get:
+      operationId: LogsController_stream
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Logs
+  /api/logs/files:
+    get:
+      operationId: LogsController_getFiles
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - Logs
+  /api/logs/files/{file}:
+    get:
+      operationId: LogsController_getFile
+      parameters:
+        - name: file
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Logs
+  /api/logs/settings:
+    get:
+      operationId: LogsController_getLogSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Logs
+    post:
+      operationId: LogsController_setLogSettings
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Logs
+  /api/logs/client-error:
+    post:
+      operationId: LogsController_logClientError
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Logs
+  /api/settings:
+    get:
+      operationId: SettingsController_getSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateSettings
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    patch:
+      operationId: SettingsController_patchSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/radarr:
+    get:
+      operationId: SettingsController_getRadarrSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_addRadarrSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/sonarr:
+    get:
+      operationId: SettingsController_getSonarrSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_addSonarrSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/sportarr:
+    get:
+      operationId: SettingsController_getSportarrSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_addSportarrSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/version:
+    get:
+      operationId: SettingsController_getVersion
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - settings
+  /api/settings/database/download:
+    get:
+      operationId: SettingsController_downloadDatabase
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/api/generate:
+    get:
+      operationId: SettingsController_generateApiKey
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - settings
+  /api/settings/plex/auth:
+    delete:
+      operationId: SettingsController_deletePlexApiAuth
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/plex/token:
+    post:
+      operationId: SettingsController_updateAuthToken
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/setup:
+    get:
+      operationId: SettingsController_testSetup
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: boolean
+      tags:
+        - settings
+  /api/settings/test/radarr:
+    post:
+      operationId: SettingsController_testRadarr
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/radarr/{id}:
+    put:
+      operationId: SettingsController_updateRadarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_deleteRadarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/sonarr:
+    post:
+      operationId: SettingsController_testSonarr
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/sonarr/{id}:
+    put:
+      operationId: SettingsController_updateSonarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_deleteSonarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/sportarr:
+    post:
+      operationId: SettingsController_testSportarr
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/sportarr/{id}:
+    put:
+      operationId: SettingsController_updateSportarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_deleteSportarrSetting
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/tautulli:
+    get:
+      operationId: SettingsController_getTautulliSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateTautlliSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeTautlliSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/tautulli:
+    post:
+      operationId: SettingsController_testTautulli
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/streamystats:
+    get:
+      operationId: SettingsController_getStreamystatsSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateStreamystatsSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeStreamystatsSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/streamystats:
+    post:
+      operationId: SettingsController_testStreamystats
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/tracearr:
+    get:
+      operationId: SettingsController_getTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateTracearrSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeTracearrSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/tracearr/servers:
+    post:
+      operationId: SettingsController_getTracearrServers
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/tracearr:
+    post:
+      operationId: SettingsController_testTracearr
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/download-client:
+    get:
+      operationId: SettingsController_getDownloadClientSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateDownloadClientSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeDownloadClientSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/download-client:
+    post:
+      operationId: SettingsController_testDownloadClient
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/tmdb:
+    get:
+      operationId: SettingsController_getTmdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateTmdbSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeTmdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/tmdb:
+    post:
+      operationId: SettingsController_testTmdb
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/tvdb:
+    get:
+      operationId: SettingsController_getTvdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateTvdbSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeTvdbSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/tvdb:
+    post:
+      operationId: SettingsController_testTvdb
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/metadata-provider:
+    get:
+      operationId: SettingsController_getMetadataProviderPreference
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateMetadataProviderPreference
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/telemetry/preview:
+    get:
+      operationId: SettingsController_previewTelemetry
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/telemetry/status:
+    get:
+      operationId: SettingsController_telemetryStatus
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/telemetry:
+    post:
+      operationId: SettingsController_updateTelemetrySetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/metadata/refresh/{provider}:
+    post:
+      operationId: SettingsController_refreshMetadataCache
+      parameters:
+        - name: provider
+          required: true
+          in: path
+          schema:
+            enum:
+              - tmdb
+              - tvdb
+              - sportarr
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/seerr:
+    get:
+      operationId: SettingsController_getSeerrSetting[0]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateSeerrSetting[0]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeSeerrSetting[0]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/overseerr:
+    get:
+      operationId: SettingsController_getSeerrSetting[1]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateSeerrSetting[1]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeSeerrSetting[1]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/jellyseerr:
+    get:
+      operationId: SettingsController_getSeerrSetting[2]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateSeerrSetting[2]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeSeerrSetting[2]
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/seerr:
+    post:
+      operationId: SettingsController_testSeerr[0]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/overseerr:
+    post:
+      operationId: SettingsController_testSeerr[1]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/jellyseerr:
+    post:
+      operationId: SettingsController_testSeerr[2]
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/jellyfin:
+    get:
+      operationId: SettingsController_getJellyfinSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_saveJellyfinSettings
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeJellyfinSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/jellyfin/test:
+    post:
+      operationId: SettingsController_testJellyfin
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/emby:
+    get:
+      operationId: SettingsController_getEmbySetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_saveEmbySettings
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeEmbySettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/emby/test:
+    post:
+      operationId: SettingsController_testEmby
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/emby/login:
+    post:
+      operationId: SettingsController_loginEmby
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/test/plex:
+    get:
+      operationId: SettingsController_testPlex
+      parameters: []
+      responses:
+        '200':
+          description: Plex connectivity test result
+      summary: Test Plex server connectivity
+      tags:
+        - settings
+  /api/settings/test/plex/auth:
+    get:
+      operationId: SettingsController_testPlexAuth
+      parameters: []
+      responses:
+        '200':
+          description: Plex auth token validation result
+      summary: Validate stored Plex authentication token
+      tags:
+        - settings
+  /api/settings/plex/devices/servers:
+    get:
+      operationId: SettingsController_getPlexServers
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - settings
+  /api/settings/cron/validate:
+    post:
+      operationId: SettingsController_validateSingleCron
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - settings
+  /api/settings/media-server/switch/preview/{targetServerType}:
+    get:
+      operationId: SettingsController_previewMediaServerSwitch
+      parameters:
+        - name: targetServerType
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/settings/media-server/switch:
+    post:
+      operationId: SettingsController_switchMediaServer
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+  /api/media-server:
+    get:
+      operationId: MediaServerController_getStatus
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/type:
+    get:
+      operationId: MediaServerController_getServerType
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+  /api/media-server/libraries:
+    get:
+      operationId: MediaServerController_getLibraries
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/overview/bootstrap:
+    get:
+      operationId: MediaServerController_getOverviewBootstrap
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: sort
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sortOrder
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/library/{id}/content:
+    get:
+      operationId: MediaServerController_getLibraryContent
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sort
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sortOrder
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+  /api/media-server/library/{id}/content/search/{query}:
+    get:
+      operationId: MediaServerController_searchLibraryContent
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: query
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/library/{id}/recent:
+    get:
+      operationId: MediaServerController_getRecentlyAdded
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: limit
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/users:
+    get:
+      operationId: MediaServerController_getUsers
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/user/{id}:
+    get:
+      operationId: MediaServerController_getUser
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/meta/{id}:
+    get:
+      operationId: MediaServerController_getMetadata
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/meta/{id}/maintainerr-status:
+    get:
+      operationId: MediaServerController_getMaintainerrStatusDetails
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/meta/{id}/children:
+    get:
+      operationId: MediaServerController_getChildrenMetadata
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/meta/{id}/seen:
+    get:
+      operationId: MediaServerController_getWatchHistory
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/search/{query}:
+    get:
+      operationId: MediaServerController_searchContent
+      parameters:
+        - name: query
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/library/{id}/collections:
+    get:
+      operationId: MediaServerController_getCollections
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/collection/{id}:
+    get:
+      operationId: MediaServerController_getCollection
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+    delete:
+      operationId: MediaServerController_deleteCollection
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+  /api/media-server/collection/{id}/children:
+    get:
+      operationId: MediaServerController_getCollectionChildren
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - MediaServer
+  /api/media-server/collection:
+    post:
+      operationId: MediaServerController_createCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+    put:
+      operationId: MediaServerController_updateCollection
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - MediaServer
+  /api/media-server/collection/{collectionId}/item/{itemId}:
+    put:
+      operationId: MediaServerController_addToCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+    delete:
+      operationId: MediaServerController_removeFromCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+  /api/media-server/collection/visibility:
+    put:
+      operationId: MediaServerController_updateCollectionVisibility
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - MediaServer
+  /api/servarr/sonarr/{id}/diskspace:
+    get:
+      operationId: ServarrApiController_getSonarrDiskspace
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ServarrApi
+  /api/servarr/radarr/{id}/diskspace:
+    get:
+      operationId: ServarrApiController_getRadarrDiskspace
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ServarrApi
+  /api/servarr/radarr/{id}/profiles:
+    get:
+      operationId: ServarrApiController_getRadarrProfiles
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ServarrApi
+  /api/servarr/sonarr/{id}/profiles:
+    get:
+      operationId: ServarrApiController_getSonarrProfiles
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ServarrApi
+  /api/servarr/sportarr/{id}/profiles:
+    get:
+      operationId: ServarrApiController_getSportarrProfiles
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ServarrApi
+  /api/seerr/movie/{id}:
+    get:
+      operationId: SeerrApiController_getMovie[0]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/overseerr/movie/{id}:
+    get:
+      operationId: SeerrApiController_getMovie[1]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/jellyseerr/movie/{id}:
+    get:
+      operationId: SeerrApiController_getMovie[2]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/seerr/requests/{tmdbId}/users:
+    get:
+      operationId: SeerrApiController_getRequestedByUsernames[0]
+      parameters:
+        - name: tmdbId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: season
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+        - SeerrApi
+  /api/overseerr/requests/{tmdbId}/users:
+    get:
+      operationId: SeerrApiController_getRequestedByUsernames[1]
+      parameters:
+        - name: tmdbId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: season
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+        - SeerrApi
+  /api/jellyseerr/requests/{tmdbId}/users:
+    get:
+      operationId: SeerrApiController_getRequestedByUsernames[2]
+      parameters:
+        - name: tmdbId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: season
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+        - SeerrApi
+  /api/seerr/show/{id}:
+    get:
+      operationId: SeerrApiController_getShow[0]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/overseerr/show/{id}:
+    get:
+      operationId: SeerrApiController_getShow[1]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/jellyseerr/show/{id}:
+    get:
+      operationId: SeerrApiController_getShow[2]
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/seerr/request/{requestId}:
+    delete:
+      operationId: SeerrApiController_deleteRequest[0]
+      parameters:
+        - name: requestId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/overseerr/request/{requestId}:
+    delete:
+      operationId: SeerrApiController_deleteRequest[1]
+      parameters:
+        - name: requestId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/jellyseerr/request/{requestId}:
+    delete:
+      operationId: SeerrApiController_deleteRequest[2]
+      parameters:
+        - name: requestId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/seerr/media/{mediaId}:
+    delete:
+      operationId: SeerrApiController_deleteMedia[0]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/overseerr/media/{mediaId}:
+    delete:
+      operationId: SeerrApiController_deleteMedia[1]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/jellyseerr/media/{mediaId}:
+    delete:
+      operationId: SeerrApiController_deleteMedia[2]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - SeerrApi
+  /api/seerr/media/tmdb/{mediaId}:
+    delete:
+      operationId: SeerrApiController_removeMediaByTmdbId[0]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: boolean
+      tags:
+        - SeerrApi
+  /api/overseerr/media/tmdb/{mediaId}:
+    delete:
+      operationId: SeerrApiController_removeMediaByTmdbId[1]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: boolean
+      tags:
+        - SeerrApi
+  /api/jellyseerr/media/tmdb/{mediaId}:
+    delete:
+      operationId: SeerrApiController_removeMediaByTmdbId[2]
+      parameters:
+        - name: mediaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: boolean
+      tags:
+        - SeerrApi
+  /api/streamystats/info:
+    get:
+      operationId: StreamystatsApiController_getInfo
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - StreamystatsApi
+  /api/streamystats/items/{itemId}:
+    get:
+      operationId: StreamystatsApiController_getItemDetails
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - StreamystatsApi
+  /api/tasks/{id}/status:
+    get:
+      operationId: TasksController_getTaskStatus
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskStatusDto'
+      tags:
+        - Tasks
+  /api/metadata/backdrop/{type}:
+    get:
+      operationId: MetadataController_getBackdropImage
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            enum:
+              - movie
+              - show
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Metadata
+  /api/metadata/overview/{type}:
+    get:
+      operationId: MetadataController_getOverview
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            enum:
+              - movie
+              - show
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Metadata
+  /api/metadata/image/{type}:
+    get:
+      operationId: MetadataController_getImage
+      parameters:
+        - name: type
+          required: true
+          in: path
+          schema:
+            enum:
+              - movie
+              - show
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Metadata
+  /api/rules/constants:
+    get:
+      operationId: RulesController_getRuleConstants
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleConstants'
+      tags:
+        - Rules
+  /api/rules/users:
+    get:
+      operationId: RulesController_getRuleUsernames
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+        - Rules
+  /api/rules/community:
+    get:
+      operationId: RulesController_getCommunityRules
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+    post:
+      operationId: RulesController_updateCommunityRules
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommunityRule'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/community/count:
+    get:
+      operationId: RulesController_getCommunityRuleCount
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: number
+      tags:
+        - Rules
+  /api/rules/community/karma/history:
+    get:
+      operationId: RulesController_getCommunityRuleKarmaHistory
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunityRuleKarma'
+      tags:
+        - Rules
+  /api/rules/exclusion:
+    get:
+      operationId: RulesController_getExclusion
+      parameters:
+        - name: rulegroupId
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: mediaServerId
+          required: false
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Exclusion'
+      tags:
+        - Rules
+    post:
+      operationId: RulesController_setExclusion
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: A collection or rule run held the execution lock for too long.
+      tags:
+        - Rules
+  /api/rules/count:
+    get:
+      operationId: RulesController_getRuleGroupCount
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: number
+      tags:
+        - Rules
+  /api/rules/{id}/rules:
+    get:
+      operationId: RulesController_getRules
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rules'
+      tags:
+        - Rules
+  /api/rules/collection/{id}:
+    get:
+      operationId: RulesController_getRuleGroupByCollectionId
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleGroup'
+      tags:
+        - Rules
+  /api/rules:
+    get:
+      operationId: RulesController_getRuleGroups
+      parameters:
+        - name: activeOnly
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: libraryId
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: typeId
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuleGroupDto'
+      tags:
+        - Rules
+    post:
+      operationId: RulesController_setRules
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleGroupDto'
+      responses:
+        '201':
+          description: The rule group was created.
+        '400':
+          description: The rule group was rejected. The message names what was wrong.
+        '500':
+          description: The rule group could not be written. The cause is logged.
+        '502':
+          description: The media server could not be read to resolve the library.
+        '503':
+          description: The configured media server adapter could not initialize.
+      tags:
+        - Rules
+    put:
+      operationId: RulesController_updateRule
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RuleGroupDto'
+      responses:
+        '200':
+          description: The rule group was updated.
+        '400':
+          description: The rule group was rejected. The message names what was wrong.
+        '404':
+          description: The rule group does not exist.
+        '500':
+          description: The rule group could not be written. The cause is logged.
+        '502':
+          description: The media server could not be read to resolve the library.
+        '503':
+          description: The configured media server adapter could not initialize.
+      tags:
+        - Rules
+  /api/rules/{id}:
+    get:
+      operationId: RulesController_getRuleGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RuleGroupDto'
+      tags:
+        - Rules
+    delete:
+      operationId: RulesController_deleteRuleGroup
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/execute:
+    post:
+      operationId: RulesController_executeRules
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Rules
+  /api/rules/{id}/execute:
+    post:
+      operationId: RulesController_executeRule
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Rules
+  /api/rules/execute/status:
+    get:
+      operationId: RulesController_getExecutionStatus
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/execute/stop:
+    post:
+      operationId: RulesController_stopExecutingRules
+      parameters: []
+      responses:
+        '200':
+          description: The rules handler is already stopped.
+        '202':
+          description: The rules handler has been requested to stop.
+      tags:
+        - Rules
+  /api/rules/{id}/execute/stop:
+    post:
+      operationId: RulesController_stopExecutingRule
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: The rules handler is already stopped.
+        '202':
+          description: The rules handler has been requested to stop.
+      tags:
+        - Rules
+  /api/rules/exclusions/bulk:
+    post:
+      operationId: RulesController_setBulkExclusions
+      parameters: []
+      responses:
+        '201':
+          description: Per-item results; failures are reported per media id.
+        '400':
+          description: 'Rejected without processing: empty, or more than 250 media ids.'
+        '409':
+          description: A collection or rule run held the execution lock for too long.
+      tags:
+        - Rules
+  /api/rules/exclusion/{id}:
+    delete:
+      operationId: RulesController_removeExclusion
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/exclusions/{mediaServerId}:
+    delete:
+      operationId: RulesController_removeAllExclusion
+      parameters:
+        - name: mediaServerId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/community/karma:
+    post:
+      operationId: RulesController_updateCommunityRuleKarma
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/yaml/encode:
+    post:
+      operationId: RulesController_yamlEncode
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/yaml/decode:
+    post:
+      operationId: RulesController_yamlDecode
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/test:
+    post:
+      operationId: RulesController_testRuleGroup
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/rules/migrate:
+    post:
+      operationId: RulesController_migrateRules
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Rules
+  /api/collections:
+    post:
+      operationId: CollectionsController_createCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Collections
+    put:
+      operationId: CollectionsController_updateCollection
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+    get:
+      operationId: CollectionsController_getCollections
+      parameters:
+        - name: libraryId
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: typeId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/add:
+    post:
+      operationId: CollectionsController_addToCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/remove:
+    post:
+      operationId: CollectionsController_removeFromCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/removeCollection:
+    post:
+      operationId: CollectionsController_removeCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Collections
+  /api/collections/handle:
+    post:
+      operationId: CollectionsController_handleCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/schedule/update:
+    put:
+      operationId: CollectionsController_updateSchedule
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Collections
+  /api/collections/deactivate/{id}:
+    get:
+      operationId: CollectionsController_deactivate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Collections
+  /api/collections/activate/{id}:
+    get:
+      operationId: CollectionsController_activate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Collections
+  /api/collections/overlay-data:
+    get:
+      operationId: CollectionsController_getCollectionsForOverlayData
+      parameters:
+        - name: libraryId
+          required: false
+          in: query
+          description: Filter collections by library id.
+          schema:
+            type: string
+        - name: typeId
+          required: false
+          in: query
+          description: Filter collections by media item type.
+          schema:
+            enum:
+              - movie
+              - show
+              - season
+              - episode
+            type: string
+      responses:
+        '200':
+          description: Returns collections with full media arrays for overlay and helper integrations.
+      summary: Get collections with full media membership for overlay consumers
+      tags:
+        - Collections
+  /api/collections/collection/{id}:
+    get:
+      operationId: CollectionsController_getCollection
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+      tags:
+        - Collections
+  /api/collections/media/add:
+    post:
+      operationId: CollectionsController_ManualActionOnCollection
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+      tags:
+        - Collections
+  /api/collections/media/bulk:
+    post:
+      operationId: CollectionsController_bulkMediaCollectionAction
+      parameters: []
+      responses:
+        '201':
+          description: Per-item results; failures are reported per media id.
+        '400':
+          description: 'Rejected without processing: empty, more than 250 media ids, or an add without a collection.'
+      summary: Add or remove a media selection to or from one collection
+      tags:
+        - Collections
+  /api/collections/media/handle:
+    post:
+      operationId: CollectionsController_handleCollectionMedia
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/media/postpone:
+    post:
+      operationId: CollectionsController_postponeCollectionMedia
+      parameters: []
+      responses:
+        '200':
+          description: Returns the new addDate, the collection deleteAfterDays, and the resulting deletionDate.
+      summary: Postpone (or reset) the deletion timer for one collection item
+      tags:
+        - Collections
+  /api/collections/media:
+    delete:
+      operationId: CollectionsController_deleteMediaFromCollection
+      parameters:
+        - name: mediaId
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: collectionId
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+    get:
+      operationId: CollectionsController_getMediaInCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionMedia'
+      tags:
+        - Collections
+  /api/collections/media/count:
+    get:
+      operationId: CollectionsController_getMediaInCollectionCount
+      parameters:
+        - name: collectionId
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: number
+      tags:
+        - Collections
+  /api/collections/media/{id}/content/{page}:
+    get:
+      operationId: CollectionsController_getLibraryContent
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: page
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: sort
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sortOrder
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: size
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/exclusions/{id}/content/{page}:
+    get:
+      operationId: CollectionsController_getExclusions
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: page
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: sort
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: sortOrder
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: size
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+  /api/collections/{id}/poster:
+    get:
+      operationId: CollectionsController_getCollectionPoster
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Returns the stored JPEG bytes.
+        '404':
+          description: No custom poster on this collection.
+      summary: Stream the user-uploaded poster bytes for a collection. 404 when none.
+      tags:
+        - Collections
+    post:
+      operationId: CollectionsController_uploadCollectionPoster
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: Returns { pushed, attempted } so clients can distinguish a deferred local save from an attempted live media-server push.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - pushed
+                  - attempted
+                properties:
+                  pushed:
+                    type: boolean
+                    description: True when the live media-server upload succeeded during this request.
+                  attempted:
+                    type: boolean
+                    description: True when Maintainerr attempted a live media-server upload during this request.
+      summary: Upload a custom collection poster. Stored locally and pushed to the media server (best-effort). 500 KB max.
+      tags:
+        - Collections
+    delete:
+      operationId: CollectionsController_deleteCollectionPoster
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Returns whether the local poster was cleared and whether Maintainerr successfully requested a media-server metadata refresh.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - cleared
+                  - refreshRequested
+                properties:
+                  cleared:
+                    type: boolean
+                    description: True when the stored local poster file was removed.
+                  refreshRequested:
+                    type: boolean
+                    description: True when Maintainerr successfully sent a metadata refresh request to the current media server. This does not guarantee that artwork will change.
+      summary: Clear the stored custom poster and request a best-effort metadata refresh on the media server. Artwork may or may not change depending on the configured server behavior and agents.
+      tags:
+        - Collections
+  /api/collections/logs/{id}/content/{page}:
+    get:
+      operationId: CollectionsController_getCollectionLogs
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: page
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: search
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: sort
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: filter
+          required: true
+          in: query
+          schema:
+            type: number
+        - name: size
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Collections
+  /api/overlays/settings:
+    get:
+      operationId: OverlaysController_getSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+    put:
+      operationId: OverlaysController_updateSettings
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/sections:
+    get:
+      operationId: OverlaysController_getSections
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - Overlays
+  /api/overlays/random-item:
+    get:
+      operationId: OverlaysController_getRandomItem
+      parameters:
+        - name: sectionId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/random-episode:
+    get:
+      operationId: OverlaysController_getRandomEpisode
+      parameters:
+        - name: sectionId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/poster:
+    get:
+      operationId: OverlaysController_getPoster
+      parameters:
+        - name: itemId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/status:
+    get:
+      operationId: OverlaysController_getStatus
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/process:
+    post:
+      operationId: OverlaysController_processAll
+      parameters: []
+      responses:
+        '202':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/process/{collectionId}:
+    post:
+      operationId: OverlaysController_processCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/revert/{collectionId}:
+    post:
+      operationId: OverlaysController_revertCollection
+      parameters:
+        - name: collectionId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/reset:
+    delete:
+      operationId: OverlaysController_resetAll
+      parameters: []
+      responses:
+        '202':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/fonts:
+    get:
+      operationId: OverlaysController_listFonts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+    post:
+      operationId: OverlaysController_uploadFont
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/fonts/{name}:
+    get:
+      operationId: OverlaysController_getFont
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/images:
+    get:
+      operationId: OverlaysController_listImages
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+    post:
+      operationId: OverlaysController_uploadImage
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/images/{name}:
+    get:
+      operationId: OverlaysController_getImage
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+    delete:
+      operationId: OverlaysController_deleteImage
+      parameters:
+        - name: name
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/templates:
+    get:
+      operationId: OverlaysController_listTemplates
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - Overlays
+    post:
+      operationId: OverlaysController_createTemplate
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/templates/{id}:
+    get:
+      operationId: OverlaysController_getTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+    put:
+      operationId: OverlaysController_updateTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+    delete:
+      operationId: OverlaysController_deleteTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/templates/{id}/duplicate:
+    post:
+      operationId: OverlaysController_duplicateTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/templates/{id}/default:
+    post:
+      operationId: OverlaysController_setDefaultTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/templates/{id}/export:
+    post:
+      operationId: OverlaysController_exportTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Overlays
+  /api/overlays/templates/import:
+    post:
+      operationId: OverlaysController_importTemplate
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Overlays
+  /api/overlays/templates/{id}/preview:
+    post:
+      operationId: OverlaysController_previewTemplate
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: itemId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Overlays
+  /api/notifications/test:
+    post:
+      operationId: NotificationsController_sendTestNotification
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - Notifications
+  /api/notifications/agents:
+    get:
+      operationId: NotificationsController_getNotificationAgents
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Notifications
+  /api/notifications/types:
+    get:
+      operationId: NotificationsController_getNotificationTypes
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Notifications
+  /api/notifications/configuration/add:
+    post:
+      operationId: NotificationsController_addNotificationConfiguration
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Notifications
+  /api/notifications/configuration/connect:
+    post:
+      operationId: NotificationsController_connectNotificationConfiguration
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Notifications
+  /api/notifications/configuration/disconnect:
+    post:
+      operationId: NotificationsController_disconnectionNotificationConfiguration
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Notifications
+  /api/notifications/configurations:
+    get:
+      operationId: NotificationsController_getNotificationConfigurations
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+      tags:
+        - Notifications
+  /api/notifications/configuration/{id}:
+    delete:
+      operationId: NotificationsController_deleteNotificationConfiguration
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Notifications
+  /api/events/stream:
+    get:
+      operationId: EventsController_stream
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Events
+  /api/storage-metrics:
+    get:
+      operationId: StorageMetricsController_getMetrics
+      parameters: []
+      responses:
+        '200':
+          description: Returns disk-usage totals, per-mount breakdowns, instance health and collection-size summaries.
+      summary: Aggregated disk space and collection storage metrics across all configured Radarr/Sonarr instances.
+      tags:
+        - StorageMetrics
+  /api/storage-metrics/library-sizes:
+    get:
+      operationId: StorageMetricsController_getLibrarySizes
+      parameters: []
+      responses:
+        '200':
+          description: Returns a map of media server library id → bytes. Libraries missing from the map could not be sized.
+      summary: Accurate per-library size computed by iterating media items. Potentially slow - call on demand.
+      tags:
+        - StorageMetrics
+info:
+  title: Maintainerr
+  description: ''
+  version: 1.0.0
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    TaskStatusDto:
+      type: object
+      properties: {}
+    RuleConstants:
+      type: object
+      properties: {}
+    CommunityRuleKarma:
+      type: object
+      properties: {}
+    Exclusion:
+      type: object
+      properties: {}
+    Rules:
+      type: object
+      properties: {}
+    RuleGroup:
+      type: object
+      properties: {}
+    Notification:
+      type: object
+      properties: {}
+    RuleGroupDto:
+      type: object
+      properties:
+        id:
+          type: number
+        libraryId:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+        arrAction:
+          type: number
+        useRules:
+          type: boolean
+        ruleHandlerCronSchedule:
+          type: string
+          nullable: true
+        collection:
+          type: object
+        listExclusions:
+          type: boolean
+        cleanupLeftoverFolders:
+          type: boolean
+        forceSeerr:
+          type: boolean
+        rules:
+          type: object
+        manualCollection:
+          type: boolean
+        manualCollectionName:
+          type: string
+        dataType:
+          enum:
+            - movie
+            - show
+            - season
+            - episode
+          type: string
+        tautulliWatchedPercentOverride:
+          type: number
+        notifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        radarrSettingsId:
+          type: number
+        sonarrSettingsId:
+          type: number
+        sportarrSettingsId:
+          type: number
+        radarrQualityProfileId:
+          type: number
+        sonarrQualityProfileId:
+          type: number
+        sportarrQualityProfileId:
+          type: number
+        tagInArr:
+          type: boolean
+        keepInMaintainerrOnly:
+          type: boolean
+      required:
+        - libraryId
+        - name
+        - description
+        - rules
+        - dataType
+    RuleDto:
+      type: object
+      properties:
+        firstVal:
+          type: array
+          items:
+            type: number
+        lastVal:
+          type: array
+          items:
+            type: number
+        operator:
+          type: number
+          nullable: true
+          enum:
+            - 0
+            - 1
+        action:
+          type: number
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+            - 12
+            - 13
+            - 14
+            - 15
+            - 16
+            - 17
+            - 18
+            - 19
+        customVal:
+          type: object
+          properties:
+            ruleTypeId:
+              type: number
+            value:
+              type: string
+          required:
+            - ruleTypeId
+            - value
+        arrDiskPath:
+          type: string
+        username:
+          type: string
+        section:
+          type: number
+      required:
+        - firstVal
+        - operator
+        - action
+        - section
+    CommunityRule:
+      type: object
+      properties:
+        id:
+          type: number
+        karma:
+          type: number
+        appVersion:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        JsonRules:
+          $ref: '#/components/schemas/RuleDto'
+      required:
+        - name
+        - description
+        - JsonRules
+    Collection:
+      type: object
+      properties: {}
+    CollectionMedia:
+      type: object
+      properties: {}
