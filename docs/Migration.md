@@ -35,6 +35,7 @@ The database schema includes support for overlays.
 - a `streamystats_url` setting for the Jellyfin-only Streamystats integration
 - download-client settings for the qBittorrent cleanup integration: URL, optional username/password, whether download data should be deleted, and the fallback seeding ratio
 - a `collection_media.ruleEvaluationFailed` state so upgrades can preserve which rule-managed items should be skipped by automatic handling after a rule-evaluation failure; manual collection entries are still handled normally
+- a direction on pending collection membership changes so an unanswered add or remove can be reconciled without being mistaken for a manual membership; existing rows default to `remove`
 - a `NormalizeRuleSectionOperators` migration that backfills legacy null operators without changing existing matches: the first rule of a group stays unset, the first rule of a later section becomes `AND`, and later rules in that section become `OR`. This migration is behavior-preserving and its `down()` is a no-op.
 - a `tagInArr` collection field plus six Radarr/Sonarr exclusion-tag settings (`radarr_tag_exclusions`, `radarr_exclusion_tag`, `radarr_untag_on_unexclude`, and the Sonarr equivalents) for the \*arr tagging integration. Existing collections default to untagged and exclusion tagging defaults to off, so the upgrade is behavior-preserving.
 - a `sportarr_settings` table plus optional Sportarr server and quality-profile fields on collections. Existing collections remain unchanged until you configure Sportarr.
