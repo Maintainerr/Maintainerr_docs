@@ -170,6 +170,8 @@ If media is added to the collection outside of Maintainerr, it will be added to 
 
 If you delete media from the collection outside of Maintainerr, it will be removed from the corresponding Maintainerr collection. However, if the media still matches your rules, it will be re-added to the collection in subsequent rule processing cycles.
 
+If a media-server add or remove does not return an answer, Maintainerr keeps the change pending and reconciles it later. It does not immediately treat an unanswered add as a manual member.
+
 ### MANUAL membership badge
 
 An item shows a **MANUAL** badge when its membership source is manual: it was added by hand in the UI, or it was adopted from a media-server collection whose contents the rule does not own.
