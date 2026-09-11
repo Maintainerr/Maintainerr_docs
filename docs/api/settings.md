@@ -1111,7 +1111,7 @@ If no media server is configured the sweep returns immediately and silently, eve
 | `200`                      | The settings, **with the password in cleartext** |
 | `200` with `status: "NOK"` | The read failed                                  |
 
-An unconfigured client reads as `download_client_type: "qbittorrent"`, empty strings, `download_client_delete_data: true`, and `download_client_fallback_ratio: 0.5`, which is indistinguishable from a deliberately blank qBittorrent configuration.
+An unconfigured client reads as `download_client_type: null`, empty strings, `download_client_delete_data: true`, and `download_client_fallback_ratio: 0.5`.
 
 ### `POST /api/settings/download-client`
 
@@ -1160,7 +1160,7 @@ With it on, removing a download also **deletes its data on disk** during cleanup
 | `200` with `status: "NOK"` | The write failed |
 
 :::warning Destructive, and it resets more than the connection
-Clears the URL, username and password, with no copy kept, **and resets `download_client_type` to `qbittorrent`, `download_client_delete_data` to true, and `download_client_fallback_ratio` to 0.5**.
+Clears the URL, username and password, with no copy kept, **and resets `download_client_type` to `null`, `download_client_delete_data` to true, and `download_client_fallback_ratio` to 0.5**.
 
 That reset is the non-obvious part: if you had turned data deletion off, removing and re-adding the client silently gives you the on-by-default behaviour back.
 

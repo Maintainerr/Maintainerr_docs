@@ -211,11 +211,11 @@ When media is removed through Radarr or Sonarr, Maintainerr can remove the match
 
 Maintainerr supports qBittorrent and Transmission. Pick the client first, then enter the URL and credentials for that same instance.
 
-| Setting                | Description                                                                                                                                                                                          |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Client                 | Choose `qBittorrent` or `Transmission`. Existing installs keep `qBittorrent` until you change it.                                                                                                    |
-| Delete downloaded data | When enabled, removing a download also deletes its files from disk. Turn this off if you cross-seed, so other torrents that share the data keep working.                                             |
-| Fallback seeding ratio | Whether a download has finished seeding is decided by the client's own ratio or time limits first. This fallback ratio only applies when the client enforces no limit, and then only after 23 hours. |
+| Setting                | Description                                                                                                                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Client                 | Choose `qBittorrent` or `Transmission`. Nothing is selected until you choose. An install that already had a download client when it upgraded keeps `qBittorrent`, the only client that existed before. |
+| Delete downloaded data | When enabled, removing a download also deletes its files from disk. Turn this off if you cross-seed, so other torrents that share the data keep working.                                               |
+| Fallback seeding ratio | Whether a download has finished seeding is decided by the client's own ratio or time limits first. This fallback ratio only applies when the client enforces no limit, and then only after 23 hours.   |
 
 ### qBittorrent
 
