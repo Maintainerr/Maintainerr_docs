@@ -248,7 +248,7 @@ How it works:
 - **Seeding is decided by the selected client.** A download is only removed once the selected client says its own seeding goal is met. For qBittorrent that means its own ratio or seed-time limit. For Transmission that means Transmission's own ratio or idle-time rules when one exists. If the selected client enforces no seeding goal at all, Maintainerr waits until the download has both reached the **Fallback seeding ratio** and kept seeding for at least 23 hours.
 - **Separate download and library folders are handled automatically.** The download client deletes its own downloaded files while Radarr/Sonarr delete the imported library copy, so the common "downloads separate from the library" (hardlink/copy) setup is fully cleaned without Maintainerr needing to know any paths.
 - For **Sonarr**, cleanup runs only on whole-show deletions. Season- and episode-level deletions are skipped on purpose, because a season-pack download can contain episodes you still want.
-- If another torrent shares the same downloaded files, Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working.
+- If **Delete downloaded data** is on and another torrent shares the same downloaded files, Maintainerr removes only the torrent entry and keeps the data so the other torrent keeps working.
 - Removal is best-effort: a failure to reach the download client never blocks the Radarr/Sonarr deletion itself, so treat it as cleanup assistance rather than guaranteed download-client reconciliation. For more advanced usage; look elsewhere.
 - `Test Connection` verifies the URL and credentials against the selected client before saving.
 
