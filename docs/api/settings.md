@@ -1111,7 +1111,7 @@ If no media server is configured the sweep returns immediately and silently, eve
 | `200`                      | The settings, **with the password in cleartext** |
 | `200` with `status: "NOK"` | The read failed                                  |
 
-An unconfigured client reads as empty strings with `download_client_delete_data` true and `download_client_fallback_ratio` `0.5`, which is indistinguishable from a deliberately blank configuration.
+An unconfigured client reads as `download_client_type: null`, empty strings, `download_client_delete_data: true`, and `download_client_fallback_ratio: 0.5`.
 
 ### `POST /api/settings/download-client`
 
@@ -1121,6 +1121,7 @@ Request body:
 
 ```json
 {
+  "download_client_type": "qbittorrent",
   "download_client_url": "http://qbittorrent:8080",
   "download_client_username": "user",
   "download_client_password": "...",
@@ -1129,7 +1130,7 @@ Request body:
 }
 ```
 
-`download_client_delete_data` and `download_client_fallback_ratio` are **required**, so a partial update is not possible. To change only the URL you must send the other fields too.
+`download_client_type`, `download_client_delete_data` and `download_client_fallback_ratio` are **required**, so a partial update is not possible. To change only the URL you must send the other fields too.
 
 | Status                     | Cause                                            |
 | -------------------------- | ------------------------------------------------ |
@@ -1137,9 +1138,13 @@ Request body:
 | `201` with `status: "NOK"` | The write failed                                 |
 | `400`                      | Validation failed, including a ratio below `0.5` |
 
-The username and password are deliberately **not** trimmed, so a credential with real leading or trailing whitespace survives. An empty username and password are a valid configuration, since qBittorrent can bypass authentication for whitelisted subnets.
+Use `qbittorrent` with a WebUI URL like `http://qbittorrent:8080`, or `transmission` with the full RPC endpoint like `http://transmission:9091/transmission/rpc`.
+
+The username and password are deliberately **not** trimmed, so a credential with real leading or trailing whitespace survives. Empty credentials are valid when the selected client allows unauthenticated access.
 
 The connection is stored unverified.
+
+The fallback ratio applies only when the selected client enforces no seeding goal of its own. In that case Maintainerr also waits for at least 23 hours of seeding before removing the download.
 
 :::caution download_client_delete_data has real destructive reach
 With it on, removing a download also **deletes its data on disk** during cleanup, though data shared with another download is kept. This takes effect the moment you save, changing what the file-deleting `*arr` actions do.
@@ -1155,7 +1160,7 @@ With it on, removing a download also **deletes its data on disk** during cleanup
 | `200` with `status: "NOK"` | The write failed |
 
 :::warning Destructive, and it resets more than the connection
-Clears the URL, username and password, with no copy kept, **and resets `download_client_delete_data` to true and `download_client_fallback_ratio` to 0.5**.
+Clears the URL, username and password, with no copy kept, **and resets `download_client_type` to `null`, `download_client_delete_data` to true, and `download_client_fallback_ratio` to 0.5**.
 
 That reset is the non-obvious part: if you had turned data deletion off, removing and re-adding the client silently gives you the on-by-default behaviour back.
 
@@ -1166,11 +1171,11 @@ No torrents are touched. Afterwards the file-deleting `*arr` actions stop attemp
 
 **Probe a download client URL and credentials, without saving.**
 
-| Status                     | Cause                                                                                                                                                                                                      |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | Connected. `message` is the qBittorrent version                                                                                                                                                            |
-| `201` with `status: "NOK"` | `Invalid username or password`, a message about the Web UI IP whitelist on a `403`, `Unexpected response from the download client. Verify the URL points to a qBittorrent WebUI.`, or a connection failure |
-| `400`                      | Validation failed                                                                                                                                                                                          |
+| Status                     | Cause                                                                                                                                                                                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the selected client's version                                                                                                                                                                                                                     |
+| `201` with `status: "NOK"` | `Invalid username or password`, the qBittorrent Web UI IP-whitelist message, the Transmission `rpc-whitelist` or `rpc-host-whitelist` message, `Unexpected response from the download client. Verify the URL points to the selected client API.`, or a connection failure |
+| `400`                      | Validation failed                                                                                                                                                                                                                                                         |
 
 :::caution The body is the whole settings schema
 `download_client_delete_data` and `download_client_fallback_ratio` are required even for a pure connection test. Omitting them is a `400`.
