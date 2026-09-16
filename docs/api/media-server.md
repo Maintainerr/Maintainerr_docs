@@ -137,7 +137,7 @@ Response:
 }
 ```
 
-Items carry the full media item shape. On top of the media server's own fields, this route adds Maintainerr state: `maintainerrExclusionId`, `maintainerrExclusionType` which is `specific` or `global`, `maintainerrIsManual`, and `maintainerrCollections`, the titles of every collection the item belongs to.
+Items carry the full media item shape except `path`, which is only populated by the single-item metadata route. On top of the media server's own fields, this route adds Maintainerr state: `maintainerrExclusionId`, `maintainerrExclusionType` which is `specific` or `global`, `maintainerrIsManual`, and `maintainerrCollections`, the titles of every collection the item belongs to.
 
 | Status | Cause                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------- |
@@ -166,7 +166,7 @@ Note that `limit` has no cap and is passed straight through. A `limit` of `0` re
 | `query`   | path  | Yes      | Search text. Taken raw from the path, so a query containing `/` will not route                      |
 | `type`    | query | No       | `movie`, `show`, `season` or `episode`. Not validated: an unrecognised value silently means `movie` |
 
-Returns an array of media items with the same Maintainerr enrichment as the content route. Season and episode results also carry `parentItem`, the parent or grandparent's metadata.
+Returns an array of media items with the same Maintainerr enrichment as the content route. `path` is not populated here either. Season and episode results also carry `parentItem`, the parent or grandparent's metadata.
 
 | Status | Cause                                                                 |
 | ------ | --------------------------------------------------------------------- |
@@ -186,7 +186,7 @@ Search behaviour differs by backend. Plex matches on title as a prefix filter, w
 | `id`      | path           | Yes      | Library id                                                                           |
 | `limit`   | query, integer | No       | Maximum items. There is no default from Maintainerr, so each backend applies its own |
 
-Returns raw media items with no Maintainerr enrichment.
+Returns raw media items with no Maintainerr enrichment. `path` is not populated here.
 
 | Status | Cause                             |
 | ------ | --------------------------------- |
@@ -257,11 +257,29 @@ Result kinds differ by backend. Plex filters to movies and shows, so episodes ne
 | --------- | ---- | -------- | --------------------------------------------------------- |
 | `id`      | path | Yes      | Item id. A Plex rating key, or a Jellyfin or Emby item id |
 
+Response:
+
+```json
+{
+  "id": "12345",
+  "title": "An example title",
+  "guid": "plex://movie/abc",
+  "type": "movie",
+  "addedAt": "2026-01-01T00:00:00.000Z",
+  "providerIds": { "tmdb": ["550"] },
+  "mediaSources": [{ "id": "1", "sizeBytes": 0 }],
+  "path": "/media/movies/An example title (2026)/An example title (2026).mkv",
+  "library": { "id": "1", "title": "Movies" }
+}
+```
+
 | Status | Cause                                                                        |
 | ------ | ---------------------------------------------------------------------------- |
 | `200`  | The item, **or an empty body for both "no such item" and "the read failed"** |
 
 There is no way to tell a missing item from a failed read here.
+
+`path` is the server's own filesystem path for that one item: movies and episodes return the media file, while shows and seasons return the folder. Only this single-item route populates it, and a Plex season has no path of its own.
 
 :::caution Watch fields are per-user and cached
 `viewCount`, `lastViewedAt` and `userRating` are scoped to the single Jellyfin or Emby user Maintainerr is configured with, and are cached for 5 minutes. Do not use them to drive watch or deletion decisions. Use `GET /api/media-server/meta/{id}/seen` for that.
@@ -285,7 +303,7 @@ On Plex the hierarchy is unambiguous and this works for both shows and seasons.
 On Jellyfin and Emby it asks for items whose parent is the id you gave. A season's parent there is the **library folder**, not the show, so asking a series for its seasons does not reliably return them. Maintainerr uses a dedicated seasons lookup internally for that, and this route does not reach it.
 :::
 
-Unaired placeholder episodes are not filtered out on this route. Emby caps the read at 500 rows.
+Unaired placeholder episodes are not filtered out on this route. `path` is not guaranteed here. Emby caps the read at 500 rows.
 
 ### `GET /api/media-server/meta/{id}/seen`
 

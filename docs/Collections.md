@@ -15,6 +15,7 @@ This runs each collection's configured action (such as delete, unmonitor, or do 
 
      If a rule-managed item is still in the collection but its most recent rule evaluation failed, Maintainerr skips the automatic handling action for that item until the rule can be evaluated cleanly again. Manually added items are still eligible for handling, unless an exclusion covers them. That means an exclusion for this collection or a global one, and excluding a show or season covers everything inside it.
      When a delete-style action removes files, Maintainerr also prunes that media from any other Maintainerr-managed collections that still list it. This prevents already-deleted items from being re-processed while Jellyfin or Emby are still catching up on their next library scan.
+     After a Radarr, Sonarr, or Sportarr delete that removes files, Maintainerr also asks the media server to rescan that item's folder so the orphan disappears sooner. This uses the media server's own path, so unlike leftover-folder cleanup it does not need a matching bind mount or path mapping in the Maintainerr container.
      If eligible media is actively being streamed, Maintainerr defers it to the next collection-handler run instead of acting on it mid-playback. This is a best-effort snapshot taken once per run, so playback that starts later is only protected on the following pass.
 
 :::
