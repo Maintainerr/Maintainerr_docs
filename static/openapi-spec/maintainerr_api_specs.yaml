@@ -1383,6 +1383,11 @@ paths:
             application/json:
               schema:
                 type: object
+                description: Single-item media metadata. Only this route populates `path`, which is the media server's own filesystem path for the item.
+                properties:
+                  path:
+                    type: string
+                    description: Server-side filesystem path for the item. Movies and episodes return the media file, while shows and seasons return the folder. Plex seasons do not have a path.
       tags:
         - MediaServer
   /api/media-server/meta/{id}/maintainerr-status:
