@@ -1,0 +1,86 @@
+{
+  "docsSidebar": [
+    "introduction",
+    {
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        "installation",
+        "configuration",
+        "works",
+        "common",
+        "reverseproxy",
+        "security",
+        "downgrade",
+        "migration"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Rules",
+      "items": [
+        "rules",
+        "glossary"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Collections",
+      "items": [
+        "collections",
+        "test-media"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Features",
+      "items": [
+        "calendar-feature",
+        "media-server-switching-feature",
+        "overlays-feature",
+        "storage-metrics-feature"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Notifications",
+      "items": [
+        "notifications"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Translations",
+      "items": [
+        "translations"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "Community",
+      "items": [
+        "contributing",
+        "changelog"
+      ]
+    },
+    {
+      "type": "category",
+      "label": "API",
+      "items": [
+        "api",
+        "api/settings",
+        "api/rules",
+        "api/overlays",
+        "api/collections",
+        "api/media-server",
+        "api/notifications",
+        "api/app-and-health",
+        "api/logs",
+        "api/seerr",
+        "api/metadata-and-storage",
+        "api/servarr",
+        "api/streamystats"
+      ]
+    }
+  ]
+}
