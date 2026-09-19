@@ -10,31 +10,7 @@ import TabItem from "@theme/TabItem";
 import Details from "@theme/Details";
 import AnnotatedCodeBlock from "@site/src/components/AnnotatedCodeBlock";
 
-Docker is Maintainerr's supported method of installation.
-
-Images for amd64 & arm64 are available under `maintainerr/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
-The container's data location is `/opt/data`. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
-
-[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
-
-:::note
-Maintainerr uses the configured `user:group` as its runtime user inside the container, and any files it creates in your host data directory will be owned by that user and group.
-
-If you do not set one explicitly, the default `UID:GID` is `1000:1000`, so make sure your host data directory is read/writeable by that UID:GID. If needed, update it with `chown -R 1000:1000 /opt/data`.
-:::
-
-## Docker
-
-Compose is recommended for most installs. Choose the Docker example that matches your workflow.
-
-<Tabs>
-  <TabItem value="compose" label="Compose" default>
-
-Define the Maintainerr service in your docker-compose.yml as follows:
-
-<AnnotatedCodeBlock
-  language="yaml"
-  code={`services:
+export const composeExample = `services:
   maintainerr:
     image: ghcr.io/maintainerr/maintainerr:latest
     user: 1000:1000
@@ -49,7 +25,65 @@ Define the Maintainerr service in your docker-compose.yml as follows:
       - TZ=Europe/Brussels
     ports:
       - 6246:6246
-    restart: unless-stopped`}
+    restart: unless-stopped`;
+
+export const runExample = `docker run -d \\
+  --name maintainerr \\
+  -e TZ=Europe/Brussels \\
+  -v <your host location>:/opt/data \\
+  -v /data/media:/data/media \\
+  -u 1000:1000 \\
+  -p 6246:6246 \\
+  --restart unless-stopped \\
+  ghcr.io/maintainerr/maintainerr:latest`;
+
+export const quadletExample = `[Unit]
+Description=Maintainerr
+
+[Container]
+Image=ghcr.io/maintainerr/maintainerr:latest
+ContainerName=maintainerr
+UserNS=keep-id:uid=1000,gid=1000
+Volume=%h/maintainerr/data:/opt/data:Z
+#Volume=/data/media:/data/media:Z
+Environment=TZ=Europe/Brussels
+PublishPort=6246:6246
+#AutoUpdate=registry
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=default.target`;
+
+Docker is Maintainerr's supported method of installation.
+
+Images for amd64 & arm64 are available under `maintainerr/maintainerr` and `ghcr.io/maintainerr/maintainerr`.
+The container's data location is `/opt/data`. A Docker [volume][tooltip] is strongly encouraged to persist your configuration.
+
+[tooltip]: https://docs.docker.com/storage/volumes/#start-a-container-with-a-volume "Click here to be taken to the Docker documentation page on volumes."
+
+:::note
+Maintainerr uses the configured `user:group` as its runtime user inside the container, and any files it creates in your host data directory will be owned by that user and group.
+
+If you do not set one explicitly, the default `UID:GID` is `1000:1000`, so make sure your host data directory is read/writeable by that UID:GID. If needed, update it with `chown -R 1000:1000 /opt/data`.
+:::
+
+## Install
+
+Pick your platform, then the step you need. Compose is recommended for most Docker installs.
+
+<Tabs groupId="platform">
+  <TabItem value="docker" label="Docker" default>
+    <Tabs>
+      <TabItem value="compose" label="Compose" default>
+
+Define the Maintainerr service in your docker-compose.yml as follows:
+
+<AnnotatedCodeBlock
+  language="yaml"
+  code={composeExample}
   annotations={[
     {
       line: 3,
@@ -84,22 +118,14 @@ Then, while in the directory where your docker-compose file exists, start all se
 docker compose up -d
 ```
 
-  </TabItem>
-  <TabItem value="run-command" label="Run Command">
+      </TabItem>
+      <TabItem value="run" label="Run">
 
 Run Maintainerr with the following command:
 
 <AnnotatedCodeBlock
   language="bash"
-  code={`docker run -d \\
-  --name maintainerr \\
-  -e TZ=Europe/Brussels \\
-  -v <your host location>:/opt/data \\
-  -v /data/media:/data/media \\
-  -u 1000:1000 \\
-  -p 6246:6246 \\
-  --restart unless-stopped \\
-  ghcr.io/maintainerr/maintainerr:latest`}
+  code={runExample}
   annotations={[
     {
       line: 4,
@@ -127,28 +153,8 @@ Run Maintainerr with the following command:
   ]}
 />
 
-  </TabItem>
-</Tabs>
-
-The optional media-library bind mount is required for [leftover-folder cleanup](./Collections.md#leftover-folder-cleanup). Use the same container path that Radarr or Sonarr reports for its root folder, and make sure the configured `user:group` can write to it.
-
-<Details summary="Development Images">
-
-While the development version contains all of the latest features and bug
-fixes, there is a chance things will break. By using a development version
-you must be willing to report any issues you come across, to the development
-team, and provide as much information as possible to help resolve the issue.
-
-Changing from a development version to a stable version is not supported.
-
-- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
-- `maintainerr/maintainerr:development` for the Docker Hub development image.
-
-</Details>
-
-### Updating
-
-#### Update to the latest version with Compose
+      </TabItem>
+      <TabItem value="update" label="Update">
 
 If you installed Maintainerr with Compose, navigate to the directory containing your `docker-compose.yml` and run:
 
@@ -159,24 +165,95 @@ docker compose up -d
 
 This updates Maintainerr using the image tag defined in your Compose file.
 
-#### Stop and remove an existing container
-
-Use these commands if you need to stop and remove a container that was started manually with `docker run`:
+If you started the container manually with `docker run`, pull the new image, remove the old container, then run the same `docker run` command again. Pulling a new image by itself does not update an existing container.
 
 ```bash
+docker pull ghcr.io/maintainerr/maintainerr:latest
 docker stop maintainerr
 docker rm -f maintainerr
 ```
 
-#### Pull the latest image only
+      </TabItem>
+    </Tabs>
 
-Use this command if you only want to download the latest image. Pulling a new image by itself does not update an existing container.
+  </TabItem>
+  <TabItem value="podman" label="Podman">
+    <Tabs>
+      <TabItem value="quadlet" label="Quadlet" default>
+
+Save the unit below as `~/.config/containers/systemd/maintainerr.container`. Quadlet does not allow comments after a value, so each optional line is commented out as a whole.
+
+<AnnotatedCodeBlock
+  language="ini"
+  code={quadletExample}
+  annotations={[
+    {
+      line: 5,
+      label: "+",
+      tooltip:
+        "You can also use maintainerr/maintainerr here if you prefer the Docker Hub image.",
+    },
+    {
+      line: 7,
+      label: "+",
+      tooltip:
+        "Maps your own user to 1000:1000 inside the container, so the data directory only has to be owned by you.",
+    },
+    {
+      line: 8,
+      label: "+",
+      tooltip:
+        "Bind a host directory to /opt/data so configuration and database files persist outside the container. %h is your home directory and :Z relabels the directory for SELinux.",
+    },
+    {
+      line: 9,
+      label: "+",
+      tooltip:
+        "Optional: uncomment and bind the media library at the same container path used by Radarr or Sonarr for leftover-folder cleanup.",
+    },
+    {
+      line: 11,
+      label: "+",
+      tooltip: "Port mappings are defined as host:container.",
+    },
+    {
+      line: 12,
+      label: "+",
+      tooltip: "Optional: uncomment to let podman auto-update pull new images.",
+    },
+  ]}
+/>
+
+Create the data directory and start the unit:
 
 ```bash
-docker pull ghcr.io/maintainerr/maintainerr
+mkdir -p ~/maintainerr/data
+systemctl --user daemon-reload
+systemctl --user start maintainerr
+loginctl enable-linger "$USER" # keeps it running while you are logged out
 ```
 
-## Kubernetes
+For a rootful install, put the file in `/etc/containers/systemd/` instead, replace `UserNS=` with `User=1000` and `Group=1000` (the data directory must then be owned by `1000:1000`), use an absolute data path, set `WantedBy=multi-user.target`, and run `systemctl` without `--user`.
+
+      </TabItem>
+      <TabItem value="update" label="Update">
+
+Pull the new image and restart the unit:
+
+```bash
+podman pull ghcr.io/maintainerr/maintainerr:latest
+systemctl --user restart maintainerr
+```
+
+With `AutoUpdate=registry` enabled in the unit, `podman auto-update` does both steps for you.
+
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+  <TabItem value="kubernetes" label="Kubernetes">
+    <Tabs>
+      <TabItem value="manifest" label="Manifest" default>
 
 Use the example below as a starting point for a single-instance Maintainerr deployment with a Service and persistent storage claim.
 
@@ -251,7 +328,8 @@ spec:
       storage: 1Gi
 ```
 
-### Updating
+      </TabItem>
+      <TabItem value="update" label="Update">
 
 To update your Kubernetes deployment to the latest Maintainerr image, update the image tag in your manifest (or leave it as `latest`) and re-apply:
 
@@ -266,6 +344,28 @@ kubectl apply -f maintainerr-deployment.yaml
 ```
 
 Kubernetes will perform a rolling update, replacing the old pod with one running the new image.
+
+      </TabItem>
+    </Tabs>
+
+  </TabItem>
+</Tabs>
+
+The optional media-library bind mount is required for [leftover-folder cleanup](./Collections.md#leftover-folder-cleanup). Use the same container path that Radarr or Sonarr reports for its root folder, and make sure the configured `user:group` can write to it.
+
+<Details summary="Development Images">
+
+While the development version contains all of the latest features and bug
+fixes, there is a chance things will break. By using a development version
+you must be willing to report any issues you come across, to the development
+team, and provide as much information as possible to help resolve the issue.
+
+Changing from a development version to a stable version is not supported.
+
+- `ghcr.io/maintainerr/maintainerr:development` for the development branch.
+- `maintainerr/maintainerr:development` for the Docker Hub development image.
+
+</Details>
 
 ## Health checks
 

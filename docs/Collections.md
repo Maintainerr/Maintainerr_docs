@@ -226,7 +226,7 @@ None of the *arr root folders are visible to Maintainerr for 'Some Movie'; mount
 If you see this message, check that the host path and the container path are both identical across your Radarr/Sonarr and Maintainerr service definitions.
 :::
 
-For a Compose example with the optional media-library bind mount, see the [Docker installation instructions](./Installation.mdx#docker). The media-library `source` and `target` must use the same container path that Radarr or Sonarr reports for its root folder.
+For a Compose example with the optional media-library bind mount, see the [Docker installation instructions](./Installation.mdx#install). The media-library `source` and `target` must use the same container path that Radarr or Sonarr reports for its root folder.
 
 ### Cleanup safety gates
 
