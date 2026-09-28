@@ -13,13 +13,13 @@ hide:
 
 :::
 
-Maintainerr exposes 219 HTTP endpoints. Every one of them is documented in the pages below, grouped by area.
+Maintainerr exposes 226 HTTP endpoints. Every one of them is documented in the pages below, grouped by area.
 
 ## Endpoints by area
 
 | Page                                                          | Endpoints | Covers                                                                             |
 | ------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------- |
-| [Settings](./api/settings.md)                                 | 74        | Every integration's connection settings, connection tests, the media server switch |
+| [Settings](./api/settings.md)                                 | 78        | Every integration's connection settings, connection tests, the media server switch |
 | [Rules](./api/rules.md)                                       | 29        | Rule groups, execution, exclusions, community rules, YAML import and export        |
 | [Overlays](./api/overlays.md)                                 | 28        | Overlay settings, processing runs, templates, fonts and images                     |
 | [Collections](./api/collections.md)                           | 25        | Collections, membership, bulk media actions, handling, posters, logs               |
@@ -31,6 +31,8 @@ Maintainerr exposes 219 HTTP endpoints. Every one of them is documented in the p
 | [Metadata, storage and events](./api/metadata-and-storage.md) | 6         | Metadata provider lookups, storage metrics, the events stream                      |
 | [Servarr](./api/servarr.md)                                   | 5         | Radarr, Sonarr and Sportarr disk space and quality profiles                        |
 | [Streamystats](./api/streamystats.md)                         | 2         | Streamystats server info and per-item watch statistics                             |
+| [Watch statistics](./api/watch-statistics.md)                 | 2         | Per-item Tautulli and Tracearr watch statistics                                    |
+| [Ombi](./api/ombi.md)                                         | 1         | Ombi requester names                                                               |
 
 ## API conventions
 
@@ -66,7 +68,7 @@ Bodies are validated per endpoint. Where a schema exists, a failure returns:
 
 `errors` holds the individual validation problems.
 
-Validation is not universal. Of the 70 endpoints that take a body, **17 have no schema at all**, so the body reaches the service unchecked. Each of those 17 says so on its own entry. Most numeric path parameters are checked and reject a non-numeric value with a `400` before the handler runs, but not all: `DELETE /api/notifications/configuration/{id}` declares a numeric id without that check.
+Validation is not universal. Of the 72 endpoints that take a body, **17 have no schema at all**, so the body reaches the service unchecked. Each of those 17 says so on its own entry. Most numeric path parameters are checked and reject a non-numeric value with a `400` before the handler runs, but not all: `DELETE /api/notifications/configuration/{id}` declares a numeric id without that check.
 
 ### Success and failure in the same status code
 

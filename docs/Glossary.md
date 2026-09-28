@@ -2125,6 +2125,92 @@ Indicates whether the media was requested in Seerr.
 
 ---
 
+### Ombi
+
+:::note
+Ombi holds one request per movie, and one request per user for a show, each covering the seasons and episodes that user asked for. A season or episode property therefore answers from the requests that cover it, and a show property from all of them.
+
+:::
+
+#### Requested by user
+
+:::info
+The Ombi username of the user who requested the media. A request made with Ombi's API key is listed under the alias that request carries.
+
+:::
+
+- Key: Ombi.addUser
+- Availability: movies, shows, seasons, episodes
+- Type: text
+
+#### Request date
+
+:::info
+The date when the media was requested in Ombi. Where several requests cover the item, the earliest one.
+
+:::
+
+- Key: Ombi.requestDate
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Release/air date
+
+:::info
+The release date Ombi holds for the movie or show. For a season or episode it is the earliest air date among the requested episodes, because Ombi only stores air dates for the episodes someone actually requested.
+
+:::
+
+- Key: Ombi.releaseDate
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Approval date
+
+:::info
+The date when the media request was approved in Ombi. Ombi only stamps an approval that was given by hand, so an auto-approved request answers with its request date instead.
+
+:::
+
+- Key: Ombi.approvalDate
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Media downloaded date
+
+:::info
+The date when Ombi marked the request as available.
+
+:::
+
+- Key: Ombi.mediaAddedAt
+- Availability: movies, shows, seasons, episodes
+- Type: date
+
+#### Amount of requests
+
+:::info
+The number of Ombi requests covering the media. A movie is always 1 or 0.
+
+:::
+
+- Key: Ombi.amountRequested
+- Availability: movies, shows, seasons, episodes
+- Type: number
+
+#### Requested in Ombi
+
+:::info
+Indicates whether the media was requested in Ombi.
+
+:::
+
+- Key: Ombi.isRequested
+- Availability: movies, shows, seasons, episodes
+- Type: boolean
+
+---
+
 ### Tautulli
 
 :::note

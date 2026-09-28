@@ -682,6 +682,8 @@ This is the only place the version requirement is applied. A build whose version
 
 ## Requests
 
+Seerr and Ombi are separate integrations with separate storage, and both can be configured at once.
+
 The three Seerr settings routes each answer on `/api/settings/seerr`, `/api/settings/overseerr` and `/api/settings/jellyseerr`. They are aliases of one handler with one storage location, and `/api/settings/seerr` is canonical.
 
 ### `GET /api/settings/seerr`
@@ -740,6 +742,64 @@ There is no "test what is currently stored" mode. Both fields are required in th
 
 :::caution This sends your credentials to whatever host you name
 The URL and key both come from the request body, so this route makes the server contact any address you supply. Private addresses are deliberately allowed, since self-hosted services need them. Combined with the lack of authentication, that makes this a way to have your server issue requests on someone else's behalf.
+:::
+
+### `GET /api/settings/ombi`
+
+**Return the stored Ombi URL and API key.**
+
+| Status                     | Cause                                           |
+| -------------------------- | ----------------------------------------------- |
+| `200`                      | The settings, **with the API key in cleartext** |
+| `200` with `status: "NOK"` | The read failed                                 |
+
+### `POST /api/settings/ombi`
+
+**Store the Ombi URL and API key.**
+
+Request body needs both `url` and `api_key`.
+
+| Status                     | Cause             |
+| -------------------------- | ----------------- |
+| `201`                      | Saved             |
+| `201` with `status: "NOK"` | The write failed  |
+| `400`                      | Validation failed |
+
+The connection is stored **unverified**. Use `POST /api/settings/test/ombi` first if you want verification.
+
+Both fields are required together, so you cannot clear Ombi here. Use the `DELETE` route.
+
+### `DELETE /api/settings/ombi`
+
+**Clear the stored Ombi settings.**
+
+| Status                     | Cause            |
+| -------------------------- | ---------------- |
+| `200`                      | Cleared          |
+| `200` with `status: "NOK"` | The write failed |
+
+:::warning Destructive
+Clears the Ombi URL and API key, with no copy kept. The Ombi client is dropped, so nothing queries Ombi afterwards.
+
+Rules that read Ombi values are not deleted or rewritten. They simply stop resolving, and a collection with `forceOmbi` set stops removing requests.
+:::
+
+### `POST /api/settings/test/ombi`
+
+**Probe an Ombi instance with supplied credentials, without saving.**
+
+The probe reads `/api/v1/Settings/about` on the instance you name.
+
+| Status                     | Cause                                                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `201` with `status: "OK"`  | Connected. `message` is the Ombi version                                                                                                   |
+| `201` with `status: "NOK"` | `Failure, an unexpected response was returned. The URL is likely incorrect.`, or a classified connection failure such as `Invalid API key` |
+| `400`                      | Validation failed                                                                                                                          |
+
+There is no "test what is currently stored" mode. Both fields are required in the body.
+
+:::caution This sends your credentials to whatever host you name
+The same caveat as the Seerr test route above: the URL and key both come from the request body, so this route makes the server contact any address you supply.
 :::
 
 ## Watch statistics

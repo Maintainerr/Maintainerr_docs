@@ -987,6 +987,52 @@ paths:
                 type: object
       tags:
         - settings
+  /api/settings/ombi:
+    get:
+      operationId: SettingsController_getOmbiSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    post:
+      operationId: SettingsController_updateOmbiSetting
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
+    delete:
+      operationId: SettingsController_removeOmbiSetting
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - settings
+  /api/settings/test/ombi:
+    post:
+      operationId: SettingsController_testOmbi
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - settings
   /api/settings/jellyfin:
     get:
       operationId: SettingsController_getJellyfinSetting
@@ -2055,6 +2101,72 @@ paths:
                 type: boolean
       tags:
         - SeerrApi
+  /api/ombi/requests/{tmdbId}/users:
+    get:
+      operationId: OmbiApiController_getRequestedByUsernames
+      parameters:
+        - name: tmdbId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: type
+          required: true
+          in: query
+          schema:
+            enum:
+              - movie
+              - tv
+            type: string
+        - name: season
+          required: false
+          in: query
+          schema:
+            type: number
+        - name: episode
+          required: false
+          in: query
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      tags:
+        - OmbiApi
+  /api/tautulli/items/{itemId}:
+    get:
+      operationId: TautulliApiController_getItemStats
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - TautulliApi
+  /api/tracearr/items/{itemId}:
+    get:
+      operationId: TracearrApiController_getItemStats
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - TracearrApi
   /api/streamystats/info:
     get:
       operationId: StreamystatsApiController_getInfo

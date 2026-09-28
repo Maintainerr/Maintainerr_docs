@@ -90,6 +90,8 @@ A countdown says the media leaves the library on that date, so a collection whos
 
 Maintainerr re-renders overlays when the visible days-left value changes, and it can revert overlay artwork for a single collection or for all collections.
 
+Before uploading, it compares the rendered image with the artwork the media server currently holds and skips the upload when the two match, so an item whose day count moved without changing the picture is counted as skipped in the run's log. Artwork another tool has replaced does not match, so it is drawn again.
+
 Deleting a collection restores its overlays first, so its items keep their original artwork. If a run is going on at the time, that restore waits for the run to finish instead of being skipped.
 
 ## Media that gets deleted along with a collection
