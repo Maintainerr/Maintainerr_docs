@@ -36,7 +36,9 @@ Maintainerr's `HEAD`. These rules are hard rules when you open the PR for one.
   release. No speculative additions and no broad rewrites.
 - **Doc-only changes.** Restrict edits to `docs/` and `static/openapi-spec/`. Do
   not touch sidebars, config, or unrelated assets unless a doc edit strictly
-  requires it.
+  requires it. A new page under `docs/api/` does require one line in
+  `sidebars.js`, because without it the page has no route into the site. Add it
+  and say so in the PR description.
 - **Keep the PR tied to the code diff**, not to the issue summary alone.
 - **Structure the PR description** in two parts:
   1. **What was added**, one short bullet per doc edit, citing the upstream
