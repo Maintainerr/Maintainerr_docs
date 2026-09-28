@@ -9,6 +9,8 @@ All configuration is done inside the application. No extra config files are requ
 
 When you first access the web UI, you should be redirected to the settings page. If that does not happen, try refreshing the page.
 
+Service connections live under `Services` in the sidebar. That page lists every service as a card, grouped by what it does - media server, requests, library managers, metadata, watch statistics, downloads and notifications - and each card says whether that service is set up. Open a card to configure it, then use the row of logos along the top of the page to move between services. `Settings` holds the rest: `General`, `Logs`, `Jobs` and `About`. A `/settings/<service>` link lands on the same page under `/services`.
+
 :::note Service URLs
 Every service URL field expects a base URL starting with `http://` or `https://`. Any trailing slashes are removed for you when you save or test the setting.
 :::
@@ -29,7 +31,7 @@ These settings are OK for most installations.
 
 ## Media Server
 
-You need to configure one media server: Plex, Jellyfin, or Emby. Multiple media servers are not supported simultaneously.
+You need to configure one media server: Plex, Jellyfin, or Emby. Multiple media servers are not supported simultaneously. Pick it on the media server card under `Services`; that page also holds its connection settings.
 
 ## Plex
 
@@ -111,7 +113,7 @@ Jellyfin can also be used as your media server connection.
 Streamystats is only available for Jellyfin users
 :::
 
-The separate `Settings -> Streamystats` page only appears when Jellyfin is the active media server. Maintainerr reuses your saved Jellyfin API key for authentication, so you only need to provide the Streamystats base URL.
+The `Services -> Streamystats` page only appears when Jellyfin is the active media server. Maintainerr reuses your saved Jellyfin API key for authentication, so you only need to provide the Streamystats base URL.
 
 | Setting | Description                                                                                                       |
 | ------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -136,33 +138,44 @@ Seerr configuration is required if you want to use Seerr-related rule parameters
 | URL     | The domain name or local IP address of the host running Seerr |
 | API key | The API key from Seerr settings                               |
 
+## Ombi
+
+Ombi is a second request service alongside Seerr. Both can be configured at once. Ombi's configuration is required if you want to use Ombi-related rule parameters, remove Ombi requests, or see who requested media in pre-deletion notifications.
+
+| Setting | Description                                                  |
+| ------- | ------------------------------------------------------------ |
+| URL     | The domain name or local IP address of the host running Ombi |
+| API key | The API key from Ombi, under `Settings`, `Ombi`, `API Key`   |
+
+Ombi holds one request per movie, and one request per user for a show, each covering the seasons and episodes that user asked for. That shapes what the rule properties answer, so read the [Ombi rules](./Glossary.md#ombi) in the glossary before you build a rule on them.
+
+Once a request has gone available, Ombi never lists it as unavailable again. If you want the request removed when Maintainerr deletes the media, turn on `Force delete Ombi request` on the rule group - see [Creating rules](./Rules.mdx#general).
+
 ## Radarr
 
 Radarr's configuration is required to use its parameters in rules and to remove or unmonitor movies.
 
-:::note
-Enter the `Base URL` for Radarr and Sonarr without a leading slash - `radarr`, not `/radarr`.
-:::
+Each Radarr instance is its own card on the page. Use `Add Radarr server` to add another.
 
-| Setting        | Description                                                    |
-| -------------- | -------------------------------------------------------------- |
-| Server Name    | A friendly name to help identify the server                    |
-| Hostname or IP | The domain name or local IP address of the host running Radarr |
-| Port           | The port Radarr runs on                                        |
-| Base URL       | The URL base configured in Radarr, if one is set               |
-| API key        | The API key from Radarr settings                               |
+| Setting     | Description                                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| Server Name | A friendly name to help identify the server                                                          |
+| URL         | The base URL of the Radarr instance, such as `http://localhost:7878` or `https://radarr.example.com` |
+| Base Path   | The URL base configured in Radarr, if one is set. Only editable once `URL` holds a complete address  |
+| API key     | The API key from Radarr settings                                                                     |
 
 ## Sonarr
 
 Sonarr's configuration is required to use its parameters in rules and to remove or unmonitor shows.
 
-| Setting        | Description                                                    |
-| -------------- | -------------------------------------------------------------- |
-| Server Name    | A friendly name to help identify the server                    |
-| Hostname or IP | The domain name or local IP address of the host running Sonarr |
-| Port           | The port Sonarr runs on                                        |
-| Base URL       | The URL base configured in Sonarr, if one is set               |
-| API key        | The API key from Sonarr settings                               |
+Each Sonarr instance is its own card on the page. Use `Add Sonarr server` to add another.
+
+| Setting     | Description                                                                                          |
+| ----------- | ---------------------------------------------------------------------------------------------------- |
+| Server Name | A friendly name to help identify the server                                                          |
+| URL         | The base URL of the Sonarr instance, such as `http://localhost:8989` or `https://sonarr.example.com` |
+| Base Path   | The URL base configured in Sonarr, if one is set. Only editable once `URL` holds a complete address  |
+| API key     | The API key from Sonarr settings                                                                     |
 
 ## Sportarr
 
@@ -176,21 +189,22 @@ shows come from the configured Sportarr connection. For a league none of your co
 Maintainerr can read that artwork from sportarr.net instead, which is off unless you set the
 `SPORTARR_NET` environment variable to `on`. Nothing is requested from sportarr.net otherwise.
 
-Artwork and descriptions are cached. `Refresh Metadata` in the Sportarr server dialog drops that
+Artwork and descriptions are cached. `Refresh metadata` on the Sportarr server card drops that
 cache, so the next view fetches them again.
 
-| Setting     | Description                                 |
-| ----------- | ------------------------------------------- |
-| Server Name | A friendly name to help identify the server |
-| URL         | The base URL of the Sportarr instance       |
-| API key     | The API key from Sportarr settings          |
+| Setting     | Description                                                                                           |
+| ----------- | ----------------------------------------------------------------------------------------------------- |
+| Server Name | A friendly name to help identify the server                                                           |
+| URL         | The base URL of the Sportarr instance                                                                 |
+| Base Path   | The URL base configured in Sportarr, if one is set. Only editable once `URL` holds a complete address |
+| API key     | The API key from Sportarr settings                                                                    |
 
 ## Exclusion tag
 
 When Maintainerr excludes an item, it can apply a protective tag to the matching Radarr movie or Sonarr series, so the \*arr instance carries a single source of truth for "do not touch". This covers both global and collection-scoped exclusions.
 
 :::note
-The `Exclusion tag` section appears on the `Settings -> Radarr` and `Settings -> Sonarr` pages once that service is configured. Radarr and Sonarr are configured independently: each has its own enable toggle, label, and removal policy.
+These settings sit on each Radarr and Sonarr server's own card, under `Services`. Every server is configured independently, with its own enable toggle, label, and removal policy. A collection-scoped exclusion tags the item on that collection's server only. A global one tags it on every configured server that has tagging switched on and tracks the item, each with that server's own label.
 :::
 
 | Setting                  | Description                                                                                                                                                                                                                                       |
@@ -204,7 +218,7 @@ Tagging is best-effort: the tag is added or removed through the Radarr/Sonarr ed
 ## Download Client
 
 :::note
-The separate `Settings -> Download Client` page only appears once Radarr or Sonarr is configured.
+The `Services -> Download Client` page only appears once Radarr or Sonarr is configured.
 :::
 
 When media is removed through Radarr or Sonarr, Maintainerr can remove the matching completed download (and optionally its data) from your download client. Downloads are matched using the Radarr/Sonarr download history, so media removed without Radarr/Sonarr is left untouched.
@@ -258,7 +272,7 @@ A `403 Forbidden` on the connection test (or in the logs) means qBittorrent acce
 
 ## Metadata
 
-Maintainerr has a separate `Settings -> Metadata` page for poster, backdrop, and metadata-provider settings used across the UI.
+Maintainerr has a `Services -> Metadata` page for poster, backdrop, and metadata-provider settings used across the UI.
 
 This page is mainly useful when you want better artwork fallback, more reliable cross-provider ID resolution, or more control over which metadata source Maintainerr prefers.
 

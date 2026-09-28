@@ -68,6 +68,8 @@ const sidebars = {
         "api/metadata-and-storage",
         "api/servarr",
         "api/streamystats",
+        "api/watch-statistics",
+        "api/ombi",
       ],
     },
   ],

@@ -101,7 +101,7 @@ If you want to run Maintainerr as safely as possible:
 
 Only needed if your Maintainerr was reachable from the internet without a login.
 
-- [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr/Sportarr API keys, Seerr API key, Tautulli API key, Tracearr API key, Jellyfin/Emby API key, TMDB API key, TVDB API key, and the qBittorrent download-client password. (Streamystats needs nothing separate - Maintainerr authenticates to it with the Jellyfin API key already listed here.)
+- [ ] Rotate the API key for every connected service: Plex token, Sonarr/Radarr/Sportarr API keys, Seerr API key, Ombi API key, Tautulli API key, Tracearr API key, Jellyfin/Emby API key, TMDB API key, TVDB API key, and the download-client password. (Streamystats needs nothing separate - Maintainerr authenticates to it with the Jellyfin API key already listed here.)
 - [ ] Rotate any webhook URLs or SMTP credentials configured in Maintainerr's notification agents.
 - [ ] Review recent collection runs in Maintainerr's logs for unexpected deletions or rule changes.
 - [ ] Check Sonarr/Radarr/Seerr audit logs if available.
