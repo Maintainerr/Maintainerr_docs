@@ -69,6 +69,7 @@ This is the route behind the "Requested by" line in the media modal. Names are r
 | Parameter | Type           | Required | Description                                                              |
 | --------- | -------------- | -------- | ------------------------------------------------------------------------ |
 | `tmdbId`  | path, integer  | Yes      | TMDB id of the movie or show                                             |
+| `type`    | query, string  | Yes      | `movie` or `tv`. Anything else is a `400`                                |
 | `season`  | query, integer | No       | Season number. Only filters show requests, so it is harmless for a movie |
 
 Response:
@@ -79,10 +80,12 @@ Response:
 
 Order is oldest request first.
 
-| Status | Cause                                                                 |
-| ------ | --------------------------------------------------------------------- |
-| `200`  | Array of usernames, possibly empty                                    |
-| `400`  | `tmdbId` is not an integer, or `season` is present but not an integer |
+| Status | Cause                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------ |
+| `200`  | Array of usernames, possibly empty                                                                           |
+| `400`  | `tmdbId` is not an integer, `type` is missing or not `movie`/`tv`, or `season` is present but not an integer |
+
+`type` is required because TMDB numbers movies and shows separately, so one id can name both a movie and an unrelated show. Only requests of that type are counted.
 
 Pass `season` for a season-level lookup. Seerr tracks show requests per season, so without it a season lookup credits whoever requested a _different_ season.
 

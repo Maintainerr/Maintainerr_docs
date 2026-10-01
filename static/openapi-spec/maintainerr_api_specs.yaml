@@ -1819,6 +1819,14 @@ paths:
           in: path
           schema:
             type: number
+        - name: type
+          required: true
+          in: query
+          schema:
+            enum:
+              - movie
+              - tv
+            type: string
         - name: season
           required: false
           in: query
@@ -1844,6 +1852,14 @@ paths:
           in: path
           schema:
             type: number
+        - name: type
+          required: true
+          in: query
+          schema:
+            enum:
+              - movie
+              - tv
+            type: string
         - name: season
           required: false
           in: query
@@ -1869,6 +1885,14 @@ paths:
           in: path
           schema:
             type: number
+        - name: type
+          required: true
+          in: query
+          schema:
+            enum:
+              - movie
+              - tv
+            type: string
         - name: season
           required: false
           in: query

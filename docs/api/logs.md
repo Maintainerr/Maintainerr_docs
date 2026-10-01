@@ -58,9 +58,7 @@ Response:
 
 Only Maintainerr's own daily files are listed. Anything else in the directory is invisible here, including the rotation bookkeeping file.
 
-:::note DATA_DIR is ignored here
-In production this route reads `/opt/data/logs` directly and does not honour `DATA_DIR`. If you have moved your data directory, this list will not reflect it.
-:::
+The files live in the `logs` folder of the data directory, which is `/opt/data` unless `DATA_DIR` points somewhere else.
 
 ### `GET /api/logs/files/{file}`
 
