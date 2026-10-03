@@ -602,14 +602,15 @@ Send `multipart/form-data` with a single file field named `font`. Accepted exten
 | ------ | ------------------------------------------------------------------------------------------------- |
 | `201`  | Stored. The body is the sanitised name and path                                                   |
 | `400`  | No file uploaded, an unsupported extension, an invalid filename, or the field is not named `font` |
+| `413`  | The file exceeds 32 MB                                                                            |
 | `500`  | The write failed                                                                                  |
 
 :::warning Overwrites silently
 A font with the same sanitised name is **overwritten with no warning and no backup**. Every template referencing that filename renders with the new file on the next run.
 :::
 
-:::caution No size limit on this route
-Unlike the image route, there is no size cap here and the whole file is buffered in memory. The bytes are also never checked to be a real font. A bad file only shows up later as a warning during a run, after which text falls back to a default typeface.
+:::caution The file is not checked to be a font
+The whole file is held in memory during the upload, which is why it is capped at 32 MB. The bytes are never checked to be a real font. A bad file only shows up later as a warning during a run, after which text falls back to a default typeface.
 :::
 
 There is **no delete route for fonts**. An uploaded font can only be removed from disk by hand.

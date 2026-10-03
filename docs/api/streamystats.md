@@ -106,4 +106,4 @@ Response:
 
 The second `404` covers four different situations: the Streamystats server id could not be resolved, Streamystats does not know the item, the request to Streamystats failed or timed out, and the payload failed validation. A `404` is therefore not proof that the item has no watch history.
 
-Successful responses are cached in memory for 20 minutes, keyed by item and server id. A transport failure is never cached and is retried on the next request, but a response that fails validation is cached, so that item keeps answering `404` for the full 20 minutes.
+The statistics are read from Streamystats on every request and never cached, so reopening an item after a play shows the new numbers.

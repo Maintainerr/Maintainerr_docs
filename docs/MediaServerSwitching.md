@@ -36,6 +36,7 @@ When migrating during a switch:
 
 - Compatible rules are automatically converted (application ID and property IDs rewritten)
 - Incompatible rules are **deleted** from the database (logged with details)
+- If a deleted rule was the first in its section, the next rule takes over its section operator, so the section still joins the rest of the group with `AND` or `OR` as before
 - Rule groups where all rules were incompatible are also deleted
 - Some properties are **remapped** to their closest equivalent (see [Incompatible Properties](#incompatible-properties))
 - Collections are preserved (metadata kept, recreated on new server)

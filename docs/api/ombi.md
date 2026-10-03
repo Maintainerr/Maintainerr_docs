@@ -34,7 +34,7 @@ Response:
 | `200`  | Array of usernames, possibly empty                                                        |
 | `400`  | `tmdbId` is not an integer, `type` is missing or not `movie`/`tv`, or a number is not one |
 
-Unlike the Seerr route, `type` is required and validated, because Ombi keeps movie and show requests in separate lists and cannot be asked for both at once.
+`type` is required and validated, as on the Seerr route, because Ombi keeps movie and show requests in separate lists and cannot be asked for both at once.
 
 A request made with Ombi's API key is recorded against Ombi's system user, so the name reported is the alias that request carries instead.
 

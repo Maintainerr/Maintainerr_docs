@@ -70,6 +70,8 @@ The per-user totals come from Tautulli's `get_item_user_stats`. Those rows carry
 
 Works with Plex, Jellyfin and Emby. Only the Tracearr server bound in your settings is read, so plays recorded against another server are not counted.
 
+Before reading, Maintainerr checks that this Tracearr server tracks your media server, the same check rule runs make. Plex rating keys repeat across servers, so without it another server's plays could be shown. If the check does not pass, the route answers `502` and waits a minute before checking again. A server that passes is kept until the Tracearr or media server settings change.
+
 | Parameter | Type   | Required | Description                                                                 |
 | --------- | ------ | -------- | --------------------------------------------------------------------------- |
 | `itemId`  | string | Yes      | Media server item id, the same id used by `GET /api/media-server/meta/{id}` |

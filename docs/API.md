@@ -100,7 +100,7 @@ There is no global error handler, so error bodies are framework defaults. A deni
 
 ### Secrets
 
-`GET /api/settings` masks nine secret fields. The per-integration read routes under `/api/settings` **do not mask** and return the real stored values, because the settings forms need them in order to save them again. `GET /api/settings` also leaves `apikey` and `download_client_username` in the clear.
+`GET /api/settings` masks ten secret fields. The per-integration read routes under `/api/settings` **do not mask** and return the real stored values, because the settings forms need them in order to save them again. `GET /api/settings` also leaves `apikey` and `download_client_username` in the clear.
 
 Two further routes hand over secrets wholesale: `GET /api/notifications/configurations` returns every notification credential unmasked, and `GET /api/settings/database/download` streams the entire database with every secret in plaintext.
 

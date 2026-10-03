@@ -118,12 +118,10 @@ Response:
 ]
 ```
 
-| Status                   | Cause                        |
-| ------------------------ | ---------------------------- |
-| `200`                    | JSON array of configurations |
-| `200` with an empty body | The read failed              |
-
-An empty body is not the same as `[]`. `[]` means no agents are configured, an empty body means the read threw. Check the body type to tell them apart.
+| Status | Cause                                                             |
+| ------ | ----------------------------------------------------------------- |
+| `200`  | JSON array of configurations. `[]` means no agents are configured |
+| `500`  | `Notification configurations could not be read`: the read failed  |
 
 Rule group links are not included on this route.
 

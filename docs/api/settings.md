@@ -11,9 +11,9 @@ See [API conventions](../API.md#api-conventions) for the rules that apply across
 ## Secrets on this page
 
 :::danger Per-integration reads return secrets in cleartext
-`GET /api/settings` masks nine secret fields. **Every per-integration read on this page does not.** These routes return the real stored value:
+`GET /api/settings` masks ten secret fields. **Every per-integration read on this page does not.** These routes return the real stored value:
 
-`GET /api/settings/jellyfin`, `GET /api/settings/emby`, `GET /api/settings/seerr`, `GET /api/settings/tautulli`, `GET /api/settings/tracearr`, `GET /api/settings/tmdb`, `GET /api/settings/tvdb`, `GET /api/settings/download-client`, and the three `*arr` list routes.
+`GET /api/settings/jellyfin`, `GET /api/settings/emby`, `GET /api/settings/seerr`, `GET /api/settings/ombi`, `GET /api/settings/tautulli`, `GET /api/settings/tracearr`, `GET /api/settings/tmdb`, `GET /api/settings/tvdb`, `GET /api/settings/download-client`, and the three `*arr` list routes.
 
 `GET /api/settings/database/download` goes further and hands over the entire database, including every secret in plaintext.
 
@@ -48,13 +48,13 @@ Successful `POST` requests answer `201`. `PATCH`, `PUT` and `DELETE` answer `200
 
 This is the backbone read for the whole UI. It returns the full settings row: application title and URL, the Maintainerr API key, the active media server type, every integration's connection fields, both cron schedules, the `*arr` exclusion tag options and the telemetry flag.
 
-| Status                     | Cause                      |
-| -------------------------- | -------------------------- |
-| `200`                      | The settings               |
-| `200` with an empty body   | No settings row exists yet |
-| `200` with `status: "NOK"` | The database read failed   |
+| Status                   | Cause                                                      |
+| ------------------------ | ---------------------------------------------------------- |
+| `200`                    | The settings                                               |
+| `200` with an empty body | No settings row exists yet                                 |
+| `500`                    | `The settings could not be read`: the database read failed |
 
-Nine fields are masked: the Plex token, the Jellyfin, Emby, Seerr, TMDB, TVDB, Tautulli and Tracearr API keys, and the download client password. A value of six characters or fewer becomes `****`, anything longer becomes the first three characters, an ellipsis, then the last three.
+Ten fields are masked: the Plex token, the Jellyfin, Emby, Seerr, Ombi, TMDB, TVDB, Tautulli and Tracearr API keys, and the download client password. A value of six characters or fewer becomes `****`, anything longer becomes the first three characters, an ellipsis, then the last three.
 
 :::caution Two secrets are not masked here
 `apikey`, the Maintainerr API key itself, and `download_client_username` are returned in the clear.
@@ -234,12 +234,12 @@ Afterwards, the media server becomes unavailable to Maintainerr until a new toke
 
 **Probe the configured Plex server and return its version.**
 
-| Status                     | Cause                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `200` with `status: "OK"`  | Connected. `message` is the Plex version                                                                           |
-| `200` with `status: "NOK"` | `Authenticate with Plex before testing the connection.` when no token is stored, otherwise the bare word `Failure` |
+| Status                     | Cause                                                                                                                 |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `200` with `status: "OK"`  | Connected. `message` is the Plex version                                                                              |
+| `200` with `status: "NOK"` | `Authenticate with Plex before testing the connection.` when no token is stored, otherwise the reason the test failed |
 
-This never returns an HTTP error. Note that a `Failure` conflates an unreachable server with a client that was never started, so it gives you little to diagnose with.
+This never returns an HTTP error. The test reads the library list and the server identity within five seconds. A failure says why, such as a refused or timed-out connection, or `Plex client is not initialized` when the client was never started.
 
 It tests whatever connection the process currently holds, which is not necessarily the hostname you most recently saved. Save first, then test.
 
@@ -300,7 +300,7 @@ You can end up with Jellyfin active alongside stale credentials and collections 
 
 Saving also re-initialises Streamystats, because it authenticates with the Jellyfin API key.
 
-The connection probe sets no timeout, so this can hang for a while against an unresponsive host.
+The connection test before the save gives up after five seconds.
 
 ### `POST /api/settings/jellyfin/test`
 
@@ -316,7 +316,7 @@ Takes the same body as the save route. Nothing is stored.
 
 Testing is effectively a prerequisite for choosing a user, because the save route validates the user id against this same admin-only list.
 
-Note the message `Invalid API key` is returned for **any** error on the user lookup, not just an authentication failure.
+The `NOK` message says why the test failed, such as `Invalid API key` or a refused or timed-out connection.
 
 ### `DELETE /api/settings/jellyfin`
 
@@ -496,7 +496,7 @@ Note the alternative way in: `POST` and `PATCH /api/settings` accept `media_serv
 
 Radarr, Sonarr and Sportarr are configured as lists of instances, and the four routes for each behave identically. What follows applies to all three.
 
-**The list route** returns every configured instance as `id`, `serverName`, `url` and `apiKey`, with the **API key in cleartext**. It answers `200` even on failure, in which case the body is an error envelope object rather than an array, so check the shape before iterating.
+**The list route** returns every configured instance as `id`, `serverName`, `url` and `apiKey`, with the **API key in cleartext**. If the list cannot be read from the database it answers `500` with `The server list could not be read`.
 
 **The create and update routes** take `serverName`, `url` and `apiKey`, all required. The URL is **forced to lowercase** when stored, which breaks an instance behind a case-sensitive reverse proxy path. Credentials are stored verbatim and unverified, so test first if you want verification. Duplicate names and URLs are allowed.
 
@@ -510,9 +510,10 @@ The `{id}` in these paths is Maintainerr's own settings row id.
 
 **List every configured Radarr instance.**
 
-| Status | Cause                                                                      |
-| ------ | -------------------------------------------------------------------------- |
-| `200`  | The instances, **with API keys in cleartext**, or an error envelope object |
+| Status | Cause                                         |
+| ------ | --------------------------------------------- |
+| `200`  | The instances, **with API keys in cleartext** |
+| `500`  | The list could not be read                    |
 
 ### `POST /api/settings/radarr`
 
@@ -556,9 +557,10 @@ Nothing cascades: the in-use check is what stops a collection being left pointin
 
 **List every configured Sonarr instance.**
 
-| Status | Cause                                                                      |
-| ------ | -------------------------------------------------------------------------- |
-| `200`  | The instances, **with API keys in cleartext**, or an error envelope object |
+| Status | Cause                                         |
+| ------ | --------------------------------------------- |
+| `200`  | The instances, **with API keys in cleartext** |
+| `500`  | The list could not be read                    |
 
 ### `POST /api/settings/sonarr`
 
@@ -598,9 +600,10 @@ Permanently deletes the instance row, including its API key, with no copy kept. 
 
 **List every configured Sportarr instance.**
 
-| Status | Cause                                                                      |
-| ------ | -------------------------------------------------------------------------- |
-| `200`  | The instances, **with API keys in cleartext**, or an error envelope object |
+| Status | Cause                                         |
+| ------ | --------------------------------------------- |
+| `200`  | The instances, **with API keys in cleartext** |
+| `500`  | The list could not be read                    |
 
 ### `POST /api/settings/sportarr`
 
@@ -646,13 +649,13 @@ Permanently deletes the instance row, including its API key, with no copy kept. 
 
 Takes the same body as the save route, including `serverName`, which the probe does not use.
 
-| Status                     | Cause                                                                                             |
-| -------------------------- | ------------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | Connected. `message` is the Radarr version                                                        |
-| `201` with `status: "NOK"` | `Failure`, or `Unexpected application name returned: <name>` when a different application answers |
-| `400`                      | Validation failed                                                                                 |
+| Status                     | Cause                                                                                                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the Radarr version                                                                                                                  |
+| `201` with `status: "NOK"` | `Unexpected application name returned: <name>` when a different application answers, `Failure` when the answer has no version, or why the connection failed |
+| `400`                      | Validation failed                                                                                                                                           |
 
-Real connection failures come back as the bare word `Failure` with no detail, because the underlying error is swallowed before it can be classified.
+A connection failure says why, such as `Invalid API key` or a refused or timed-out connection. The test gives up after five seconds.
 
 Testing is not a precondition for saving.
 
@@ -660,11 +663,11 @@ Testing is not a precondition for saving.
 
 **Probe a Sonarr connection using credentials in the body, without saving.**
 
-| Status                     | Cause                                        |
-| -------------------------- | -------------------------------------------- |
-| `201` with `status: "OK"`  | Connected. `message` is the Sonarr version   |
-| `201` with `status: "NOK"` | `Failure`, or an unexpected application name |
-| `400`                      | Validation failed                            |
+| Status                     | Cause                                                                   |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the Sonarr version                              |
+| `201` with `status: "NOK"` | An unexpected application name, `Failure`, or why the connection failed |
+| `400`                      | Validation failed                                                       |
 
 A Radarr behind the URL is rejected by name.
 
@@ -672,11 +675,11 @@ A Radarr behind the URL is rejected by name.
 
 **Probe a Sportarr connection and enforce the minimum supported version, without saving.**
 
-| Status                     | Cause                                                                                                                                       |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | Connected. `message` is the Sportarr version                                                                                                |
-| `201` with `status: "NOK"` | `Failure`, an unexpected application name, or `Sportarr <version> is below the minimum supported version 4.0.1022. Please update Sportarr.` |
-| `400`                      | Validation failed                                                                                                                           |
+| Status                     | Cause                                                                                                                                                                  |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the Sportarr version                                                                                                                           |
+| `201` with `status: "NOK"` | An unexpected application name, `Sportarr <version> is below the minimum supported version 4.0.1022. Please update Sportarr.`, `Failure`, or why the connection failed |
+| `400`                      | Validation failed                                                                                                                                                      |
 
 This is the only place the version requirement is applied. A build whose version cannot be parsed passes the check.
 
@@ -737,6 +740,8 @@ Also answers on the `/api/settings/test/overseerr` and `/api/settings/test/jelly
 | `201` with `status: "OK"`  | Connected. `message` is the Seerr version                                                                                                  |
 | `201` with `status: "NOK"` | `Failure, an unexpected response was returned. The URL is likely incorrect.`, or a classified connection failure such as `Invalid API key` |
 | `400`                      | Validation failed                                                                                                                          |
+
+An Ombi URL fails with the unexpected-response message. Ombi answers the same path with any key, so the test also checks for a field only Seerr sends.
 
 There is no "test what is currently stored" mode. Both fields are required in the body.
 
@@ -907,18 +912,20 @@ Rules that read Streamystats values stop resolving rather than being removed.
 
 ### `POST /api/settings/test/streamystats`
 
-**Probe a Streamystats URL, without saving or sending any credential.**
+**Probe a Streamystats URL with the stored Jellyfin API key, without saving.**
 
-| Status                     | Cause                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `201` with `status: "OK"`  | Connected. `message` is the Streamystats version                                                                   |
-| `201` with `status: "NOK"` | `Unexpected response from Streamystats. Verify the URL points to a Streamystats instance.` or a connection failure |
-| `400`                      | Validation failed                                                                                                  |
-| `403`                      | The active media server is not Jellyfin                                                                            |
+| Status                     | Cause                                                                                                                                                                                                               |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the Streamystats version                                                                                                                                                                    |
+| `201` with `status: "NOK"` | `Unexpected response from Streamystats. Verify the URL points to a Streamystats instance.`, `Unexpected response`, `API key is required` when no Jellyfin key is stored, `Invalid API key`, or a connection failure |
+| `400`                      | Validation failed                                                                                                                                                                                                   |
+| `403`                      | The active media server is not Jellyfin                                                                                                                                                                             |
 
-This is the only test route that deliberately **withholds** a stored credential from the URL you supply, so it cannot be used to leak your Jellyfin key to an arbitrary host.
+The probe reads the Streamystats version, then reads its watchlists with your stored Jellyfin API key, the same way the live client does. A pass therefore means the key works against that Streamystats too.
 
-A pass here does not prove the integration will work, because the live client also needs the Jellyfin API key, which this probe never exercises.
+:::caution This sends your stored Jellyfin key to the host you name
+The URL comes from the request body, but the key is the one stored in Maintainerr. It is sent only once the host has answered the version check like a Streamystats instance. Even so, anyone who can reach the port can point this route at a host they control and receive your Jellyfin key.
+:::
 
 ### `GET /api/settings/tracearr`
 
@@ -1044,7 +1051,7 @@ Deleting the TVDB key later does not reset this value either.
 The key is checked against TMDB **before** anything is written, so a wrong key cannot overwrite a working one.
 
 :::caution Posting an empty key silently reverts to the bundled key
-An empty string passes validation, and the check then falls back to the currently loaded key, which normally passes. The empty string is stored, `Success` is reported, and the running client drops back to the shared key that ships with Maintainerr.
+An empty string passes validation, and the check then tests the shared key that ships with Maintainerr, which normally passes. The empty string is stored, `Success` is reported, and the running client drops back to that shared key.
 
 The effect is the same as calling `DELETE`. Use `DELETE` if that is what you want.
 :::
@@ -1079,19 +1086,15 @@ The cached TMDB responses are not flushed. Use `POST /api/settings/metadata/refr
 
 **Validate a TVDB API key and store it if it works.**
 
-| Status                     | Cause                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | Stored                                                                                          |
-| `201` with `status: "NOK"` | `Invalid API key`, `No TVDB API key configured`, `Unexpected response`, or a connection failure |
-| `400`                      | The field is missing or not a string                                                            |
+| Status                     | Cause                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Stored                                                                                   |
+| `201` with `status: "NOK"` | `Invalid API key`, `API key is required`, `Unexpected response`, or a connection failure |
+| `400`                      | The field is missing or not a string                                                     |
 
-Validated before saving, so a bad key never overwrites a good one.
+Validated before saving, so a bad key never overwrites a good one. The check logs in to TVDB and then reads one series, so a key that can log in but not read metadata is refused too.
 
-:::danger Posting an empty key wipes your configured key
-This is worse than the TMDB case. An empty string passes validation, the check falls back to the **already stored** key and passes, and the empty string is then stored.
-
-`Success` is reported while your TVDB key is gone and TVDB is left unauthenticated, exactly as if you had called `DELETE`. Unlike TMDB there is no bundled fallback key. Use `DELETE` if that is what you want.
-:::
+An empty key is refused with `API key is required` and nothing is stored. Use `DELETE` to remove the key.
 
 ### `DELETE /api/settings/tvdb`
 
@@ -1114,25 +1117,25 @@ Cached TVDB responses are not flushed.
 
 **Test a TMDB API key, without saving it.**
 
-| Status                     | Cause                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | The key works                                                                                   |
-| `201` with `status: "NOK"` | `Invalid API key`, `No TMDB API key configured`, `Unexpected response`, or a connection failure |
-| `400`                      | The field is missing or not a string                                                            |
+| Status                     | Cause                                                             |
+| -------------------------- | ----------------------------------------------------------------- |
+| `201` with `status: "OK"`  | The key works                                                     |
+| `201` with `status: "NOK"` | `Invalid API key`, `Unexpected response`, or a connection failure |
+| `400`                      | The field is missing or not a string                              |
 
-An empty key re-tests whatever is currently loaded rather than reporting that nothing is configured.
+An empty key tests the shared key that ships with Maintainerr, which is the key an empty setting falls back to.
 
 ### `POST /api/settings/test/tvdb`
 
 **Test a TVDB API key, without saving it.**
 
-| Status                     | Cause                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | The key works                                                                                   |
-| `201` with `status: "NOK"` | `Invalid API key`, `No TVDB API key configured`, `Unexpected response`, or a connection failure |
-| `400`                      | The field is missing or not a string                                                            |
+| Status                     | Cause                                                                                    |
+| -------------------------- | ---------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | The key works                                                                            |
+| `201` with `status: "NOK"` | `Invalid API key`, `API key is required`, `Unexpected response`, or a connection failure |
+| `400`                      | The field is missing or not a string                                                     |
 
-An empty key re-tests the already stored key, and only reports that nothing is configured when nothing is stored either.
+An empty key is refused with `API key is required`. It does not fall back to the stored key.
 
 ### `POST /api/settings/metadata/refresh/{provider}`
 
@@ -1150,7 +1153,7 @@ No request body is read.
 | `201` with `status: "NOK"` | The provider's connection test failed, or something threw                                      |
 | `400`                      | The provider is not one of the three                                                           |
 
-The connection is tested first using whatever is **already configured**, not anything from the request. TVDB reports `No TVDB API key configured` and does nothing when no key is stored.
+The connection is tested first using whatever is **already configured**, not anything from the request. TVDB reports `API key is required` and does nothing when no key is stored.
 
 The refresh itself is fire and forget. Only its start is reported, and per-item failures are logged rather than returned.
 
