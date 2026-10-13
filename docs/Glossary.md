@@ -1568,7 +1568,7 @@ The first air date of the Sonarr item.
 #### Number of seasons / episodes (also unavailable)
 
 :::info
-The number of seasons or episodes for the Sonarr item. This will also count the unavailable episodes.
+For a show, the number of seasons. For a season, the number of episodes in that season, including episodes that are not downloaded.
 
 :::
 
@@ -1623,7 +1623,7 @@ Indicates whether the Sonarr show/season has unaired episodes.
 #### Number of monitored seasons / episodes
 
 :::info
-The number of monitored seasons or episodes for the Sonarr item.
+For a show, the number of monitored seasons. For a season, the number of monitored episodes in that season.
 
 :::
 
