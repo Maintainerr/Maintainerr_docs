@@ -954,8 +954,8 @@ The save is refused if no server matches, or if the one you named tracks a diffe
 
 This can be slow: resolution probes up to 20 items per candidate server against your media server.
 
-:::caution The version requirement is not enforced here
-Only `POST /api/settings/test/tracearr` checks the minimum supported Tracearr version.
+:::caution The version requirement is only enforced indirectly here
+Only `POST /api/settings/test/tracearr` names the minimum supported Tracearr version. Without `server_id`, the save reads Tracearr's server list, which a Tracearr older than 2.7.0 does not have, so it is refused as having no matching server. With `server_id`, that list is not read.
 :::
 
 ### `DELETE /api/settings/tracearr`
@@ -979,23 +979,25 @@ Re-adding Tracearr re-runs the whole resolve-and-verify probe. Rules that read T
 
 Request body takes `url` and `api_key`.
 
-| Status | Cause                                                                            |
-| ------ | -------------------------------------------------------------------------------- |
-| `201`  | An array of servers with `id` and `name`. **May legitimately be empty**          |
-| `400`  | Validation failed                                                                |
-| `502`  | The document fetch threw, or reading item metadata from your media server failed |
+| Status | Cause                                                                                                                                      |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `201`  | An array of servers with `id` and `name`. **May legitimately be empty**                                                                    |
+| `400`  | Validation failed                                                                                                                          |
+| `502`  | Tracearr's server list could not be read, including on a Tracearr older than 2.7.0, or reading item metadata from your media server failed |
 
-An empty array is ambiguous: it can mean the document had no server list, or the media server type filter removed every candidate. If the library list cannot be read, every candidate is returned with a warning rather than an error.
+An empty array is ambiguous: it can mean Tracearr tracks no servers, or none of them is the same type as your media server.
 
 ### `POST /api/settings/test/tracearr`
 
 **Probe a Tracearr URL and API key and check its version, without saving.**
 
-| Status                     | Cause                                                                                                                                           |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `201` with `status: "OK"`  | Connected. `message` is the Tracearr version                                                                                                    |
-| `201` with `status: "NOK"` | `Unexpected response from Tracearr. Verify the URL points to a Tracearr v2 instance.`, a below-minimum-version refusal, or a connection failure |
-| `400`                      | Validation failed                                                                                                                               |
+| Status                     | Cause                                                                                                                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `201` with `status: "OK"`  | Connected. `message` is the Tracearr version                                                                                                                                              |
+| `201` with `status: "NOK"` | `Tracearr 2.7.0 or later is required. Update Tracearr, or verify the URL points to it.`, `Unexpected response from Tracearr. Verify the URL points to Tracearr.`, or a connection failure |
+| `400`                      | Validation failed                                                                                                                                                                         |
+
+The test reads Tracearr's server list, which arrived in Tracearr 2.7.0, so an older Tracearr answers `404` and gets the first message. No version number is compared, and a Tracearr build without build information reports `0.0.0`.
 
 `server_id` is accepted by the schema but unused. A pass here says nothing about whether the save will find a matching server.
 
