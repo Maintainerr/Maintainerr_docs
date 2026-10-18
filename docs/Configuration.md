@@ -313,7 +313,7 @@ Tautulli's configuration is required to use its parameters in rules.
 
 ## Tracearr
 
-Tracearr's configuration is required to use its watch history parameters in rules.
+Tracearr's configuration is required to use its watch history parameters in rules. Maintainerr requires Tracearr 2.7.0 or later.
 
 :::note
 Tracearr does not backfill media-server history. Only watch events recorded by Tracearr after it was connected to your media server are available to rules.
