@@ -1322,7 +1322,7 @@ paths:
             type: string
       responses:
         '200':
-          description: ''
+          description: The paged items can include the media server's filesystem path when the backend provides it. Plex listings provide it only for movies and episodes.
       tags:
         - MediaServer
   /api/media-server/library/{id}/content/search/{query}:
@@ -1429,7 +1429,7 @@ paths:
             application/json:
               schema:
                 type: object
-                description: Single-item media metadata. Only this route populates `path`, which is the media server's own filesystem path for the item.
+                description: Single-item media metadata. `path` is the media server's own filesystem path for the item. The paged library content route and overview bootstrap content can also include it.
                 properties:
                   path:
                     type: string

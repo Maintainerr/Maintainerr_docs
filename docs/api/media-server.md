@@ -125,6 +125,7 @@ Response:
       "addedAt": "2026-01-01T00:00:00.000Z",
       "providerIds": { "tmdb": ["550"] },
       "mediaSources": [{ "id": "1", "sizeBytes": 0 }],
+      "path": "/media/movies/Example title (2026)/Example title.mkv",
       "library": { "id": "1", "title": "Movies" },
       "maintainerrExclusionType": "global",
       "maintainerrIsManual": true,
@@ -137,7 +138,7 @@ Response:
 }
 ```
 
-Items carry the full media item shape except `path`, which is only populated by the single-item metadata route. On top of the media server's own fields, this route adds Maintainerr state: `maintainerrExclusionId`, `maintainerrExclusionType` which is `specific` or `global`, `maintainerrIsManual`, and `maintainerrCollections`, the titles of every collection the item belongs to.
+Items include the media server's path when that backend provides it. Movies and episodes return the media file; shows and seasons return the folder. Plex listings provide it only for movies and episodes, and Plex seasons have no path. On top of the media server's own fields, this route adds Maintainerr state: `maintainerrExclusionId`, `maintainerrExclusionType` which is `specific` or `global`, `maintainerrIsManual`, and `maintainerrCollections`, the titles of every collection the item belongs to.
 
 | Status | Cause                                                                                       |
 | ------ | ------------------------------------------------------------------------------------------- |
@@ -230,6 +231,8 @@ Response:
 
 There is no way to choose which library is bootstrapped. It is always the first one the media server returned. The embedded page is always filtered to that library's own type, so a show library returns shows and never seasons or episodes.
 
+The embedded content items can include `path`, as described for the paged content route.
+
 A `sort` of `manual` or `excluded` pays the full-library sweep described above, at page load.
 
 ### `GET /api/media-server/search/{query}`
@@ -279,7 +282,7 @@ Response:
 
 There is no way to tell a missing item from a failed read here.
 
-`path` is the server's own filesystem path for that one item: movies and episodes return the media file, while shows and seasons return the folder. Only this single-item route populates it, and a Plex season has no path of its own.
+`path` is the server's own filesystem path for that one item: movies and episodes return the media file, while shows and seasons return the folder. The paged content route and its embedded page in `overview/bootstrap` can also return it; other listing routes do not guarantee it. A Plex season has no path of its own.
 
 :::caution Watch fields are per-user and cached
 `viewCount`, `lastViewedAt` and `userRating` are scoped to the single Jellyfin or Emby user Maintainerr is configured with, and are cached for 5 minutes. Do not use them to drive watch or deletion decisions. Use `GET /api/media-server/meta/{id}/seen` for that.
