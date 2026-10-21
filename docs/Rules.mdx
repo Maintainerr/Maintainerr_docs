@@ -69,6 +69,10 @@ Troubleshooting tips:
 
 :::
 
+:::note Seerr Watchlist Rules
+`Watchlisted by` (`Seerr.watchlist_isListedByUsers`) and `Is Watchlisted` (`Seerr.watchlist_isWatchlisted`) check the watchlists of all users returned by Seerr. They work with every media server; Plex users' watchlists are read through their linked plex.tv accounts. A season or episode uses its show's watchlist because Seerr tracks watchlisted titles, not individual seasons or episodes. If Maintainerr cannot read the Seerr user list or any watchlist response, the result is unknown for that run rather than an empty list.
+:::
+
 ## Creating rules
 
 ### General
@@ -171,7 +175,7 @@ Season delete actions unmonitor the season in Sonarr and delete its episode file
 
 Episode delete actions share the season folder with other episodes, so the folder is never removed by this action. No leftover folder cleanup is offered for episode rules.
 
-Maintainerr finds the episode in Sonarr by its TVDB episode id when exactly one Sonarr episode has it, so a library numbered differently from Sonarr, such as absolute or DVD order, still acts on the right episode. Otherwise it matches by season and episode number, or by air date. When one file holds several episodes, all of them are unmonitored before the file is deleted, so Sonarr does not download it again. If any of them cannot be unmonitored, the file is kept.
+Maintainerr first matches a Sonarr episode by the media file when its path identifies one file containing exactly one episode. If there is no unique file match, it falls back to a unique TVDB episode id, then to season and episode numbers or air date. When Sonarr's episode or file list cannot be read, episode-level rules stay unknown and episode actions skip the item rather than risk using the wrong episode. When one file holds several episodes, all of them are unmonitored before the file is deleted, so Sonarr does not download it again. If any of them cannot be unmonitored, the file is kept.
 
 ### Sportarr actions
 
@@ -470,7 +474,8 @@ Both walkthroughs work unchanged for daily series:
 - Daily shows that use one season per year rank those year-seasons like any
   other season.
 - Some servers store daily episodes with only an air date and no episode
-  number. Those episodes are matched to Sonarr by broadcast date, so
+  number. Maintainerr first matches them by file when it identifies one
+  episode; otherwise it can match them to Sonarr by broadcast date, so
   `Episode position by air date (1 = latest)` still resolves. When two
   episodes of a date-only show share the same broadcast day, the newer one's
   rank is used, which errs on the side of keeping media.

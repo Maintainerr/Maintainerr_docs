@@ -2123,6 +2123,28 @@ Indicates whether the media was requested in Seerr.
 - Availability: movies, shows, seasons, episodes
 - Type: boolean
 
+#### Watchlisted by (username)
+
+:::info
+List of Seerr users who have the movie or show in their watchlist. For seasons and episodes, this checks the parent show's watchlist.
+
+:::
+
+- Key: Seerr.watchlist_isListedByUsers
+- Availability: movies, shows, seasons, episodes
+- Type: text[]
+
+#### Is Watchlisted
+
+:::info
+Indicates whether any Seerr user has the movie or show in their watchlist. For seasons and episodes, this checks the parent show's watchlist.
+
+:::
+
+- Key: Seerr.watchlist_isWatchlisted
+- Availability: movies, shows, seasons, episodes
+- Type: boolean
+
 ---
 
 ### Ombi
