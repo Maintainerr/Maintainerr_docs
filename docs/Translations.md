@@ -17,21 +17,23 @@ Open `Settings -> General`, choose a language under `Display language`, and pres
 
 ## Available languages
 
-| Language     | Code |
-| ------------ | ---- |
-| English      | `en` |
-| Čeština      | `cs` |
-| Dansk        | `da` |
-| Deutsch      | `de` |
-| Español      | `es` |
-| Français     | `fr` |
-| Italiano     | `it` |
-| Nederlands   | `nl` |
-| Norsk bokmål | `nb` |
-| Polski       | `pl` |
-| Português    | `pt` |
-| Suomi        | `fi` |
-| Svenska      | `sv` |
+| Language     | Code      |
+| ------------ | --------- |
+| English      | `en`      |
+| Čeština      | `cs`      |
+| Dansk        | `da`      |
+| Deutsch      | `de`      |
+| Español      | `es`      |
+| Français     | `fr`      |
+| Italiano     | `it`      |
+| Nederlands   | `nl`      |
+| Norsk bokmål | `nb`      |
+| Polski       | `pl`      |
+| Português    | `pt`      |
+| Suomi        | `fi`      |
+| Svenska      | `sv`      |
+| Русский      | `ru`      |
+| 繁體中文     | `zh-Hant` |
 
 English is the source language and is always complete. The other languages are still being worked on, and how much is done depends on how far their translators have got.
 
