@@ -1209,7 +1209,7 @@ The username and password are deliberately **not** trimmed, so a credential with
 
 The connection is stored unverified.
 
-The fallback ratio applies only when the selected client enforces no seeding goal of its own. In that case Maintainerr also waits for at least 23 hours of seeding before removing the download.
+The fallback ratio applies only when the selected client enforces no seeding goal of its own. In that case Maintainerr removes the download once it has reached the fallback ratio and seeded for at least 23 hours, or once it has seeded for 14 days at any ratio.
 
 :::caution download_client_delete_data has real destructive reach
 With it on, removing a download also **deletes its data on disk** during cleanup, though data shared with another download is kept. This takes effect the moment you save, changing what the file-deleting `*arr` actions do.
