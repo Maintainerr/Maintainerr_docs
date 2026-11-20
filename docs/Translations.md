@@ -30,6 +30,7 @@ Open `Settings -> General`, choose a language under `Display language`, and pres
 | Norsk bokmål | `nb`      |
 | Polski       | `pl`      |
 | Português    | `pt`      |
+| Română       | `ro`      |
 | Suomi        | `fi`      |
 | Svenska      | `sv`      |
 | Русский      | `ru`      |
@@ -49,7 +50,7 @@ It all happens on [Weblate](https://hosted.weblate.org/engage/maintainerr/). Pic
 
 - Not sure how to word something? Leave a comment on that string in Weblate. Skipping it is fine too - a missing translation is shown in English, so nothing breaks.
 - If the English text has a placeholder such as `{count}`, keep it in your translation. Weblate warns you when one is missing, and the same check runs again before the translation is accepted.
-- Missing a language? Ask for it on Weblate and start it yourself. Once work has begun, it is added to the `Display language` list.
+- Missing a language? Ask for it on Weblate and the maintainers add it, which also puts it in the `Display language` list.
 - Weblate gathers the finished work and opens a pull request on the Maintainerr repository. A maintainer reads it, and your words ship with the next release.
 
 Thank you. Every string helps someone use Maintainerr in the language they think in.
