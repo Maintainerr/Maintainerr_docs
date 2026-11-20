@@ -602,6 +602,32 @@ If a history row comes back without the season it belongs to, the value is treat
 - Availability: seasons
 - Type: date
 
+#### Franchise name
+
+:::info
+The name of the film series the movie belongs to, read from TMDB. TMDB calls a film series a collection, which is not the same thing as a Maintainerr or media server collection. Radarr is not needed.
+
+The value is empty when the movie is in no franchise, so `exists` matches movies that are part of one. If the TMDB lookup fails, the value is treated as unknown for that run.
+
+:::
+
+- Key: Plex.franchise_name
+- Availability: movies
+- Type: text
+
+#### Next franchise release date
+
+:::info
+The earliest future release date among the other movies in the same franchise, read from TMDB. A movie TMDB lists without a release date does not count, because announced movies can sit undated for years.
+
+The value is empty when the movie is in no franchise or nothing in it has a future release date, so `exists` matches movies whose franchise has an upcoming release. If the TMDB lookup fails, the value is treated as unknown for that run.
+
+:::
+
+- Key: Plex.franchise_nextReleaseDate
+- Availability: movies
+- Type: date
+
 ---
 
 ### Jellyfin
@@ -1196,6 +1222,32 @@ A season filed without a number, such as `Season Unknown`, has no place in the o
 
 - Key: Jellyfin.sw_lastViewedAtThroughSeason
 - Availability: seasons
+- Type: date
+
+#### Franchise name
+
+:::info
+The name of the film series the movie belongs to, read from TMDB. TMDB calls a film series a collection, which is not the same thing as a Maintainerr or media server collection. Radarr is not needed. Also available on Emby.
+
+The value is empty when the movie is in no franchise, so `exists` matches movies that are part of one. If the TMDB lookup fails, the value is treated as unknown for that run.
+
+:::
+
+- Key: Jellyfin.franchise_name
+- Availability: movies
+- Type: text
+
+#### Next franchise release date
+
+:::info
+The earliest future release date among the other movies in the same franchise, read from TMDB. A movie TMDB lists without a release date does not count, because announced movies can sit undated for years. Also available on Emby.
+
+The value is empty when the movie is in no franchise or nothing in it has a future release date, so `exists` matches movies whose franchise has an upcoming release. If the TMDB lookup fails, the value is treated as unknown for that run.
+
+:::
+
+- Key: Jellyfin.franchise_nextReleaseDate
+- Availability: movies
 - Type: date
 
 ---

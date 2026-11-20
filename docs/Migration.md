@@ -43,6 +43,7 @@ The database schema includes support for overlays.
 - three Tracearr settings (`tracearr_url`, `tracearr_api_key`, `tracearr_server_id`) for the Tracearr watch history integration. Existing configurations are unaffected.
 - two Ombi settings (`ombi_url`, `ombi_api_key`) plus a `forceOmbi` collection field for the Ombi request service. Existing collections default to off, and nothing contacts Ombi until you configure it.
 - a move of the Radarr and Sonarr exclusion-tag settings out of the global settings row and onto each server, as `tagExclusions`, `exclusionTag` and `untagOnUnexclude` columns on `radarr_settings` and `sonarr_settings`. The migration copies each service's settings onto every server of that service, so tagging behaves exactly as it did before the upgrade. Its `down()` does not copy them back.
+- an `overlayScope` collection field that sets how far a show collection's overlay reaches (`show_only`, `show_seasons` or `all`). Existing collections default to `all`, so they keep drawing on every level.
 
 No manual database work should be required, but you should still keep a backup of `/opt/data/maintainerr.db` before upgrading and allow startup migrations to complete before using the overlay screens.
 

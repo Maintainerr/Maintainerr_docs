@@ -131,7 +131,9 @@ This counts every row with no filtering, so it will not agree with the length of
 
 **Create a rule group, its collection and its rules.**
 
-The body is a rule group object. Required are `libraryId`, `name`, `description`, `dataType` and `rules`. It also accepts `isActive`, `useRules`, `ruleHandlerCronSchedule`, `notifications` (only each entry's `id` is used), and a nested `collection` block carrying `deleteAfterDays`, `manualCollection`, `manualCollectionName`, `visibleOnRecommended`, `visibleOnHome`, `keepLogsForMonths`, `sortTitle`, `mediaServerSort`, `overlayEnabled` and `overlayTemplateId`.
+The body is a rule group object. Required are `libraryId`, `name`, `description`, `dataType` and `rules`. It also accepts `isActive`, `useRules`, `ruleHandlerCronSchedule`, `notifications` (only each entry's `id` is used), and a nested `collection` block carrying `deleteAfterDays`, `manualCollection`, `manualCollectionName`, `visibleOnRecommended`, `visibleOnHome`, `keepLogsForMonths`, `sortTitle`, `mediaServerSort`, `overlayEnabled`, `overlayTemplateId` and `overlayScope`.
+
+`overlayScope` is `show_only`, `show_seasons` or `all`, and defaults to `all`. Only a show collection reads it.
 
 The body is **not** schema-validated. Unknown fields pass through, and missing ones are only caught by the hand-written checks below.
 
@@ -184,7 +186,7 @@ No media files are deleted and nothing leaves your library.
 This always rewrites every rule row from the payload. It is a full replace.
 
 :::caution Omitting the collection block loses settings
-Omitting `collection` keeps the stored `visibleOnRecommended`, `visibleOnHome`, `manualCollection` and `manualCollectionName`. But `deleteAfterDays`, `sortTitle`, `mediaServerSort`, `overlayEnabled` and `overlayTemplateId` fall back to empty rather than to their stored values, and `keepLogsForMonths` resets to `6`.
+Omitting `collection` keeps the stored `visibleOnRecommended`, `visibleOnHome`, `manualCollection`, `manualCollectionName` and `overlayScope`. But `deleteAfterDays`, `sortTitle`, `mediaServerSort`, `overlayEnabled` and `overlayTemplateId` fall back to empty rather than to their stored values, and `keepLogsForMonths` resets to `6`.
 
 Send the full object, including the collection block, on every update.
 :::

@@ -72,6 +72,7 @@ Overlay controls also appear in the rule or collection form.
 
 - `Enable overlays` turns overlays on for that collection.
 - `Overlay template` optionally selects a specific template. Leave it empty to follow the default.
+- `Overlay scope` only appears on show collections. It sets how far below each show the countdown reaches: `Show only` draws on the show poster, `Show + seasons` adds the season posters, and `Show + seasons + episodes` adds every episode title card too. It defaults to `Show + seasons + episodes`.
 
 This setting is stored on the collection, so existing collections can be updated later without rebuilding your whole setup.
 
@@ -104,6 +105,8 @@ When a collection's action deletes files, more than the items in the collection 
 These extra items only get an overlay. They are never added to the collection, so nothing extra is deleted.
 
 This happens for show, season and episode collections. Movie collections draw nothing extra, because deleting a movie deletes nothing else.
+
+On a show collection, `Overlay scope` limits how far down this reaches. Seasons and episodes it leaves out get no countdown. If they had one before, the next scheduled run or `Run Now` puts their original artwork back, unless another collection still draws on them.
 
 Episodes need a title card template, so make sure you have one if a show or season collection reaches down to episodes. Without it, those episodes are skipped and the log says so.
 
